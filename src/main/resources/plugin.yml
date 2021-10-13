@@ -1,0 +1,4 @@
+name: omens_economy
+version: 1.0
+main: omen44.omens_economy.Main
+api-version: 1.17

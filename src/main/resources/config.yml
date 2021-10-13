@@ -1,0 +1,35 @@
+#==========================================#
+#    Welcome to OMEN44's Economy plugin    #
+#                                          #
+# This plugin adds basic economy commands  #
+#        such as /balance and /pay         #
+#                                          #
+# Players gain money from mining different #
+# blocks found in the world here is where  #
+# you can configure what blocks they need  #
+#   to mine and how much money they get    #
+#==========================================#
+
+# your list should look like this:
+# blocks:
+#   <block name>:
+#     The amount of money dropped is a random one of the values you set here
+#     - <amount of $>
+#     - <amount of $>
+
+database:
+  host: localhost # host of your database
+  port: 3306 # default port for MariaDB and MySQL
+  database: indrocraft # name of your database. A database server can contain multiple databases
+  user: root
+  password: PasswordHere # if database has no password leave the password as 'PasswordHere'
+
+moneySymbol: $
+
+blocks:
+  DIAMOND_ORE:
+    - 100
+  COAL_ORE:
+    - 20
+    - 5
+    - 1
