@@ -1,6 +1,6 @@
 package omen44.omens_economy;
 
-import omen44.omens_economy.commands.Economy;
+import omen44.omens_economy.commands.CommandBal;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.events.PlayerMine;
@@ -19,7 +19,7 @@ public final class Main extends JavaPlugin {
     public MySQL mySQL;
     public SQLUtils sqlUtils;
     public EconomyUtils economyUtils;
-    public Economy economy;
+    public CommandBal economy;
 
     @Override
     public void onEnable() {
@@ -28,7 +28,7 @@ public final class Main extends JavaPlugin {
         mySQL = new MySQL(this);
         sqlUtils = new SQLUtils(this);
         economyUtils = new EconomyUtils(this);
-        economy = new Economy(this);
+        economy = new CommandBal(this);
 
         // register listeners:
         getServer().getPluginManager().registerEvents(new PlayerMine(this), this);

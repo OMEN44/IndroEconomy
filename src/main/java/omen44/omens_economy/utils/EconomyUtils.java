@@ -30,10 +30,12 @@ public class EconomyUtils {
     public int getMoney(Player player, String column) {
         int amount = 0;
         String uuid = player.getUniqueId().toString();
-        if (column.equalsIgnoreCase("Bank") || column.equalsIgnoreCase("ban")) {
+        if (column.equalsIgnoreCase("bank")) {
             amount = main.sqlUtils.getInt("Bank", "UUID", uuid, "players");
-        } else {
+        } else if (column.equalsIgnoreCase("wallet")) {
             amount = main.sqlUtils.getInt("Wallet", "UUID", uuid, "players");
+        } else {
+            System.out.println("Error: Invalid Column Input");
         }
         return amount;
     }
