@@ -15,10 +15,16 @@ public class EconomyUtils {
     public Main main;
     public EconomyUtils(Main main) {this.main = main;}
 
-    public void setMoney(Player player, String column, int amount) {
+    public void setBank(Player player, int amount) {
         String uuid = player.getUniqueId().toString();
         String value = Integer.valueOf(amount).toString();
-        main.sqlUtils.setData(value, "UUID", uuid, column, "players");
+        main.sqlUtils.setData(value, "UUID", uuid, "bank", "players");
+    }
+
+    public void setWallet(Player player, int amount) {
+        String uuid = player.getUniqueId().toString();
+        String value = Integer.valueOf(amount).toString();
+        main.sqlUtils.setData(value, "UUID", uuid, "wallet", "players");
     }
 
     public int getMoney(Player player, String column) {

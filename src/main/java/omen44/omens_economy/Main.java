@@ -45,6 +45,12 @@ public final class Main extends JavaPlugin {
 
         try {
             mySQL.connect();
+
+            //create main table:
+            sqlUtils.createTable("players", "UUID");
+            sqlUtils.createColumn("ign", "VARCHAR(100)", "players");
+            sqlUtils.createColumn("wallet", "INT(100)", "players");
+            sqlUtils.createColumn("bank", "INT(100)", "players");
         } catch (ClassNotFoundException | SQLException e) {
             Bukkit.getLogger().severe("Database not connected!");
         }
@@ -53,11 +59,6 @@ public final class Main extends JavaPlugin {
             Bukkit.getLogger().info(ChatColor.BLUE + "Database is connected!");
         }
 
-        //create main table:
-        sqlUtils.createTable("players", "UUID");
-        sqlUtils.createColumn("ign", "VARCHAR(100)", "players");
-        sqlUtils.createColumn("wallet", "INT(100)", "players");
-        sqlUtils.createColumn("bank", "INT(100)", "players");
     }
 
     @Override
