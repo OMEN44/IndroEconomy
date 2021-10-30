@@ -10,16 +10,46 @@ public class EconomyUtils {
     *   - getWallet
     *   - set (wallet | bank)
     *   - transfer
-    *
-    * 
-    *
     */
-
 
     public Main main;
     public EconomyUtils(Main main) {this.main = main;}
 
-    public void getBank(SQLUtils sqlUtils, String uuid) {
+    public void setMoney(Player player, String column, int amount) {
+        String uuid = player.getUniqueId().toString();
+        String value = Integer.valueOf(amount).toString();
+        main.sqlUtils.setData(value, "UUID", uuid, column, "players");
+    }
 
+    public int getMoney(Player player, String column) {
+        int amount = 0;
+        String uuid = player.getUniqueId().toString();
+        if (column.equalsIgnoreCase("Bank") || column.equalsIgnoreCase("ban")) {
+            amount = main.sqlUtils.getInt("Bank", "UUID", uuid, "players");
+        } else {
+            amount = main.sqlUtils.getInt("Wallet", "UUID", uuid, "players");
+        }
+        return amount;
+    }
+
+    public String sendMoney(Player from, Player target, int amount) {
+        String sender = from.getUniqueId().toString();
+        try {
+            target.getUniqueId();
+        } catch (Exception e) {
+            return "Target not found";
+        }
+        String receiver = target.getUniqueId().toString();
+
+        int senderWal = main.sqlUtils.getInt("Wallet", "UUID", sender, "players");
+        int receiverWal = main.sqlUtils.getInt("Wallet", "UUID", receiver, "players");
+
+        if (senderWal >= amount) {
+            amount = amount+receiverWal;
+            main.sqlUtils.setData(Integer.valueOf(amount).toString(), "UUID", receiver, "Wallet", "players");
+            return "Successful";
+        }
+
+        return "Unsuccessful";
     }
 }
