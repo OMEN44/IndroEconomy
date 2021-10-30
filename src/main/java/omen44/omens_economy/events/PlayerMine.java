@@ -29,7 +29,7 @@ public class PlayerMine implements Listener {
 
         if (blocks.contains(block.getType().toString()) &&
                 !(player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH))) {
-            main.economyUtils.setWallet(player, "");
+            main.economyUtils.setWallet(player, 1);
         }
 
     }
