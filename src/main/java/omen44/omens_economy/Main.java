@@ -59,6 +59,10 @@ public final class Main extends JavaPlugin {
             Bukkit.getLogger().info(ChatColor.BLUE + "Database is connected!");
         }
 
+        //initialise commands
+        this.getCommand("bal").setExecutor(new CommandBal());
+        this.getCommand("bal").setTabCompleter(new CommandBal());
+
     }
 
     @Override

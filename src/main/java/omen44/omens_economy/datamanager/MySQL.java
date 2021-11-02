@@ -44,7 +44,7 @@ public class MySQL {
         if (isConnected()) {
             try {
                 connection.close();
-            }catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }

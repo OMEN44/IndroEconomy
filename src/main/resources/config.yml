@@ -26,6 +26,8 @@ database:
 
 moneySymbol: $
 
+defaultAmount: 200 # what amount do you want players to start with?
+
 blocks:
   DIAMOND_ORE:
     - 100

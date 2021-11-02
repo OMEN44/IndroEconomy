@@ -2,3 +2,8 @@ name: omens_economy
 version: 1.0
 main: omen44.omens_economy.Main
 api-version: 1.17
+commands:
+  bal:
+    description: allows you to check your balance and send it
+    usage: /bal
+    permission: omensEconomy.bal

@@ -53,7 +53,7 @@ public class EconomyUtils {
         int receiverWal = main.sqlUtils.getInt("Wallet", "UUID", receiver, "players");
 
         if (senderWal >= amount) {
-            amount = amount+receiverWal;
+            amount += receiverWal;
             main.sqlUtils.setData(Integer.valueOf(amount).toString(), "UUID", receiver, "Wallet", "players");
             return "Successful";
         }

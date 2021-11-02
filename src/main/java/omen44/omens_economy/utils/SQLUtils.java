@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLUtils {
-    private Main plugin;
+    private final Main plugin;
     public SQLUtils(Main plugin) {this.plugin = plugin;}
 
     /**
@@ -22,17 +22,17 @@ public class SQLUtils {
         try {
             PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + idColumn + "=?");
             if (isNum("int", value)) {
-                int valNum = Integer.valueOf(value);
+                int valNum = Integer.parseInt(value);
                 ps.setInt(1, valNum);
                 ps.setString(2, id);
                 Bukkit.getLogger().warning("int");
             } else if (isNum("float", value)) {
-                float valNum = Float.valueOf(value);
+                float valNum = Float.parseFloat(value);
                 ps.setFloat(1, valNum);
                 ps.setString(2, id);
                 Bukkit.getLogger().warning("float");
             } else if (isNum("double", value)) {
-                double valNum = Double.valueOf(value);
+                double valNum = Double.parseDouble(value);
                 ps.setDouble(1, valNum);
                 ps.setString(2, id);
                 Bukkit.getLogger().warning("double");
@@ -58,7 +58,7 @@ public class SQLUtils {
             PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
             ps.setString(1, idEquals);
             ResultSet rs = ps.executeQuery();
-            int info = 0;
+            int info;
             if (rs.next()) {
                 info = rs.getInt(column);
                 return info;
@@ -81,12 +81,12 @@ public class SQLUtils {
             PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
             ps.setString(1, idEquals);
             ResultSet rs = ps.executeQuery();
-            String info = "";
+            String info;
             if (rs.next()) {
                 info = rs.getString(column);
                 return info;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return "";
@@ -104,7 +104,7 @@ public class SQLUtils {
             PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
             ps.setString(1, idEquals);
             ResultSet rs = ps.executeQuery();
-            double info = 0;
+            double info;
             if (rs.next()) {
                 info = rs.getDouble(column);
                 return info;
@@ -127,7 +127,7 @@ public class SQLUtils {
             PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
             ps.setString(1, idEquals);
             ResultSet rs = ps.executeQuery();
-            float info = 0;
+            float info;
             if (rs.next()) {
                 info = rs.getFloat(column);
                 return info;
@@ -197,11 +197,8 @@ public class SQLUtils {
             ps.setString(1, test);
 
             ResultSet results = ps.executeQuery();
-            if (results.next()) {
-                //row is found
-                return true;
-            }
-            return false;
+            //row is found
+            return results.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -235,29 +232,19 @@ public class SQLUtils {
         }
     }
 
+
+    // this is to determine if a number is a certain type
     public boolean isNum(String type, String num) {
         try {
             if (type.equalsIgnoreCase("int")) {
                 int i = Integer.parseInt(num);
-                if (num == String.valueOf(i)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return num.equals(String.valueOf(i));
             } else if (type.equalsIgnoreCase("float")) {
                 float i = Float.parseFloat(num);
-                if (num == String.valueOf(i)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return num.equals(String.valueOf(i));
             } else if (type.equalsIgnoreCase("double")) {
                 double i = Double.parseDouble(num);
-                if (num == String.valueOf(i)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return num.equals(String.valueOf(i));
             }
         } catch (Exception e) {
             return false;
