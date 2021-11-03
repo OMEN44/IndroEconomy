@@ -24,9 +24,10 @@ database:
   user: root
   password: PasswordHere # if database has no password leave the password as 'PasswordHere'
 
-moneySymbol: $
-
-defaultAmount: 200 # what amount do you want players to start with?
+money:
+  moneySymbol: $ # the symbol that the plugin will use to present the money with
+  deathLossPercent: 10 # when player's die, how much percent of their money do you want them to lose?
+  defaultAmount: 200 # what amount do you want players to start with?
 
 blocks:
   DIAMOND_ORE:
