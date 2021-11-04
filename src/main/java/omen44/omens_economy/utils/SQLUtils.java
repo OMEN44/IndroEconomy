@@ -139,12 +139,12 @@ public class SQLUtils {
     }
 
     /**
-     * @param name What name do you want to u se for the table
+     * @param name What name do you want to use for the table
      * @param idColumn This is the unique ID column generally 'NAME'
      */
     public void createTable(String name, String idColumn) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + idColumn + " VARCHAR(100),PRIMARY KEY (" + idColumn + "))");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + idColumn + " VARCHAR(100), PRIMARY KEY" + " (" + idColumn + "));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,7 +158,7 @@ public class SQLUtils {
      */
     public void createColumn(String id, String dataType, String tableName) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " ADD IF NOT EXISTS " + id + " " + dataType);
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + id + " " + dataType + ";");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

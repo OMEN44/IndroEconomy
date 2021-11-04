@@ -11,24 +11,24 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.SQLException;
-
 public final class Main extends JavaPlugin {
 
     public ConfigTools configTools;
     public MySQL mySQL;
     public SQLUtils sqlUtils;
     public EconomyUtils economyUtils;
-    public CommandBal economy;
 
     @Override
     public void onEnable() {
+        // initialise commands
+        this.getCommand("bal").setExecutor(new CommandBal(this));
+        this.getCommand("bal").setTabCompleter(new CommandBal(this));
+
         // initialize classes:
         configTools = new ConfigTools(this);
         mySQL = new MySQL(this);
         sqlUtils = new SQLUtils(this);
         economyUtils = new EconomyUtils(this);
-        economy = new CommandBal(this);
 
         // register listeners:
         getServer().getPluginManager().registerEvents(new PlayerMine(this), this);
@@ -37,32 +37,23 @@ public final class Main extends JavaPlugin {
         configTools.generateConfig("config.yml");
         FileConfiguration config = configTools.getFileConfig("config.yml");
 
-        String symbol = config.getString("moneySymbol");
-        Bukkit.getLogger().info(symbol);
+        String symbol = config.getString("money.moneySymbol");
+        Bukkit.getLogger().info("Money symbol: " + symbol);
 
         // connects to the database:
         this.mySQL = new MySQL(this);
 
-        try {
-            mySQL.connect();
-
+        mySQL.connect();
+        if (mySQL.isConnected()) {
             //create main table:
             sqlUtils.createTable("players", "UUID");
             sqlUtils.createColumn("ign", "VARCHAR(100)", "players");
             sqlUtils.createColumn("wallet", "INT(100)", "players");
             sqlUtils.createColumn("bank", "INT(100)", "players");
-        } catch (ClassNotFoundException | SQLException e) {
+            Bukkit.getLogger().info(ChatColor.BLUE + "Database is connected!");
+        } else {
             Bukkit.getLogger().severe("Database not connected!");
         }
-
-        if (mySQL.isConnected()) {
-            Bukkit.getLogger().info(ChatColor.BLUE + "Database is connected!");
-        }
-
-        //initialise commands
-        this.getCommand("bal").setExecutor(new CommandBal());
-        this.getCommand("bal").setTabCompleter(new CommandBal());
-
     }
 
     @Override

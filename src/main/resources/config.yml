@@ -22,7 +22,7 @@ database:
   port: 3306 # default port for MariaDB and MySQL
   database: indrocraft # name of your database. A database server can contain multiple databases
   user: root
-  password: PasswordHere # if database has no password leave the password as 'PasswordHere'
+  password: ; # if database has no password leave the password as ;
 
 money:
   moneySymbol: $ # the symbol that the plugin will use to present the money with
