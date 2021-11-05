@@ -3,6 +3,7 @@ package omen44.omens_economy.commands;
 import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.ShortcutsUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /*this command handles
  - /bal <wallet/bank>
@@ -44,56 +44,73 @@ public class CommandBal implements TabExecutor {
         int wallet = main.economyUtils.getMoney(player, "wallet");
         int bank = main.economyUtils.getMoney(player, "bank");
 
-        String target = player.getDisplayName();
-        int amount = 0;
-        String type = "bank";
-        String moneyStorage =  "wallet";
-
-        if (args[1] != null) {target = args[1];} //who is the player targeting
-        if (args[2] != null) {
-            amount = Integer.parseInt(args[2]); //handles set and send commands
-            type = args[2]; //handles reset command
+        String commandCalled = "";
+        if (args.length >= 1) {
+            commandCalled = args[0]; //args[0] handles this
         }
-        if (args[3] != null) {moneyStorage = args[3];} //what money type do you want to reset
+        Player target;
+        int amount; //args[2] handles this
+        String type; //and this if it is a string
 
         if (label.equalsIgnoreCase("balance") || label.equalsIgnoreCase("bal")) {
-            switch (args[0].toLowerCase(Locale.ROOT)) {
+            switch (commandCalled) {
                 case "w", "wallet" -> player.sendMessage(s.prefix + "You have " + symbol + wallet + " in your wallet");
                 case "bank", "b" -> player.sendMessage(s.prefix + "You have " + symbol + bank + " in the bank");
                 case "send" -> {
-                    String status = main.economyUtils.sendMoney(player, player.getServer().getPlayerExact(target), amount);
-                    switch (status) {
-                        case "Successful" -> player.sendMessage(s.prefix + "Sent " + amount + " to " + target + "\n You have " + symbol + wallet + "in your wallet remaining");
-                        case "Unsuccessful" -> player.sendMessage(s.prefix + ChatColor.YELLOW + "You do not have enough money to send " + amount + " to " + target);
-                        default -> player.sendMessage(s.prefix + ChatColor.RED + "Not a valid targeted player!");
-                    }
-                }
+                    if (args.length == 3) {
+                        target = Bukkit.getPlayer(args[1]);
+                        amount = Integer.parseInt(args[2]);
 
-                //only OPed people can execute this
-                case "set" -> {
-                    //args handling: /bal set <target> <amount> <wallet/bank>
-                    if (player.isOp()) {
-
-                        //part that executes the actual adding command
-                        if ("bank".equals(type)) {
-                            main.economyUtils.setBank(player.getServer().getPlayerExact(target), amount);
-                            player.sendMessage(s.prefix + "Set " + target + "'s " + type + " to " + symbol + amount);
-                        } else {
-                            main.economyUtils.setWallet(player.getServer().getPlayerExact(target), amount);
-                            player.sendMessage(s.prefix + "Set " + target + "'s wallet to " + symbol + amount);
+                        String status = main.economyUtils.sendMoney(player, target, amount);
+                        switch (status) {
+                            case "Successful" -> player.sendMessage(s.prefix + "Sent " + amount + " to " + args[1] + "\n" + s.prefix + " You have " + symbol + wallet + "in your wallet remaining");
+                            case "Unsuccessful" -> player.sendMessage(s.prefix + ChatColor.YELLOW + "You do not have enough money to send " + amount + " to " + target);
+                            default -> player.sendMessage(s.prefix + ChatColor.RED + "Not a valid targeted player!");
                         }
                     } else {
-                        player.sendMessage(s.prefix + ChatColor.RED + "Only OP's can use this command!");
+                        player.sendMessage(s.prefix + ChatColor.YELLOW + "Error: Invalid Syntax");
+                    }
+                }
+                //only OPed people can execute this
+                case "set" -> {
+                    if (args.length == 4) {
+                        target = Bukkit.getPlayer(args[1]);
+                        amount = Integer.parseInt(args[2]);
+                        type = args[3];
+
+                        //args handling: /bal set <target> <amount> <wallet/bank>
+                        if (player.isOp() && target != null) {
+                            //part that executes the actual adding command
+                            if ("bank".equals(type)) {
+                                main.economyUtils.setBank(target, amount);
+                                player.sendMessage(s.prefix + "Set " + args[1] + "'s " + type + " to " + symbol + amount);
+                            } else {
+                                main.economyUtils.setWallet(target, amount);
+                                player.sendMessage(s.prefix + "Set " + args[1] + "'s wallet to " + symbol + amount);
+                            }
+                        } else {
+                            player.sendMessage(s.prefix + ChatColor.RED + "Only OP's can use this command!");
+                        }
+                    } else {
+                        player.sendMessage(s.prefix + ChatColor.YELLOW + "Error: Invalid Syntax");
                     }
                 }
                 case "reset" -> {
-                    if (player.isOp()) {
-                        switch (moneyStorage) {
-                            case "wallet" -> main.economyUtils.setWallet(player.getServer().getPlayerExact(target), 0);
-                            case "bank" -> main.economyUtils.setBank(player.getServer().getPlayerExact(target), 0);
+                    if (args.length == 3) {
+                        target = Bukkit.getPlayer(args[1]);
+                        type = args[2];
+
+                        if (player.isOp() && target != null) {
+                            switch (type) {
+                                case "wallet" -> main.economyUtils.setWallet(target, 0);
+                                case "bank" -> main.economyUtils.setBank(target, 0);
+                            }
+                            player.sendMessage(s.prefix + "Reset " + args[1] + "'s " + type + " to " + symbol + "0");
+                        } else {
+                            player.sendMessage(s.prefix + "Only OP's can use this command!");
                         }
                     } else {
-                        player.sendMessage(s.prefix + "Only OP's can use this command!");
+                        player.sendMessage(s.prefix + ChatColor.YELLOW + "Error: Invalid Syntax");
                     }
                 }
                 default -> player.sendMessage(s.prefix + "Use /bal <bank/wallet>");
