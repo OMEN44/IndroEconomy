@@ -34,22 +34,18 @@ public class CommandBal implements TabExecutor {
         if (label.equalsIgnoreCase("bal") && args.length <= 1) {
             if (args[0].equalsIgnoreCase("wallet")) {
                 player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
-                return true;
             } else if (args[0].equalsIgnoreCase("bank")) {
                 player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
-                return true;
             } else if (args[0].equals("")) {
                 player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
                 player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
-                return true;
             } else {
                 player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
-                return false;
             }
         } else {
             player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
-            return false;
         }
+        return true;
     }
 
     @Override

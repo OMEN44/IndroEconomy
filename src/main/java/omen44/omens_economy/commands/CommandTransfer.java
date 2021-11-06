@@ -84,7 +84,7 @@ public class CommandTransfer implements TabExecutor {
         } else {
             player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
         }
-        return false;
+        return true;
     }
 
     @Override

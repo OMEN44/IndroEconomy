@@ -49,19 +49,16 @@ public class CommandSetMoney implements TabExecutor {
             if (type.equals("wallet")) {
                 main.economyUtils.setWallet(target, amount);
                 player.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s wallet to " + symbol + wallet);
-                return true;
             } else if (type.equals("bank")) {
                 main.economyUtils.setBank(target, amount);
                 player.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s bank to " + symbol + bank);
-                return true;
             } else {
                 player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
-                return false;
             }
         } else {
             player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
-            return false;
         }
+        return true;
     }
 
     @Override
