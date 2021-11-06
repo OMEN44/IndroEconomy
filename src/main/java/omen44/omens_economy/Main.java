@@ -1,8 +1,12 @@
 package omen44.omens_economy;
 
 import omen44.omens_economy.commands.CommandBal;
+import omen44.omens_economy.commands.CommandSetMoney;
+import omen44.omens_economy.commands.CommandTransfer;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
+import omen44.omens_economy.events.JoinLeave;
+import omen44.omens_economy.events.PlayerDeath;
 import omen44.omens_economy.events.PlayerMine;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.SQLUtils;
@@ -20,10 +24,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // initialise commands
-        this.getCommand("bal").setExecutor(new CommandBal(this));
-        this.getCommand("bal").setTabCompleter(new CommandBal(this));
-
         // initialize classes:
         configTools = new ConfigTools(this);
         mySQL = new MySQL(this);
@@ -32,6 +32,8 @@ public final class Main extends JavaPlugin {
 
         // register listeners:
         getServer().getPluginManager().registerEvents(new PlayerMine(this), this);
+        getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(this), this);
 
         // Plugin startup logic
         configTools.generateConfig("config.yml");
@@ -40,7 +42,7 @@ public final class Main extends JavaPlugin {
         String symbol = config.getString("money.moneySymbol");
         Bukkit.getLogger().info("Money symbol: " + symbol);
 
-        // connects to the database:
+        //connect to the database
         this.mySQL = new MySQL(this);
 
         mySQL.connect();
@@ -54,6 +56,16 @@ public final class Main extends JavaPlugin {
         } else {
             Bukkit.getLogger().severe("Database not connected!");
         }
+
+        // initialise commands
+        getServer().getPluginCommand("bal").setExecutor(this);
+        getServer().getPluginCommand("setmoney").setExecutor(this);
+        getServer().getPluginCommand("transfer").setExecutor(this);
+
+        //initialise tab completers
+        getCommand("transfer").setTabCompleter(new CommandTransfer(this));
+        getCommand("setmoney").setTabCompleter(new CommandSetMoney(this));
+        getCommand("bal").setTabCompleter(new CommandBal(this));
     }
 
     @Override

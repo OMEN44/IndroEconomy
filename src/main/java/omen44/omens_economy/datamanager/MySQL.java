@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class MySQL {
+    private final Main main;
+
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
     private final String host = config.getString("database.host");
@@ -18,11 +20,9 @@ public class MySQL {
     String pass = config.getString("database.password");
     private String password = pass;
 
-
     private Connection connection;
 
-    public MySQL(Main main) {
-    }
+    public MySQL(Main main) {this.main = main;}
 
     public boolean isConnected() {
         return (connection != null);

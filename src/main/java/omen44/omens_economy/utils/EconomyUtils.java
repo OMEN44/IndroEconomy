@@ -4,7 +4,7 @@ import omen44.omens_economy.Main;
 import org.bukkit.entity.Player;
 
 public class EconomyUtils {
-
+    
     /* TODO: 13/10/2021 add functions:
     *   - getBank
     *   - getWallet

@@ -5,5 +5,13 @@ api-version: 1.17
 commands:
   bal:
     description: allows you to check your balance and send it
-    usage: /bal
+    usage: /bal (wallet/bank)
     permission: omensEconomy.bal
+  setmoney:
+    description: allows admins to set the money you have
+    usage: /setmoney <bank/wallet> <target> <amount>
+    permission: omensEconomy.setmoney
+  transfer:
+    description: allows you to transfer
+    usage: /transfer <wallet/bank/target> <amount>
+    permission: omensEconomy.transder
