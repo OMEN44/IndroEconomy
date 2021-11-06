@@ -27,25 +27,34 @@ public class CommandBal implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = (Player) sender;
+        if (sender instanceof Player) {
+            Player p = (Player) sender;
+            int wallet = main.economyUtils.getMoney(p, "wallet");
+            int bank = main.economyUtils.getMoney(p, "bank");
 
-        int wallet = main.economyUtils.getMoney(player, "wallet");
-        int bank = main.economyUtils.getMoney(player, "bank");
-        if (label.equalsIgnoreCase("bal") && args.length <= 1) {
-            if (args[0].equalsIgnoreCase("wallet")) {
-                player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
-            } else if (args[0].equalsIgnoreCase("bank")) {
-                player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
-            } else if (args[0].equals("")) {
-                player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
-                player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
+            if (label.equalsIgnoreCase("bal") && args.length < 2) {
+                String type = args[0];
+                switch (type) {
+                    case "wallet" -> p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
+                    case "bank" -> p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
+                    case "" -> {
+                        p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
+                        p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
+                    }
+                    default -> {
+                        p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                        return false;
+                    }
+                }
+                return true;
             } else {
-                player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                return false;
             }
         } else {
-            player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+            System.out.println("Error: Must be executed by a player!");
+            return false;
         }
-        return true;
     }
 
     @Override

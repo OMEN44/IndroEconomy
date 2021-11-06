@@ -31,34 +31,42 @@ public class CommandSetMoney implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = (Player) sender;
+        Player p = (Player) sender;
 
-        int wallet = main.economyUtils.getMoney(player, "wallet");
-        int bank = main.economyUtils.getMoney(player, "bank");
-        String type;
+        int wallet;
+        int bank;
+        Player target = Bukkit.getPlayer(args[1]);
+        int amount = 0;
 
         if (label.equalsIgnoreCase("setmoney") && args.length == 3){
-            switch (args[0]) {
-                case "wallet" -> type = "wallet";
-                case "bank" -> type = "bank";
-                default -> type = "error";
+            try {
+                amount = Integer.parseInt(args[2]);
+            } catch (NumberFormatException ex){
+                p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Number");
+                return false;
             }
-            Player target = Bukkit.getPlayer(args[1]);
-            int amount = Integer.parseInt(args[2]);
 
-            if (type.equals("wallet")) {
-                main.economyUtils.setWallet(target, amount);
-                player.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s wallet to " + symbol + wallet);
-            } else if (type.equals("bank")) {
-                main.economyUtils.setBank(target, amount);
-                player.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s bank to " + symbol + bank);
-            } else {
-                player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+            switch (args[0]) {
+                case "wallet" -> {
+                    main.economyUtils.setWallet(target, amount);
+                    wallet = main.economyUtils.getMoney(p, "wallet");
+                    p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s wallet to " + symbol + wallet);
+                }
+                case "bank" -> {
+                    main.economyUtils.setBank(target, amount);
+                    bank = main.economyUtils.getMoney(p, "bank");
+                    p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s bank to " + symbol + bank);
+                }
+                default -> {
+                    p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                    return false;
+                }
             }
+            return true;
         } else {
-            player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+            p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+            return false;
         }
-        return true;
     }
 
     @Override

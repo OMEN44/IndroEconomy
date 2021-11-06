@@ -32,32 +32,38 @@ public class CommandTransfer implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = (Player) sender;
+        Player p = (Player) sender;
 
-        int wallet = eco.getMoney(player, "wallet");
-        int bank = eco.getMoney(player, "bank");
+        int wallet = eco.getMoney(p, "wallet");
+        int bank = eco.getMoney(p, "bank");
 
         if (label.equalsIgnoreCase("transfer") && args.length == 2) { // todo - add a transfer() method in EconomyUtils
+            try {
+                int amount = Integer.parseInt(args[1]);
+            } catch (NumberFormatException ex){
+                p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Number");
+                return false;
+            }
             switch (args[0]) {
                 case "wallet" -> {
                     /* boilerplate code
                     if (transfer == true) {
-                        player.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
+                        p.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
                     } else {
-                        player.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
+                        p.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
                     }
                     */
-                    player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " left");
+                    p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " left");
                 }
                 case "bank" -> {
                 /* boilerplate code
                     if (transfer == true) {
-                        player.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
+                        p.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
                     } else {
-                        player.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
+                        p.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
                     }
                  */
-                    player.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " left");
+                    p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " left");
                 }
 
                 default -> {
@@ -71,20 +77,22 @@ public class CommandTransfer implements TabExecutor {
                     if (playerNames.contains(args[1])) { //assumes that you have a whitelist
                         /* boilerplate code
                         if (transfer == true) {
-                            player.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
+                            p.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
                         } else {
-                            player.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
+                            p.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
                         }
                         */
                     } else {
-                        player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                        p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                        return false;
                     }
                 }
             }
+            return true;
         } else {
-            player.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+            p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+            return false;
         }
-        return true;
     }
 
     @Override

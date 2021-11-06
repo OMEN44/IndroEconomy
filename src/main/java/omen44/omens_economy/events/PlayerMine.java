@@ -39,7 +39,7 @@ public class PlayerMine implements Listener {
             String drop = drops.get(random.nextInt(drops.size()));
             int amount = main.economyUtils.getMoney(player, "Wallet") + Integer.parseInt(drop);
             main.economyUtils.setWallet(player, amount);
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_GREEN + "+" + symbol + drops));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_GREEN + "+" + symbol + Integer.parseInt(drop)));
         }
     }
 }

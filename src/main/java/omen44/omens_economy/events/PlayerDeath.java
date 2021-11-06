@@ -21,11 +21,11 @@ public class PlayerDeath implements Listener {
         ShortcutsUtils s = new ShortcutsUtils();
 
         //initialise the values needed
-        Player player = event.getEntity();
-        int moneyLossPercent = config.getInt("money.deathLossPercent");
+        Player player = event.getEntity().getPlayer();
+        double moneyLossPercent = config.getInt("money.deathLossPercent") / 100.0;
         int wallet = main.economyUtils.getMoney(player, "wallet");
-        String symbol = config.getString("moneySymbol");
-        float moneyLost = wallet * (moneyLossPercent/100);
+        String symbol = config.getString("money.moneySymbol");
+        double moneyLost = wallet * moneyLossPercent;
         int finalWallet = wallet - (int) moneyLost;
 
         //reduce their wallet by the percentage

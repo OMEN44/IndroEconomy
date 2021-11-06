@@ -58,9 +58,9 @@ public final class Main extends JavaPlugin {
         }
 
         // initialise commands
-        getServer().getPluginCommand("bal").setExecutor(this);
-        getServer().getPluginCommand("setmoney").setExecutor(this);
-        getServer().getPluginCommand("transfer").setExecutor(this);
+        getServer().getPluginCommand("bal").setExecutor(new CommandBal(this));
+        getServer().getPluginCommand("setmoney").setExecutor(new CommandSetMoney(this));
+        getServer().getPluginCommand("transfer").setExecutor(new CommandTransfer(this));
 
         //initialise tab completers
         getCommand("transfer").setTabCompleter(new CommandTransfer(this));
