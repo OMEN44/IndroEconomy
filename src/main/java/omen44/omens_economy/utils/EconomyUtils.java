@@ -6,9 +6,6 @@ import org.bukkit.entity.Player;
 public class EconomyUtils {
     
     /* TODO: 13/10/2021 add functions:
-    *   - getBank
-    *   - getWallet
-    *   - set (wallet | bank)
     *   - transfer
     */
 

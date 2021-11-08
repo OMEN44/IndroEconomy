@@ -153,7 +153,7 @@ public class SQLUtils {
 
     /**
      * @param id This is the name of the column
-     * @param dataType What data type do u want to use
+     * @param dataType What data type do you want to use
      * @param tableName The name of the table you want to put the column into
      */
     public void createColumn(String id, String dataType, String tableName) {
@@ -168,7 +168,7 @@ public class SQLUtils {
     /**
      * @param idColumn What is the ID column used in this table generally "NAME"
      * @param idEquals What should the id of this row be? What is the name?
-     * @param tableName What table dp you want to inset into?
+     * @param tableName What table do you want to insert into?
      */
     public void createRow(String idColumn, String idEquals, String tableName) {
         if (!rowExists(idColumn, idEquals, tableName)) {

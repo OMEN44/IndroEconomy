@@ -1,8 +1,8 @@
 package omen44.omens_economy;
 
-import omen44.omens_economy.commands.CommandBal;
-import omen44.omens_economy.commands.CommandSetMoney;
-import omen44.omens_economy.commands.CommandTransfer;
+import omen44.omens_economy.commands.economy.CommandBal;
+import omen44.omens_economy.commands.economy.CommandSetMoney;
+import omen44.omens_economy.commands.economy.CommandTransfer;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.events.JoinLeave;

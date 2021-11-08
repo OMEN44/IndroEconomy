@@ -1,4 +1,4 @@
-package omen44.omens_economy.commands;
+package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
