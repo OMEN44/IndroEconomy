@@ -3,6 +3,7 @@ package omen44.omens_economy.commands.economy;
 import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.ShortcutsUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,7 +20,10 @@ import java.util.List;
 
 public class CommandBal implements TabExecutor {
     public Main main;
-    public CommandBal(Main main) {this.main = main;}
+    public CommandBal(Main main) {
+        this.main = main;
+        Bukkit.getPluginCommand("bal").setExecutor(this);
+    }
 
     ShortcutsUtils s = new ShortcutsUtils();
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");

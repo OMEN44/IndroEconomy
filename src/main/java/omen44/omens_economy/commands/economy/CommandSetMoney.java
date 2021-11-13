@@ -27,7 +27,10 @@ public class CommandSetMoney implements TabExecutor {
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
 
-    public CommandSetMoney(Main main) {this.main = main;}
+    public CommandSetMoney(Main main) {
+        this.main = main;
+        Bukkit.getPluginCommand("setmoney").setExecutor(this);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -7,46 +7,43 @@ import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
-public class CommandBuyShop implements TabExecutor {
+public class CommandCancelShop implements CommandExecutor {
     public Main main;
-    public CommandBuyShop(Main main) {
+
+    public CommandCancelShop(Main main) {
         this.main = main;
-        Bukkit.getPluginCommand("buyshop").setExecutor(this);
+        Bukkit.getPluginCommand("cancelshop").setExecutor(this);
     }
+
     public EconomyUtils economyUtils;
 
     ShortcutsUtils s;
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            if (label.equalsIgnoreCase("buyshop")) {
+            if (label.equalsIgnoreCase("cancelshop")) {
                 ChestShopPlace csp = new ChestShopPlace(main);
                 int shopPrice = config.getInt("shop.shopPrice");
                 int playerWallet = economyUtils.getMoney(p, "wallet");
 
-                if (playerWallet >= shopPrice && !csp.isShopPlacing()) {
-                    playerWallet -= shopPrice;
-                    p.sendMessage(s.prefix + s.iMessage + "The next chest you place will be a chest shop!");
+                if (playerWallet >= shopPrice && csp.isShopPlacing()) {
+                    playerWallet += shopPrice;
+                    p.sendMessage(s.prefix + s.nMessage + "Canceled shop creation! Refunding money!");
                     economyUtils.setWallet(p, playerWallet);
-                    csp.setShopPlacing(true);
+                    csp.setShopPlacing(false);
                 }
+                return true;
             }
         }
-
-        return false;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return null;
+        return true;
     }
 }
+

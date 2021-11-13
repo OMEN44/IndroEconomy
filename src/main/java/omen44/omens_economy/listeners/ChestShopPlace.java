@@ -5,12 +5,13 @@ import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.TileState;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class ChestShopPlace implements Listener{
+public class ChestShopPlace implements Listener {
     private boolean shopPlacing = false;
     private int shopID;
     public Main main;
@@ -19,6 +20,7 @@ public class ChestShopPlace implements Listener{
         this.main = main;
     }
 
+    @EventHandler
     public void onChestShopPlace(BlockPlaceEvent event) {
         ShortcutsUtils s = new ShortcutsUtils();
         if (!(shopPlacing))

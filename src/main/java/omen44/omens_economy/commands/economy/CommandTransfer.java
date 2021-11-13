@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /*
     This class handles:
@@ -28,7 +29,10 @@ public class CommandTransfer implements TabExecutor {
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
 
-    public CommandTransfer(Main main) {this.main = main;}
+    public CommandTransfer(Main main) {
+        Bukkit.getPluginCommand("transfer").setExecutor(this);
+        this.main = main;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -36,33 +40,22 @@ public class CommandTransfer implements TabExecutor {
 
         int wallet = eco.getMoney(p, "wallet");
         int bank = eco.getMoney(p, "bank");
+        int amount = 0;
 
-        if (label.equalsIgnoreCase("transfer") && args.length == 2) { // todo - add a transfer() method in EconomyUtils
+        if (label.equalsIgnoreCase("transfer") && args.length == 2) {
             try {
-                int amount = Integer.parseInt(args[1]);
+                amount = Integer.parseInt(args[1]);
             } catch (NumberFormatException ex){
-                p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Number");
+                p.sendMessage(s.prefix + s.error + "Error: Invalid Number");
                 return false;
             }
             switch (args[0]) {
                 case "wallet" -> {
-                    /* boilerplate code
-                    if (transfer == true) {
-                        p.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
-                    } else {
-                        p.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
-                    }
-                    */
-                    p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " left");
+                    eco.transferMoney(p, "wallet", amount);
+                    p.sendMessage(s.prefix + s.nMessage + "You have " + symbol + wallet + " left");
                 }
                 case "bank" -> {
-                /* boilerplate code
-                    if (transfer == true) {
-                        p.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
-                    } else {
-                        p.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
-                    }
-                 */
+                    eco.transferMoney(p, "bank", amount);
                     p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " left");
                 }
 
@@ -73,24 +66,32 @@ public class CommandTransfer implements TabExecutor {
                     for (Player value : players) {
                         playerNames.add(value.getName());
                     }
-
-                    if (playerNames.contains(args[1])) { //assumes that you have a whitelist
-                        /* boilerplate code
-                        if (transfer == true) {
-                            p.sendMessage(s.prefix + ChatColor.GOLD + "Transfer was Successful! " + Symbol + amount + "was transferred to " + target);
-                        } else {
-                            p.sendMessage(s.prefix + ChatColor.RED + "Transfer was unsuccessful!");
+                    Player target = Bukkit.getServer().getPlayer(args[1]);
+                    if (playerNames.contains(args[1])) {
+                        String result = eco.sendMoney(p, target, amount);
+                        switch (result.toLowerCase(Locale.ROOT)) {
+                            case "successful" -> {
+                                p.sendMessage(s.prefix + s.iMessage + "Transfer Successful!");
+                                return true;
+                            }
+                            case "unsuccessful" -> {
+                                p.sendMessage(s.prefix + s.nMessage + "Transfer Unsuccessful, not enough Money!");
+                                return true;
+                            }
+                            case "target not found" -> {
+                                p.sendMessage(s.prefix + s.nMessage + "Warning: Player Not Found!");
+                                return true;
+                            }
                         }
-                        */
                     } else {
-                        p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                        p.sendMessage(s.prefix + s.error + "Error: Invalid Syntax");
                         return false;
                     }
                 }
             }
             return true;
         } else {
-            p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+            p.sendMessage(s.prefix + s.error + "Error: Invalid Syntax");
             return false;
         }
     }

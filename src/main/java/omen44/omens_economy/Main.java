@@ -1,6 +1,7 @@
 package omen44.omens_economy;
 
 import omen44.omens_economy.commands.chestshop.CommandBuyShop;
+import omen44.omens_economy.commands.chestshop.CommandCancelShop;
 import omen44.omens_economy.commands.economy.CommandBal;
 import omen44.omens_economy.commands.economy.CommandSetMoney;
 import omen44.omens_economy.commands.economy.CommandTransfer;
@@ -63,10 +64,11 @@ public final class Main extends JavaPlugin {
         }
 
         // initialise commands
-        getServer().getPluginCommand("bal").setExecutor(new CommandBal(this));
-        getServer().getPluginCommand("setmoney").setExecutor(new CommandSetMoney(this));
-        getServer().getPluginCommand("transfer").setExecutor(new CommandTransfer(this));
-        getServer().getPluginCommand("buyshop").setExecutor(new CommandBuyShop(this));
+        new CommandBal(this);
+        new CommandSetMoney(this);
+        new CommandTransfer(this);
+        new CommandBuyShop(this);
+        new CommandCancelShop(this);
 
         //initialise tab completers
         getCommand("transfer").setTabCompleter(new CommandTransfer(this));
