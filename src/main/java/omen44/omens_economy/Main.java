@@ -1,5 +1,6 @@
 package omen44.omens_economy;
 
+import omen44.omens_economy.commands.chestshop.CommandBuyShop;
 import omen44.omens_economy.commands.economy.CommandBal;
 import omen44.omens_economy.commands.economy.CommandSetMoney;
 import omen44.omens_economy.commands.economy.CommandTransfer;
@@ -8,6 +9,8 @@ import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.events.JoinLeave;
 import omen44.omens_economy.events.PlayerDeath;
 import omen44.omens_economy.events.PlayerMine;
+import omen44.omens_economy.listeners.ChestShopPlace;
+import omen44.omens_economy.listeners.ChestShopTrade;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import org.bukkit.Bukkit;
@@ -34,6 +37,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMine(this), this);
         getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(this), this);
+        getServer().getPluginManager().registerEvents(new ChestShopTrade(this), this);
+        getServer().getPluginManager().registerEvents(new ChestShopPlace(this), this);
 
         // Plugin startup logic
         configTools.generateConfig("config.yml");
@@ -61,6 +66,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("bal").setExecutor(new CommandBal(this));
         getServer().getPluginCommand("setmoney").setExecutor(new CommandSetMoney(this));
         getServer().getPluginCommand("transfer").setExecutor(new CommandTransfer(this));
+        getServer().getPluginCommand("buyshop").setExecutor(new CommandBuyShop(this));
 
         //initialise tab completers
         getCommand("transfer").setTabCompleter(new CommandTransfer(this));

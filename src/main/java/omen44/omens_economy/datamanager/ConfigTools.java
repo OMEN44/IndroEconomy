@@ -11,15 +11,15 @@ import java.io.IOException;
 
 public class ConfigTools {
     private static Main main;
-    public ConfigTools(Main main) {this.main = main;}
+    public ConfigTools(Main main) {
+        ConfigTools.main = main;
+    }
 
     public static FileConfiguration getFileConfig(String fileName) {
         File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/omens_economy/"+fileName); // First we
         // will load
         // the file.
-        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile); // Now we will load the file into a
-        // FileConfiguration.
-        return config;
+        return YamlConfiguration.loadConfiguration(configFile);
     }
 
     public static void generateConfig(String configName) {

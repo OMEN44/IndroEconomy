@@ -32,8 +32,13 @@ public class CommandBal implements TabExecutor {
             int wallet = main.economyUtils.getMoney(p, "wallet");
             int bank = main.economyUtils.getMoney(p, "bank");
 
-            if (label.equalsIgnoreCase("bal") && args.length < 2) {
-                String type = args[0];
+            if (label.equalsIgnoreCase("bal")) {
+                String type;
+
+                if (args.length == 1) type = args[0];
+                else if (args.length == 0) type = "";
+                else type = "error";
+
                 switch (type) {
                     case "wallet" -> p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
                     case "bank" -> p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
@@ -53,7 +58,7 @@ public class CommandBal implements TabExecutor {
             }
         } else {
             System.out.println("Error: Must be executed by a player!");
-            return false;
+            return true;
         }
     }
 
