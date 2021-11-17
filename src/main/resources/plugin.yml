@@ -6,12 +6,20 @@ commands:
   bal:
     description: allows you to check your balance and send it
     usage: /bal (wallet/bank)
-    permission: omensEconomy.bal
+    permission: omensEconomy.command.bal
   setmoney:
     description: allows admins to set the money you have
     usage: /setmoney <bank/wallet> <target> <amount>
-    permission: omensEconomy.setmoney
+    permission: omensEconomy.command.setmoney
   transfer:
     description: allows you to transfer
     usage: /transfer <wallet/bank/target> <amount>
-    permission: omensEconomy.transder
+    permission: omensEconomy.command.transfer
+  buyshop:
+    description: turns the next chest you place into a chest shop
+    usage: /buyshop <price>
+    permission: omensEconomy.command.buyshop
+  cancelshop:
+    description: stops the next chest you place from turning into a chestshop
+    usage: /cancelshop
+    permission: omensEconomy.command.cancelshop
