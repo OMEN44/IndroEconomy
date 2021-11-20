@@ -1,6 +1,6 @@
 package omen44.omens_economy.utils;
 
-import omen44.omens_economy.Main;
+import omen44.omens_economy.datamanager.MySQL;
 import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
@@ -8,82 +8,59 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLUtils {
-    private final Main plugin;
-    public SQLUtils(Main plugin) {this.plugin = plugin;}
+    private static final MySQL mySQL = new MySQL();
 
     /**
-     * @param value Data to be saved in form of a string, number will be converted depending on dataType
-     * @param idColumn identifier column to check
-     * @param id String that the id column is checked against
-     * @param column column to insert data
-     * @param tableName table to insert data
+     * Sets the data declared into the MySQL database.
+     * @param value The data that needs to be set
+     * @param columnID The name of the column changed
+     * @param equalsID The name of the item compared to
+     * @param column The column of the data inserted
+     * @param tableName The name of the table that the data is being set to
      */
-    public void setData(String value, String idColumn, String id, String column, String tableName) {
+    public void setData(String value, String columnID, String equalsID, String column, String tableName) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + idColumn + "=?");
-            if (isNum("int", value)) {
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + columnID + "=?");
+            if (isNumType("int", value)) {
                 int valNum = Integer.parseInt(value);
                 ps.setInt(1, valNum);
-                ps.setString(2, id);
+                ps.setString(2, equalsID);
                 Bukkit.getLogger().warning("int");
-            } else if (isNum("float", value)) {
+            } else if (isNumType("float", value)) {
                 float valNum = Float.parseFloat(value);
                 ps.setFloat(1, valNum);
-                ps.setString(2, id);
+                ps.setString(2, equalsID);
                 Bukkit.getLogger().warning("float");
-            } else if (isNum("double", value)) {
+            } else if (isNumType("double", value)) {
                 double valNum = Double.parseDouble(value);
                 ps.setDouble(1, valNum);
-                ps.setString(2, id);
+                ps.setString(2, equalsID);
                 Bukkit.getLogger().warning("double");
             } else {
                 ps.setString(1, value);
-                ps.setString(2, id);
+                ps.setString(2, equalsID);
             }
-            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * @param column What column is the desired cell in
-     * @param idColumn What is the id column used for this table
-     * @param idEquals What id are you looking for?
-     * @param tableName What is the name of the table
-     * @return returns the number value of the specified cell
+     * Gets a variable of type 'String' from the MySQL database.
+     * @param columnName The name of the column searched
+     * @param columnID The name of the column compared to
+     * @param equalsID The name of the item compared to
+     * @param tableName The name of the database table checked
+     * @return The value of data type 'String'
      */
-    public int getInt(String column, String idColumn, String idEquals, String tableName) {
-        try{
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
-            ps.setString(1, idEquals);
-            ResultSet rs = ps.executeQuery();
-            int info;
-            if (rs.next()) {
-                info = rs.getInt(column);
-                return info;
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    /**
-     * @param column What column is the desired cell in
-     * @param idColumn What is the id column used for this table
-     * @param idEquals What id are you looking for?
-     * @param tableName What is the name of the table
-     * @return returns the string value of the specified cell
-     */
-    public String getString(String column, String idColumn, String idEquals, String tableName) {
-        try{
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
-            ps.setString(1, idEquals);
-            ResultSet rs = ps.executeQuery();
+    public String getDBString(String columnName, String columnID, String equalsID, String tableName) {
+        try {
             String info;
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            ps.setString(1, equalsID);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                info = rs.getString(column);
+                info = rs.getString(columnName);
                 return info;
             }
         } catch (SQLException e) {
@@ -93,58 +70,88 @@ public class SQLUtils {
     }
 
     /**
-     * @param column What column is the desired cell in
-     * @param idColumn What is the id column used for this table
-     * @param idEquals What id are you looking for?
-     * @param tableName What is the name of the table
-     * @return returns the string value of the specified cell
+     * Gets a variable of type 'int' from the MySQL database
+     * @param columnName The name of the column searched.
+     * @param columnID The name of the column compared to.
+     * @param equalsID The name of the item compared to.
+     * @param tableName The name of the database table checked.
+     * @return The value of data type 'int'.
      */
-    public double getDouble(String column, String idColumn, String idEquals, String tableName) {
-        try{
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
-            ps.setString(1, idEquals);
+    public int getDBInt(String columnName, String columnID, String equalsID, String tableName) {
+        try {
+            int info;
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
-            double info;
             if (rs.next()) {
-                info = rs.getDouble(column);
+                info = rs.getInt(columnName);
                 return info;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
     /**
-     * @param column What column is the desired cell in
-     * @param idColumn What is the id column used for this table
-     * @param idEquals What id are you looking for?
-     * @param tableName What is the name of the table
-     * @return returns the string value of the specified cell
+     * Gets a variable of type 'float' from the MySQL database.
+     * @param columnName The name of the column searched
+     * @param columnID The name of the column compared to
+     * @param equalsID The name of the item compared to
+     * @param tableName The name of the database table checked
+     * @return The value of data type 'float'
      */
-    public float getFloat(String column, String idColumn, String idEquals, String tableName) {
-        try{
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + tableName + " WHERE " + idColumn + "=?");
-            ps.setString(1, idEquals);
-            ResultSet rs = ps.executeQuery();
+    public float getDBFloat(String columnName, String columnID, String equalsID, String tableName) {
+        try {
             float info;
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            ps.setString(1, equalsID);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                info = rs.getFloat(column);
+                info = rs.getFloat(columnName);
                 return info;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
     /**
-     * @param name What name do you want to use for the table
-     * @param idColumn This is the unique ID column generally 'NAME'
+     * Gets a variable of type 'float' from the MySQL database.
+     * @param columnName The name of the column searched
+     * @param columnID The name of the column compared to
+     * @param equalsID The name of the item compared to
+     * @param tableName The name of the database table checked
+     * @return The value of data type 'float'
      */
-    public void createTable(String name, String idColumn) {
+    public double getDBDouble(String columnName, String columnID, String equalsID, String tableName) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + idColumn + " VARCHAR(100), PRIMARY KEY" + " (" + idColumn + "));");
+            double info;
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            ps.setString(1, equalsID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                info = rs.getDouble(columnName);
+                return info;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+
+    // past here is where the creation is done
+
+    /**
+     * Creates the table of the String 'name' if it does not exist.
+     * @param name The name of the Table
+     * @param columnID The name of the first column of the database (usually "accountID")
+     */
+
+    public void createDBTable(String name, String columnID) {
+        try {
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + columnID + " VARCHAR(100), PRIMARY KEY" + " (" + columnID + "));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,13 +159,15 @@ public class SQLUtils {
     }
 
     /**
-     * @param id This is the name of the column
-     * @param dataType What data type do you want to use
-     * @param tableName The name of the table you want to put the column into
+     * Creates a new column of string 'columnName' if it doesn't exist.
+     * Appends the column to the table.
+     * @param columnName The name of the column added
+     * @param dataType The data type the column uses (i.e. VarChar(100))
+     * @param tableName The name of the table the column is getting added to (must exist)
      */
-    public void createColumn(String id, String dataType, String tableName) {
+    public void createDBColumn(String columnName, String dataType, String tableName) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + id + " " + dataType + ";");
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + columnName + " " + dataType + ";");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,18 +175,20 @@ public class SQLUtils {
     }
 
     /**
-     * @param idColumn What is the ID column used in this table generally "NAME"
-     * @param idEquals What should the id of this row be? What is the name?
-     * @param tableName What table do you want to insert into?
+     * Creates a new row of string 'rowName' and adds an ID to the first column.
+     * Note: this does not check if the row exists, handled by {@see rowExists}
+     * @param columnID The name of the first column (usually accountID)
+     * @param accountID The ID of the account added (should already be handled)
+     * @param tableName The name of the table the column is getting added to (must exist)
      */
-    public void createRow(String idColumn, String idEquals, String tableName) {
-        if (!rowExists(idColumn, idEquals, tableName)) {
+    public static void createRow(String columnID, String accountID, String tableName) {
+        if (!rowExists(columnID, accountID, tableName)) { // checks if the row does not already exist
             try {
-                PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName);
+                PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName);
                 ResultSet results = ps.executeQuery();
                 results.next();
-                PreparedStatement ps2 = plugin.mySQL.getConnection().prepareStatement("INSERT IGNORE INTO " + tableName + " (" + idColumn + ") VALUE (?)");
-                ps2.setString(1, idEquals);
+                PreparedStatement ps2 = mySQL.getConnection().prepareStatement("INSERT IGNORE INTO " + tableName + " (" + columnID + ") VALUE (?)");
+                ps2.setString(1, accountID);
                 ps2.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -186,15 +197,16 @@ public class SQLUtils {
     }
 
     /**
-     * @param idColumn What column in this table is unique generally the "NAME" column
-     * @param test What do u want to test the idColumn for
-     * @param tableName In what table
-     * @return Returns true if it exists and false if it does not
+     * Checks if a row already exists. (usually to test for if an ID already exists)
+     * @param columnID The first column of the row (usually accountID)
+     * @param comparedValue The value that it's comparing to
+     * @param tableName The table that the program is checking
+     * @return true if exists, false if it doesn't
      */
-    public boolean rowExists(String idColumn, String test, String tableName) {
+    public static boolean rowExists(String columnID, String comparedValue, String tableName) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName + " WHERE " + idColumn + "=?");
-            ps.setString(1, test);
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnID + "=?");
+            ps.setString(1, comparedValue);
 
             ResultSet results = ps.executeQuery();
             //row is found
@@ -207,24 +219,30 @@ public class SQLUtils {
 
 
     /**
-     * @param column What is the name of the column you want to alter
-     * @param dataType What data type do u want to set it to
-     * @param tableName In what table?
+     * Sets the data type of the column.
+     * @param column The name of the column altered
+     * @param dataType The data type converted to
+     * @param tableName The name of the table adjusting
      */
     public void setDataType(String column, String dataType, String tableName) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " MODIFY " + column + " " + dataType);
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " MODIFY " + column + " " + dataType);
             ps.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void remove(String idColumn, String idEquals, String tableName) {
+    /**
+     * Removes a row from the table.
+     * @param columnID The name of the column to compare to
+     * @param equalsID The name of the item compared to
+     * @param tableName The name of the table to remove from
+     */
+    public void remove(String columnID, String equalsID, String tableName) {
         try {
-            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("DELETE FROM " + tableName + " WHERE " + idColumn + "=?");
-            ps.setString(1, idEquals);
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("DELETE FROM " + tableName + " WHERE " + columnID + "=?");
+            ps.setString(1, equalsID);
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -232,9 +250,13 @@ public class SQLUtils {
         }
     }
 
-
-    // this is to determine if a number is a certain type
-    public boolean isNum(String type, String num) {
+    /**
+     * A calculation to determine what data type a number is.
+     * @param type The data type it's comparing to.
+     * @param num The string of the number it's comparing to.
+     * @return true if it's a valid number, false if it is anything else.
+     */
+    public boolean isNumType(String type, String num) {
         try {
             if (type.equalsIgnoreCase("int")) {
                 int i = Integer.parseInt(num);

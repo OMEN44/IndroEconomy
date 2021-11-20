@@ -22,12 +22,13 @@ public class CommandBal implements TabExecutor {
     public Main main;
     public CommandBal(Main main) {
         this.main = main;
-        Bukkit.getPluginCommand("bal").setExecutor(this);
     }
 
     ShortcutsUtils s = new ShortcutsUtils();
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
+
+    public CommandBal() {}
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

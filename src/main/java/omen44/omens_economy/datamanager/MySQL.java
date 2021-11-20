@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class MySQL {
-    private final Main main;
+    private Main main;
 
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
@@ -17,31 +17,31 @@ public class MySQL {
     private final String port = config.getString("database.port");
     private final String database = config.getString("database.database");
     private final String username = config.getString("database.user");
-    String pass = config.getString("database.password");
-    private String password = pass;
+    private final String password = config.getString("database.password");
+
 
     private Connection connection;
-
-    public MySQL(Main main) {this.main = main;}
 
     public boolean isConnected() {
         return (connection != null);
     }
 
-    public void connect() {
-        if (Objects.equals(pass, ";")){
-            password = "";
-        }
+    public void connectDB() {
+        System.out.println(host);
+        System.out.println(port);
+        System.out.println(database);
+        System.out.println(username);
+        System.out.println(password);
         if (!isConnected()) {
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?user=" + username + "&password=" + password + "&useSSl=false");
+                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-    public void disconnect() {
+    public void disconnectDB() {
         if (isConnected()) {
             try {
                 connection.close();

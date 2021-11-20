@@ -1,7 +1,5 @@
 package omen44.omens_economy;
 
-import omen44.omens_economy.commands.chestshop.CommandBuyShop;
-import omen44.omens_economy.commands.chestshop.CommandCancelShop;
 import omen44.omens_economy.commands.economy.CommandBal;
 import omen44.omens_economy.commands.economy.CommandSetMoney;
 import omen44.omens_economy.commands.economy.CommandTransfer;
@@ -10,65 +8,60 @@ import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.events.JoinLeave;
 import omen44.omens_economy.events.PlayerDeath;
 import omen44.omens_economy.events.PlayerMine;
-import omen44.omens_economy.listeners.ChestShopPlace;
-import omen44.omens_economy.listeners.ChestShopTrade;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.SQLUtils;
+import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
     public ConfigTools configTools;
     public MySQL mySQL;
-    public SQLUtils sqlUtils;
+    public SQLUtils SQLU;
     public EconomyUtils economyUtils;
+
 
     @Override
     public void onEnable() {
+        PluginManager pm = getServer().getPluginManager();
         // initialize classes:
         configTools = new ConfigTools(this);
-        mySQL = new MySQL(this);
-        sqlUtils = new SQLUtils(this);
-        economyUtils = new EconomyUtils(this);
+        mySQL = new MySQL();
+        SQLU = new SQLUtils();
+        economyUtils = new EconomyUtils();
+        ShortcutsUtils s = new ShortcutsUtils();
 
         // register listeners:
-        getServer().getPluginManager().registerEvents(new PlayerMine(this), this);
-        getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeath(this), this);
-        getServer().getPluginManager().registerEvents(new ChestShopTrade(this), this);
-        getServer().getPluginManager().registerEvents(new ChestShopPlace(this), this);
+        pm.registerEvents(new PlayerMine(this), this);
+        pm.registerEvents(new JoinLeave(this), this);
+        pm.registerEvents(new PlayerDeath(this), this);
 
         // Plugin startup logic
-        configTools.generateConfig("config.yml");
-        FileConfiguration config = configTools.getFileConfig("config.yml");
+        ConfigTools.generateConfig("config.yml");
+        FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
         String symbol = config.getString("money.moneySymbol");
         Bukkit.getLogger().info("Money symbol: " + symbol);
 
         //connect to the database
-        this.mySQL = new MySQL(this);
+        this.mySQL = new MySQL();
 
-        mySQL.connect();
+        mySQL.connectDB();
         if (mySQL.isConnected()) {
             //create main table:
-            sqlUtils.createTable("players", "UUID");
-            sqlUtils.createColumn("ign", "VARCHAR(100)", "players");
-            sqlUtils.createColumn("wallet", "INT(100)", "players");
-            sqlUtils.createColumn("bank", "INT(100)", "players");
-            Bukkit.getLogger().info(ChatColor.BLUE + "Database is connected!");
-        } else {
-            Bukkit.getLogger().severe("Database not connected!");
-        }
+            dbCreation();
+            Bukkit.getLogger().info(s.prefix + "Database is connected!");
+            } else {
+                Bukkit.getLogger().severe("Database not connected!");
+            }
 
         // initialise commands
-        new CommandBal(this);
-        new CommandSetMoney(this);
-        new CommandTransfer(this);
-        new CommandBuyShop(this);
-        new CommandCancelShop(this);
+        this.getCommand("bal").setExecutor(new CommandBal());
+        this.getCommand("setmoney").setExecutor(new CommandSetMoney());
+        this.getCommand("transfer").setExecutor(new CommandTransfer());
 
         //initialise tab completers
         getCommand("transfer").setTabCompleter(new CommandTransfer(this));
@@ -79,6 +72,23 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        mySQL.disconnect();
+        mySQL.disconnectDB();
+    }
+
+    void dbCreation() {
+        // handles creation of the economy table
+        SQLU.createDBTable("economy", "accountID");
+        SQLU.createDBColumn("wallet", "VARCHAR(100)", "economy");
+        SQLU.createDBColumn("bank", "VARCHAR(100)", "economy");
+
+        // handles creation of the shops table
+        SQLU.createDBTable("shops", "accountID");
+        SQLU.createDBColumn("shopID", "VARCHAR(100)", "shops");
+        SQLU.createDBColumn("shopPrice", "VARCHAR(100)", "shops");
+
+        // handles creation of the linked accounts table
+        SQLU.createDBTable("accounts", "accountID");
+        SQLU.createDBColumn("discordIGN", "VARCHAR(100)", "accounts");
+        SQLU.createDBColumn("minecraftIGN", "VARCHAR(100)", "accounts");
     }
 }

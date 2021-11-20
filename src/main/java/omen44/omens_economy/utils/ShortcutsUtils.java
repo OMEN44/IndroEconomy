@@ -1,8 +1,6 @@
 package omen44.omens_economy.utils;
 
-import omen44.omens_economy.listeners.ChestShopTrade;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 
 public class ShortcutsUtils {
     public String prefix;

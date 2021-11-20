@@ -25,14 +25,15 @@ public class CommandTransfer implements TabExecutor {
     public Main main;
 
     ShortcutsUtils s = new ShortcutsUtils();
-    EconomyUtils eco = new EconomyUtils(null);
+    EconomyUtils eco = new EconomyUtils();
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
 
     public CommandTransfer(Main main) {
-        Bukkit.getPluginCommand("transfer").setExecutor(this);
         this.main = main;
     }
+
+    public CommandTransfer() {}
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
