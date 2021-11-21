@@ -26,8 +26,8 @@ public class Bot extends ListenerAdapter {
                 .setActivity(Activity.playing("Type !register"))
                 .build();
 
-        jda.addEventListener(new CommandRegister());
         jda.addEventListener(new CommandPing());
+        //jda.addEventListener(new CommandRegister());
     }
 }
 

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class SQLUtils {
     MySQL mySQL = new MySQL();
-    Connection connection = mySQL.getConnection();
+    final Connection connection = mySQL.getConnection();
 
     /**
      * Sets the data declared into the MySQL database.
@@ -22,6 +22,7 @@ public class SQLUtils {
      */
     public void setData(String value, String columnID, String equalsID, String column, String tableName) {
         try {
+
             PreparedStatement ps = connection.prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + columnID + "=?");
             if (isNumType("int", value)) {
                 int valNum = Integer.parseInt(value);
@@ -153,6 +154,7 @@ public class SQLUtils {
 
     public void createDBTable(String name, String columnID) {
         try {
+            System.out.println(connection);
             PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + columnID + " VARCHAR(100), PRIMARY KEY" + " (" + columnID + "));");
             ps.executeUpdate();
         } catch (SQLException e) {

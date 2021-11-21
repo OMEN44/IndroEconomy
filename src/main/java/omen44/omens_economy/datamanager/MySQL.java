@@ -1,5 +1,6 @@
 package omen44.omens_economy.datamanager;
 
+import omen44.omens_economy.utils.SQLUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.Connection;
@@ -26,7 +27,8 @@ public class MySQL {
         if (!isConnected()) {
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSl=false", username, password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+                System.out.println(connection);
             } catch (SQLException ex) {
                 System.out.println("SQLException: " + ex.getMessage());
                 System.out.println("SQLState: " + ex.getSQLState());
