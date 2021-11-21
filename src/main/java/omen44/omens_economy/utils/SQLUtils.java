@@ -273,4 +273,17 @@ public class SQLUtils {
         }
         return true;
     }
+
+    /**
+     * Creates the accountID row if it does not exist.
+     */
+
+    public void createIDTable(String tableName) {
+        try {
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + tableName + " (accountID MEDIUMINT NOT NULL AUTO_INCREMENT)");
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

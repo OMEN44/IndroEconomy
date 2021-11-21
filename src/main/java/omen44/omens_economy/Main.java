@@ -5,6 +5,7 @@ import omen44.omens_economy.commands.economy.CommandSetMoney;
 import omen44.omens_economy.commands.economy.CommandTransfer;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
+import omen44.omens_economy.discordLink.Bot;
 import omen44.omens_economy.events.JoinLeave;
 import omen44.omens_economy.events.PlayerDeath;
 import omen44.omens_economy.events.PlayerMine;
@@ -15,6 +16,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import javax.security.auth.login.LoginException;
+import java.sql.SQLException;
 
 public final class Main extends JavaPlugin {
 
@@ -46,17 +50,22 @@ public final class Main extends JavaPlugin {
         String symbol = config.getString("money.moneySymbol");
         Bukkit.getLogger().info("Money symbol: " + symbol);
 
-        //connect to the database
-        this.mySQL = new MySQL();
-
-        mySQL.connectDB();
+        try {
+            Bukkit.getLogger().info(s.prefix + "Attempting to connect to MySQL!");
+            mySQL.connectDB();
+        } catch (ClassNotFoundException | SQLException e) {
+            Bukkit.getLogger().info(s.prefix + "Database Failed to connect!");
+            e.printStackTrace();
+        }
         if (mySQL.isConnected()) {
+            Bukkit.getLogger().info(s.prefix + "Database Successfully Connected!");
             //create main table:
             dbCreation();
-            Bukkit.getLogger().info(s.prefix + "Database is connected!");
-            } else {
-                Bukkit.getLogger().severe("Database not connected!");
-            }
+            Bukkit.getLogger().info(s.prefix + "Database Initialised!");
+        } else {
+            Bukkit.getLogger().severe("Database not connected!");
+        }
+
 
         // initialise commands
         this.getCommand("bal").setExecutor(new CommandBal());
@@ -67,6 +76,13 @@ public final class Main extends JavaPlugin {
         getCommand("transfer").setTabCompleter(new CommandTransfer(this));
         getCommand("setmoney").setTabCompleter(new CommandSetMoney(this));
         getCommand("bal").setTabCompleter(new CommandBal(this));
+
+        //create the bot
+        try {
+            Bot.main(new String[]{"OTEwNzg5MjE4NDg4NDM4ODM0.YZX8jw.2FQmRVO37KJFWceaFF-he_d_bdI"});
+        } catch (LoginException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -77,17 +93,17 @@ public final class Main extends JavaPlugin {
 
     void dbCreation() {
         // handles creation of the economy table
-        SQLU.createDBTable("economy", "accountID");
+        SQLU.createIDTable("economy");
         SQLU.createDBColumn("wallet", "VARCHAR(100)", "economy");
         SQLU.createDBColumn("bank", "VARCHAR(100)", "economy");
 
         // handles creation of the shops table
-        SQLU.createDBTable("shops", "accountID");
+        SQLU.createIDTable("shops");
         SQLU.createDBColumn("shopID", "VARCHAR(100)", "shops");
         SQLU.createDBColumn("shopPrice", "VARCHAR(100)", "shops");
 
         // handles creation of the linked accounts table
-        SQLU.createDBTable("accounts", "accountID");
+        SQLU.createIDTable("accounts");
         SQLU.createDBColumn("discordIGN", "VARCHAR(100)", "accounts");
         SQLU.createDBColumn("minecraftIGN", "VARCHAR(100)", "accounts");
     }

@@ -10,17 +10,38 @@ import java.sql.SQLException;
 public class IDUtils {
     private int accountID;
     MySQL mySQL = new MySQL();
+    SQLUtils sqlUtils = new SQLUtils();
 
-    public int generateID() {
+    public int generateID(String discordIGN, String minecraftIGN) {
+        int availableID = 0;
         try {
-            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT accountID FROM accounts WHERE minecraftIGN, discordIGN IS NOT NULL");
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT accountID FROM accounts WHERE minecraftIGN, discordIGN IS NULL");
             ResultSet rs = ps.executeQuery();
             if (rs != null){
-
+                availableID = rs.getInt("accountID");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        if (availableID == 0) {
+            int lastInt = 0;
+            try {
+                PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT accountID FROM accounts ORDER BY accountID LIMIT 1;");
+                ResultSet rs = ps.executeQuery();
+                lastInt = rs.getInt("accountID");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            lastInt += 1;
+            try {
+                PreparedStatement ps = mySQL.getConnection().prepareStatement("INSERT INTO accounts (discordIGN, minecraftIGN) VALUES (" + discordIGN + "," + minecraftIGN + ")");
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            availableID = lastInt;
+        }
+        return availableID;
     }
 
     public String getMinecraftID(int id) {

@@ -19,19 +19,24 @@ public class CommandRegister extends ListenerAdapter {
         String result = wr.register(discordIGN, minecraftIGN);
         switch (result.toLowerCase(Locale.ROOT)) {
             case "valid": {
-                event.getChannel().sendMessage("Successfully registered your name, your account id is " + );
+                int accountID = wr.getPlayerID();
+                event.getChannel().sendMessage("Successfully registered your name, your account id is " + accountID);
             }
-            case "" {
+            case "E-DNAR": {
+                event.getChannel().sendMessage("Error: discord name already registered");
 
             }
-            case "" {
-
+            case "E-MCSD": {
+                event.getChannel().sendMessage("Error: minecraft verification servers down");
             }
-            case "" {
-
+            case "E-MCNP": {
+                event.getChannel().sendMessage("Error; minecraft username not paid for");
             }
-            case ""
-
+            case "E-MCAR": {
+                event.getChannel().sendMessage("Error: minecraft name already registered");
+            }
+            default:
+                throw new IllegalStateException("Unexpected value: " + result.toLowerCase(Locale.ROOT));
         }
     }
 }

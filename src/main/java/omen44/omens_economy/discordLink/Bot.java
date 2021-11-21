@@ -23,11 +23,10 @@ public class Bot extends ListenerAdapter {
         // All other events will be disabled.
         JDA jda = JDABuilder.createLight(args[0], GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new Bot())
-                .setActivity(Activity.playing("Type !ping"))
+                .setActivity(Activity.playing("Type !register"))
                 .build();
 
         jda.addEventListener(new CommandRegister());
-
     }
 }
 
