@@ -22,9 +22,9 @@ import java.util.List;
 
 public class CommandSetMoney implements TabExecutor {
     public Main main;
-
+    ConfigTools configTools = new ConfigTools();
     ShortcutsUtils s = new ShortcutsUtils();
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    FileConfiguration config = configTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
 
     public CommandSetMoney(Main main) {
@@ -40,7 +40,7 @@ public class CommandSetMoney implements TabExecutor {
         int wallet;
         int bank;
         Player target = Bukkit.getPlayer(args[1]);
-        int amount = 0;
+        int amount;
 
         if (label.equalsIgnoreCase("setmoney") && args.length == 3){
             try {

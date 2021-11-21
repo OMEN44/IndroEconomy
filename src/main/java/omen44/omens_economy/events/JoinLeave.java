@@ -19,7 +19,8 @@ public class JoinLeave implements Listener {
     public JoinLeave(Main main) {this.main = main;}
     public void EconomyUtils(Main main) {this.main = main;}
 
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getFileConfig("config.yml");
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {

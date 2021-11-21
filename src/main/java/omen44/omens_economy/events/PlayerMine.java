@@ -21,7 +21,8 @@ public class PlayerMine implements Listener {
     public Main main;
     public PlayerMine(Main main) {this.main = main;}
 
-    public FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getFileConfig("config.yml");
 
     @EventHandler
     public void onPlayerMine(BlockBreakEvent event) {

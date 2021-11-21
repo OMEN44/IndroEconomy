@@ -5,29 +5,26 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ConfigTools {
-    private static Main main;
-    public ConfigTools(Main main) {
-        ConfigTools.main = main;
-    }
-
-    public static FileConfiguration getFileConfig(String fileName) {
+    public Plugin plugin = new Main();
+    public FileConfiguration getFileConfig(String fileName) {
         File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/omens_economy/"+fileName); // First we
         // will load
         // the file.
         return YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public static void generateConfig(String configName) {
-        File configA = new File(main.getDataFolder(), configName);
+    public void generateConfig(String configName) {
+        File configA = new File(plugin.getDataFolder(), configName);
 
         if (!configA.exists()) {
             configA.getParentFile().mkdirs();
-            main.saveResource(configName, false);
+            plugin.saveResource(configName, false);
         }
         FileConfiguration config = new YamlConfiguration();
 

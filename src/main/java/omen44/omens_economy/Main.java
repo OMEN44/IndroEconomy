@@ -32,7 +32,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
         // initialize classes:
-        configTools = new ConfigTools(this);
+        configTools = new ConfigTools();
         mySQL = new MySQL();
         SQLU = new SQLUtils();
         economyUtils = new EconomyUtils();
@@ -44,8 +44,8 @@ public final class Main extends JavaPlugin {
         pm.registerEvents(new PlayerDeath(this), this);
 
         // Plugin startup logic
-        ConfigTools.generateConfig("config.yml");
-        FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+        configTools.generateConfig("config.yml");
+        FileConfiguration config = configTools.getFileConfig("config.yml");
 
         String symbol = config.getString("money.moneySymbol");
         Bukkit.getLogger().info("Money symbol: " + symbol);

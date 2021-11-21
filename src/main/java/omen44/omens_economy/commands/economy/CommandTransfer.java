@@ -26,7 +26,9 @@ public class CommandTransfer implements TabExecutor {
 
     ShortcutsUtils s = new ShortcutsUtils();
     EconomyUtils eco = new EconomyUtils();
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+
+    FileConfiguration config = configTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
 
     public CommandTransfer(Main main) {
