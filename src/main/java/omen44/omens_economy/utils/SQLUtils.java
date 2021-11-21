@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLUtils {
-    private static final MySQL mySQL = new MySQL();
+    MySQL mySQL = new MySQL();
 
     /**
      * Sets the data declared into the MySQL database.
@@ -181,7 +181,7 @@ public class SQLUtils {
      * @param accountID The ID of the account added (should already be handled)
      * @param tableName The name of the table the column is getting added to (must exist)
      */
-    public static void createRow(String columnID, String accountID, String tableName) {
+    public void createRow(String columnID, String accountID, String tableName) {
         if (!rowExists(columnID, accountID, tableName)) { // checks if the row does not already exist
             try {
                 PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName);
@@ -203,7 +203,7 @@ public class SQLUtils {
      * @param tableName The table that the program is checking
      * @return true if exists, false if it doesn't
      */
-    public static boolean rowExists(String columnID, String comparedValue, String tableName) {
+    public boolean rowExists(String columnID, String comparedValue, String tableName) {
         try {
             PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, comparedValue);
@@ -244,7 +244,6 @@ public class SQLUtils {
             PreparedStatement ps = mySQL.getConnection().prepareStatement("DELETE FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ps.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -278,9 +277,12 @@ public class SQLUtils {
      * Creates the accountID row if it does not exist.
      */
 
-    public void createIDTable(String tableName) {
+    public void createIDTable(String tableName, String firstColumn, String dataType) {
         try {
-            PreparedStatement ps = mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + tableName + " (accountID MEDIUMINT NOT NULL AUTO_INCREMENT)");
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + tableName
+                    + " (accountID MEDIUMINT NOT NULL AUTO_INCREMENT,"
+                    + firstColumn + " " + dataType
+                    + " PRIMARY KEY (accountID))");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -50,16 +50,16 @@ public final class Main extends JavaPlugin {
         String symbol = config.getString("money.moneySymbol");
         Bukkit.getLogger().info("Money symbol: " + symbol);
 
+
+        Bukkit.getLogger().info(s.prefix + "Attempting to connect to MySQL!");
         try {
-            Bukkit.getLogger().info(s.prefix + "Attempting to connect to MySQL!");
-            mySQL.connectDB();
+            mySQL.connect();
         } catch (ClassNotFoundException | SQLException e) {
-            Bukkit.getLogger().info(s.prefix + "Database Failed to connect!");
             e.printStackTrace();
         }
         if (mySQL.isConnected()) {
             Bukkit.getLogger().info(s.prefix + "Database Successfully Connected!");
-            //create main table:
+            //create table:
             dbCreation();
             Bukkit.getLogger().info(s.prefix + "Database Initialised!");
         } else {
@@ -88,23 +88,26 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        mySQL.disconnectDB();
+        mySQL.disconnect();
     }
 
     void dbCreation() {
+        if (!mySQL.isConnected()) {
+            Bukkit.getLogger().severe("Database failed to connect!");
+            return;
+        }
         // handles creation of the economy table
-        SQLU.createIDTable("economy");
+        SQLU.createDBTable("economy", "accountID");
         SQLU.createDBColumn("wallet", "VARCHAR(100)", "economy");
         SQLU.createDBColumn("bank", "VARCHAR(100)", "economy");
 
         // handles creation of the shops table
-        SQLU.createIDTable("shops");
+        SQLU.createDBTable("shops", "accountID");
         SQLU.createDBColumn("shopID", "VARCHAR(100)", "shops");
         SQLU.createDBColumn("shopPrice", "VARCHAR(100)", "shops");
 
         // handles creation of the linked accounts table
-        SQLU.createIDTable("accounts");
-        SQLU.createDBColumn("discordIGN", "VARCHAR(100)", "accounts");
+        SQLU.createIDTable("accounts","discordIGN", "VARCHAR(100)");
         SQLU.createDBColumn("minecraftIGN", "VARCHAR(100)", "accounts");
     }
 }

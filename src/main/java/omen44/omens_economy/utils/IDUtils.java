@@ -41,6 +41,8 @@ public class IDUtils {
             }
             availableID = lastInt;
         }
+        sqlUtils.createRow("accountID", String.valueOf(availableID), "economy");
+        sqlUtils.createRow("accountID", String.valueOf(availableID), "shops");
         return availableID;
     }
 

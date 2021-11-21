@@ -1,40 +1,44 @@
 package omen44.omens_economy.datamanager;
 
-import omen44.omens_economy.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class MySQL {
+
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
-    private final String host = config.getString("database.host");
-    private final String port = config.getString("database.port");
-    private final String database = config.getString("database.database");
-    private final String username = config.getString("database.user");
-    private final String password = config.getString("database.password");
-    protected String pass;
+    private String host = config.getString("database.host");
+    private String port = config.getString("database.port");
+    private String database = config.getString("database.database");
+    private String username = config.getString("database.user");
+    String pass = config.getString("database.password");
+    private String password = pass;
 
     private Connection connection;
 
-    public void connectDB() throws ClassNotFoundException, SQLException {
-        if (password.equals("blank")){
-            pass = "";
+    public boolean isConnected() {
+        return (connection != null);
+    }
+
+    public void connect() throws ClassNotFoundException, SQLException {
+        String pass = config.getString("database.password");
+        if (pass.equalsIgnoreCase("blank")){
+            password = "";
         }
 
         if (!isConnected()) {
-            connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSl=false", username, pass);
+            connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSl=false", username, password);
         }
     }
 
-    public void disconnectDB() {
+    public void disconnect() {
         if (isConnected()) {
             try {
                 connection.close();
-            } catch (SQLException e) {
+            }catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -43,8 +47,4 @@ public class MySQL {
     public Connection getConnection() {
         return connection;
     }
-    public boolean isConnected() {
-        return (connection != null);
-    }
 }
-

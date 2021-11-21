@@ -4,6 +4,7 @@ import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.SQLUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
+import org.apache.commons.collections4.list.SetUniqueList;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -25,8 +26,9 @@ public class JoinLeave implements Listener {
         ShortcutsUtils s = new ShortcutsUtils();
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
+        SQLUtils sqlUtils = new SQLUtils();
 
-        SQLUtils.createRow("UUID", uuid, "players");
+        sqlUtils.createRow("UUID", uuid, "players");
         event.setJoinMessage(ChatColor.YELLOW + "Welcome to IndroCraft!");
         if (!player.hasPlayedBefore()) {
             main.economyUtils.setBank(player, config.getInt("defaultAmount"));
