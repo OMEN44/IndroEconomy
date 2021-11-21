@@ -15,6 +15,7 @@ public final class WhitelistRegister {
     SQLUtils sqlUtils = new SQLUtils();
     IDUtils id = new IDUtils();
     private int playerID = 0;
+
     public String register(String discordIGN, String minecraftIGN) {
         String discordName = sqlUtils.getDBString("discordIGN", "discordIGN", discordIGN, "accounts");
         if (discordName != null) {

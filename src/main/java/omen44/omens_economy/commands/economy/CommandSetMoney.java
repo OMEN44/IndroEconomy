@@ -21,9 +21,8 @@ import java.util.List;
 
 public class CommandSetMoney implements TabExecutor {
     public Main main;
-    ConfigTools configTools = new ConfigTools();
     ShortcutsUtils s = new ShortcutsUtils();
-    FileConfiguration config = configTools.getFileConfig("config.yml");
+    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
 
     public CommandSetMoney(Main main) {

@@ -2,7 +2,6 @@ package omen44.omens_economy.utils;
 
 import omen44.omens_economy.datamanager.MySQL;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

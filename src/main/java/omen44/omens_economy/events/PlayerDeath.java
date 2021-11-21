@@ -14,8 +14,7 @@ public class PlayerDeath implements Listener {
     public Main main;
     public PlayerDeath(Main main) {this.main = main;}
 
-    ConfigTools configTools = new ConfigTools();
-    FileConfiguration config = configTools.getFileConfig("config.yml");
+    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {

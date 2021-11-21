@@ -40,12 +40,12 @@ public final class Main extends JavaPlugin {
 
         // register listeners:
         pm.registerEvents(new PlayerMine(this), this);
-        pm.registerEvents(new JoinLeave(this), this);
+        pm.registerEvents(new JoinLeave(), this);
         pm.registerEvents(new PlayerDeath(this), this);
 
         // Plugin startup logic
-        ConfigTools.generateConfig("config.yml");
-        FileConfiguration config = configTools.getFileConfig("config.yml");
+        this.saveDefaultConfig();
+        FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
         String symbol = config.getString("money.moneySymbol");
         Bukkit.getLogger().info("Money symbol: " + symbol);
@@ -73,7 +73,7 @@ public final class Main extends JavaPlugin {
         this.getCommand("transfer").setExecutor(new CommandTransfer());
 
         //initialise tab completers
-        getCommand("transfer").setTabCompleter(new CommandTransfer(this));
+        getCommand("transfer").setTabCompleter(new CommandTransfer( ));
         getCommand("setmoney").setTabCompleter(new CommandSetMoney(this));
         getCommand("bal").setTabCompleter(new CommandBal(this));
 
@@ -92,7 +92,7 @@ public final class Main extends JavaPlugin {
     }
 
     void dbCreation() {
-        if (!mySQL.isConnected()) {
+        if (mySQL.getConnection() == null) {
             Bukkit.getLogger().severe("Database failed to connect!");
             return;
         }
