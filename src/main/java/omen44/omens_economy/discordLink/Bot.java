@@ -27,6 +27,7 @@ public class Bot extends ListenerAdapter {
                 .build();
 
         jda.addEventListener(new CommandRegister());
+        jda.addEventListener(new CommandPing());
     }
 }
 

@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ConfigTools {
-    public Plugin plugin = new Main();
+
     public FileConfiguration getFileConfig(String fileName) {
         File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/omens_economy/"+fileName); // First we
         // will load
@@ -19,7 +19,8 @@ public class ConfigTools {
         return YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public void generateConfig(String configName) {
+    public static void generateConfig(String configName) {
+        Plugin plugin = new Main();
         File configA = new File(plugin.getDataFolder(), configName);
 
         if (!configA.exists()) {

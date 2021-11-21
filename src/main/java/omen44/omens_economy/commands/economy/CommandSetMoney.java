@@ -2,7 +2,6 @@ package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -44,7 +44,7 @@ public final class Main extends JavaPlugin {
         pm.registerEvents(new PlayerDeath(this), this);
 
         // Plugin startup logic
-        configTools.generateConfig("config.yml");
+        ConfigTools.generateConfig("config.yml");
         FileConfiguration config = configTools.getFileConfig("config.yml");
 
         String symbol = config.getString("money.moneySymbol");
