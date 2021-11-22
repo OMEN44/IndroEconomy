@@ -1,5 +1,6 @@
 package omen44.omens_economy.events;
 
+import omen44.omens_economy.Main;
 import omen44.omens_economy.utils.IDUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import org.bukkit.Bukkit;
@@ -12,8 +13,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public final class WhitelistRegister {
-    SQLUtils sqlUtils = new SQLUtils();
-    IDUtils id = new IDUtils();
+    public Main main;
+    public WhitelistRegister(Main main) {
+        this.main = main;
+    }
+    SQLUtils sqlUtils = new SQLUtils(main);
+    IDUtils id = new IDUtils(main);
     private int playerID = 0;
 
     public String register(String discordIGN, String minecraftIGN) {

@@ -6,9 +6,11 @@ import omen44.omens_economy.commands.economy.CommandTransfer;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.discordLink.Bot;
+import omen44.omens_economy.discordLink.CommandRegister;
 import omen44.omens_economy.events.JoinLeave;
 import omen44.omens_economy.events.PlayerDeath;
 import omen44.omens_economy.events.PlayerMine;
+import omen44.omens_economy.events.WhitelistRegister;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
@@ -26,7 +28,8 @@ public final class Main extends JavaPlugin {
     public MySQL mySQL;
     public SQLUtils SQLU;
     public EconomyUtils economyUtils;
-
+    public CommandRegister cr;
+    public WhitelistRegister wr;
 
     @Override
     public void onEnable() {
@@ -34,13 +37,15 @@ public final class Main extends JavaPlugin {
         // initialize classes:
         configTools = new ConfigTools();
         mySQL = new MySQL();
-        SQLU = new SQLUtils();
-        economyUtils = new EconomyUtils();
+        SQLU = new SQLUtils(this);
+        economyUtils = new EconomyUtils(this);
+        cr = new CommandRegister(this);
+        wr = new WhitelistRegister(this);
         ShortcutsUtils s = new ShortcutsUtils();
 
         // register listeners:
         pm.registerEvents(new PlayerMine(this), this);
-        pm.registerEvents(new JoinLeave(), this);
+        pm.registerEvents(new JoinLeave(this), this);
         pm.registerEvents(new PlayerDeath(this), this);
 
         // Plugin startup logic

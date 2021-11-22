@@ -1,17 +1,23 @@
 package omen44.omens_economy.utils;
 
 import omen44.omens_economy.Main;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
 public class EconomyUtils {
-    
+
+
     /* TODO: 13/10/2021 add functions:
     *   - transfer
     */
+    public Main main;
+    public EconomyUtils(Main main) {
+        this.main = main;
+    }
 
-    SQLUtils sqlUtils = new SQLUtils();
+    SQLUtils sqlUtils = new SQLUtils(main);
     ShortcutsUtils s = new ShortcutsUtils();
 
     public void setBank(Player player, int amount) {

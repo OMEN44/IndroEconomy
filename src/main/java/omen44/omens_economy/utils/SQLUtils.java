@@ -1,5 +1,6 @@
 package omen44.omens_economy.utils;
 
+import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.MySQL;
 import org.bukkit.Bukkit;
 
@@ -9,11 +10,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLUtils {
-    MySQL mySQL = new MySQL();
-    final Connection connection = mySQL.getConnection();
+    private final Main plugin;
+    public SQLUtils(Main plugin) {
+        this.plugin = plugin;
+    }
 
     /**
-     * Sets the data declared into the MySQL database.
+     * Sets the data declared into the mySQL.getConnection() database.
      * @param value The data that needs to be set
      * @param columnID The name of the column changed
      * @param equalsID The name of the item compared to
@@ -22,8 +25,7 @@ public class SQLUtils {
      */
     public void setData(String value, String columnID, String equalsID, String column, String tableName) {
         try {
-
-            PreparedStatement ps = connection.prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + columnID + "=?");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + columnID + "=?");
             if (isNumType("int", value)) {
                 int valNum = Integer.parseInt(value);
                 ps.setInt(1, valNum);
@@ -49,7 +51,7 @@ public class SQLUtils {
     }
 
     /**
-     * Gets a variable of type 'String' from the MySQL database.
+     * Gets a variable of type 'String' from the mySQL.getConnection() database.
      * @param columnName The name of the column searched
      * @param columnID The name of the column compared to
      * @param equalsID The name of the item compared to
@@ -59,7 +61,7 @@ public class SQLUtils {
     public String getDBString(String columnName, String columnID, String equalsID, String tableName) {
         try {
             String info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -73,7 +75,7 @@ public class SQLUtils {
     }
 
     /**
-     * Gets a variable of type 'int' from the MySQL database
+     * Gets a variable of type 'int' from the mySQL.getConnection() database
      * @param columnName The name of the column searched.
      * @param columnID The name of the column compared to.
      * @param equalsID The name of the item compared to.
@@ -83,7 +85,7 @@ public class SQLUtils {
     public int getDBInt(String columnName, String columnID, String equalsID, String tableName) {
         try {
             int info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -97,7 +99,7 @@ public class SQLUtils {
     }
 
     /**
-     * Gets a variable of type 'float' from the MySQL database.
+     * Gets a variable of type 'float' from the mySQL.getConnection() database.
      * @param columnName The name of the column searched
      * @param columnID The name of the column compared to
      * @param equalsID The name of the item compared to
@@ -107,7 +109,7 @@ public class SQLUtils {
     public float getDBFloat(String columnName, String columnID, String equalsID, String tableName) {
         try {
             float info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -121,7 +123,7 @@ public class SQLUtils {
     }
 
     /**
-     * Gets a variable of type 'float' from the MySQL database.
+     * Gets a variable of type 'float' from the mySQL.getConnection() database.
      * @param columnName The name of the column searched
      * @param columnID The name of the column compared to
      * @param equalsID The name of the item compared to
@@ -131,7 +133,7 @@ public class SQLUtils {
     public double getDBDouble(String columnName, String columnID, String equalsID, String tableName) {
         try {
             double info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -154,8 +156,8 @@ public class SQLUtils {
 
     public void createDBTable(String name, String columnID) {
         try {
-            System.out.println(connection);
-            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + columnID + " VARCHAR(100), PRIMARY KEY" + " (" + columnID + "));");
+            System.out.println(plugin.mySQL.getConnection());
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + columnID + " VARCHAR(100), PRIMARY KEY" + " (" + columnID + "));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -171,7 +173,7 @@ public class SQLUtils {
      */
     public void createDBColumn(String columnName, String dataType, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + columnName + " " + dataType + ";");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + columnName + " " + dataType + ";");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -188,10 +190,10 @@ public class SQLUtils {
     public void createRow(String columnID, String accountID, String tableName) {
         if (!rowExists(columnID, accountID, tableName)) { // checks if the row does not already exist
             try {
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName);
+                PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName);
                 ResultSet results = ps.executeQuery();
                 results.next();
-                PreparedStatement ps2 = connection.prepareStatement("INSERT IGNORE INTO " + tableName + " (" + columnID + ") VALUE (?)");
+                PreparedStatement ps2 = plugin.mySQL.getConnection().prepareStatement("INSERT IGNORE INTO " + tableName + " (" + columnID + ") VALUE (?)");
                 ps2.setString(1, accountID);
                 ps2.executeUpdate();
             } catch (SQLException e) {
@@ -209,7 +211,7 @@ public class SQLUtils {
      */
     public boolean rowExists(String columnID, String comparedValue, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, comparedValue);
 
             ResultSet results = ps.executeQuery();
@@ -230,7 +232,7 @@ public class SQLUtils {
      */
     public void setDataType(String column, String dataType, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("ALTER TABLE " + tableName + " MODIFY " + column + " " + dataType);
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " MODIFY " + column + " " + dataType);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -245,7 +247,7 @@ public class SQLUtils {
      */
     public void remove(String columnID, String equalsID, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("DELETE FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -283,10 +285,9 @@ public class SQLUtils {
 
     public void createIDTable(String tableName, String firstColumn, String dataType) {
         try {
-            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tableName
+            PreparedStatement ps = plugin.mySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + tableName
                     + " (accountID MEDIUMINT NOT NULL AUTO_INCREMENT,"
-                    + firstColumn + " " + dataType
-                    + " PRIMARY KEY (accountID))");
+                    + firstColumn + " " + dataType + ", PRIMARY KEY (accountID));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

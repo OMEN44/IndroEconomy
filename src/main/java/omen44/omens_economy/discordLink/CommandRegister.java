@@ -4,12 +4,17 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import omen44.omens_economy.Main;
 import omen44.omens_economy.events.WhitelistRegister;
 
 import java.util.Locale;
 
 public class CommandRegister extends ListenerAdapter {
-    WhitelistRegister wr = new WhitelistRegister();
+    public Main main;
+    public CommandRegister(Main main) {
+        this.main = main;
+    }
+    WhitelistRegister wr = new WhitelistRegister(main);
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String[] message = event.getMessage().getContentRaw().split(" ");

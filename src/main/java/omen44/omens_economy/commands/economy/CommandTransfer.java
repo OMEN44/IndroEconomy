@@ -1,5 +1,6 @@
 package omen44.omens_economy.commands.economy;
 
+import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
@@ -21,8 +22,12 @@ import java.util.Locale;
  */
 
 public class CommandTransfer implements TabExecutor {
+    public Main main;
+    public CommandTransfer(Main main) {
+        this.main = main;
+    }
     ShortcutsUtils s = new ShortcutsUtils();
-    EconomyUtils eco = new EconomyUtils();
+    EconomyUtils eco = new EconomyUtils(main);
 
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");

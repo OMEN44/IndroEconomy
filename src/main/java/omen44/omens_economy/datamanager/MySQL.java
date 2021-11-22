@@ -26,15 +26,11 @@ public class MySQL {
         }
         if (!isConnected()) {
             try {
-                Class.forName("com.mysql.jdbc.Driver").newInstance();
                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
-                System.out.println(connection);
             } catch (SQLException ex) {
                 System.out.println("SQLException: " + ex.getMessage());
                 System.out.println("SQLState: " + ex.getSQLState());
                 System.out.println("VendorError: " + ex.getErrorCode());
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
             }
         }
         System.out.println(getConnection().toString());
@@ -52,7 +48,6 @@ public class MySQL {
 
     public void setConnection(Connection connection) {this.connection = connection;}
     public Connection getConnection() {
-        if (connection != null) {System.out.println(connection);}
         return connection;
     }
     public boolean isConnected() {return (connection != null);}

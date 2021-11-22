@@ -1,5 +1,6 @@
 package omen44.omens_economy.utils;
 
+import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.MySQL;
 
 import java.sql.PreparedStatement;
@@ -8,8 +9,12 @@ import java.sql.SQLException;
 
 public class IDUtils {
     private int accountID;
+    public Main main;
+    public IDUtils(Main main) {
+        this.main = main;
+    }
     MySQL mySQL = new MySQL();
-    SQLUtils sqlUtils = new SQLUtils();
+    SQLUtils sqlUtils = new SQLUtils(main);
 
     public int generateID(String discordIGN, String minecraftIGN) {
         int availableID = 0;
