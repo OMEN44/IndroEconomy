@@ -36,7 +36,6 @@ public class Main extends JavaPlugin implements Listener {
     public MySQL SQL;
     public SQLUtils sqlUtils = new SQLUtils(this);
     public ShortcutsUtils s = new ShortcutsUtils();
-    public Main main;
     public EconomyUtils eco = new EconomyUtils();
     public CommandRegister cr = new CommandRegister(this);
 
@@ -149,14 +148,14 @@ public class Main extends JavaPlugin implements Listener {
         //initialise the values needed
         Player player = event.getEntity().getPlayer();
         double moneyLossPercent = config.getInt("money.deathLossPercent") / 100.0;
-        int wallet = main.eco.getMoney(player, "wallet");
+        int wallet = eco.getMoney(player, "wallet");
         String symbol = config.getString("money.moneySymbol");
         double moneyLost = wallet * moneyLossPercent;
         int finalWallet = wallet - (int) moneyLost;
 
         //reduce their wallet by the percentage
         player.sendMessage(s.prefix + "You have died!\n" + s.prefix + "You have lost " + symbol + moneyLost);
-        main.eco.setWallet(player, finalWallet);
+        eco.setWallet(player, finalWallet);
     }
 
     @EventHandler
@@ -175,8 +174,8 @@ public class Main extends JavaPlugin implements Listener {
 
             Random random = new Random();
             String drop = drops.get(random.nextInt(drops.size()));
-            int amount = main.eco.getMoney(player, "Wallet") + Integer.parseInt(drop);
-            main.eco.setWallet(player, amount);
+            int amount = eco.getMoney(player, "Wallet") + Integer.parseInt(drop);
+            eco.setWallet(player, amount);
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_GREEN + "+" + symbol + Integer.parseInt(drop)));
         }
     }
