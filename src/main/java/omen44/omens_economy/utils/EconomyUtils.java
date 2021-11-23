@@ -12,12 +12,8 @@ public class EconomyUtils {
     /* TODO: 13/10/2021 add functions:
     *   - transfer
     */
-    public Main main;
-    public EconomyUtils(Main main) {
-        this.main = main;
-    }
 
-    SQLUtils sqlUtils = new SQLUtils(main);
+    SQLUtils sqlUtils;
     ShortcutsUtils s = new ShortcutsUtils();
 
     public void setBank(Player player, int amount) {

@@ -10,17 +10,22 @@ import omen44.omens_economy.events.WhitelistRegister;
 import java.util.Locale;
 
 public class CommandRegister extends ListenerAdapter {
-    public Main main;
-    public CommandRegister(Main main) {
-        this.main = main;
+    private Main plugin;
+    public CommandRegister(Main plugin) {
+        this.plugin = plugin;
     }
-    WhitelistRegister wr = new WhitelistRegister(main);
+
+    WhitelistRegister wr = new WhitelistRegister(plugin);
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String[] message = event.getMessage().getContentRaw().split(" ");
-
+        if (message.length != 2) {
+            event.getChannel().sendMessage("Error: invalid command syntax");
+            return;
+        }
         String discordIGN = event.getAuthor().toString();
         String minecraftIGN = message[1];
+        event.getChannel().sendMessage(minecraftIGN);
         String result = wr.register(discordIGN, minecraftIGN);
         switch (result.toLowerCase(Locale.ROOT)) {
             case "valid": {

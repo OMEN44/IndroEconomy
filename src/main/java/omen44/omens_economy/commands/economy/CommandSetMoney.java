@@ -29,8 +29,6 @@ public class CommandSetMoney implements TabExecutor {
         this.main = main;
     }
 
-    public CommandSetMoney() {}
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player) sender;
@@ -50,13 +48,13 @@ public class CommandSetMoney implements TabExecutor {
 
             switch (args[0]) {
                 case "wallet" -> {
-                    main.economyUtils.setWallet(target, amount);
-                    wallet = main.economyUtils.getMoney(p, "wallet");
+                    main.eco.setWallet(target, amount);
+                    wallet = main.eco.getMoney(p, "wallet");
                     p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s wallet to " + symbol + wallet);
                 }
                 case "bank" -> {
-                    main.economyUtils.setBank(target, amount);
-                    bank = main.economyUtils.getMoney(p, "bank");
+                    main.eco.setBank(target, amount);
+                    bank = main.eco.getMoney(p, "bank");
                     p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s bank to " + symbol + bank);
                 }
                 default -> {

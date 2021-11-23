@@ -33,8 +33,8 @@ public class CommandBal implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            int wallet = main.economyUtils.getMoney(p, "wallet");
-            int bank = main.economyUtils.getMoney(p, "bank");
+            int wallet = main.eco.getMoney(p, "wallet");
+            int bank = main.eco.getMoney(p, "bank");
 
             if (label.equalsIgnoreCase("bal")) {
                 String type;

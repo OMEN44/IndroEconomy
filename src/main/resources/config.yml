@@ -40,3 +40,6 @@ blocks:
 shop:
   shopPrice: 250
   shopLimit: 5
+
+discord:
+  token: "token_here"

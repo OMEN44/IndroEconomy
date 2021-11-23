@@ -23,17 +23,11 @@ import java.util.Locale;
 
 public class CommandTransfer implements TabExecutor {
     public Main main;
-    public CommandTransfer(Main main) {
-        this.main = main;
-    }
     ShortcutsUtils s = new ShortcutsUtils();
-    EconomyUtils eco = new EconomyUtils(main);
+    EconomyUtils eco = new EconomyUtils();
 
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
-
-    public CommandTransfer() {}
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player) sender;

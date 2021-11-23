@@ -19,21 +19,19 @@ public class MySQL {
 
     private Connection connection;
 
+    public boolean isConnected() {return (connection != null);}
+
     public void connect() throws ClassNotFoundException, SQLException {
         String pass = config.getString("database.password");
         if (pass.equalsIgnoreCase("blank")){
             password = "";
         }
+
         if (!isConnected()) {
-            try {
-                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
-            } catch (SQLException ex) {
-                System.out.println("SQLException: " + ex.getMessage());
-                System.out.println("SQLState: " + ex.getSQLState());
-                System.out.println("VendorError: " + ex.getErrorCode());
-            }
+            connection = DriverManager.getConnection("jdbc:mysql://"
+                            + host + ":" + port + "/" + database + "?useSSL=false"
+                    , username, password);
         }
-        System.out.println(getConnection().toString());
     }
 
     public void disconnect() {
@@ -45,10 +43,7 @@ public class MySQL {
             }
         }
     }
-
-    public void setConnection(Connection connection) {this.connection = connection;}
     public Connection getConnection() {
         return connection;
     }
-    public boolean isConnected() {return (connection != null);}
 }

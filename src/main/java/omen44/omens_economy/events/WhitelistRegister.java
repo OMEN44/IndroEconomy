@@ -13,12 +13,13 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public final class WhitelistRegister {
-    public Main main;
-    public WhitelistRegister(Main main) {
-        this.main = main;
+    private Main plugin;
+    public WhitelistRegister(Main plugin) {
+        this.plugin = plugin;
     }
-    SQLUtils sqlUtils = new SQLUtils(main);
-    IDUtils id = new IDUtils(main);
+
+    SQLUtils sqlUtils = new SQLUtils(plugin);
+    IDUtils id;
     private int playerID = 0;
 
     public String register(String discordIGN, String minecraftIGN) {
