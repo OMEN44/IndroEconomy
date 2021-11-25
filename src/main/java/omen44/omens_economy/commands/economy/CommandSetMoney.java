@@ -2,6 +2,7 @@ package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
+import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,10 +25,7 @@ public class CommandSetMoney implements TabExecutor {
     ShortcutsUtils s = new ShortcutsUtils();
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
-
-    public CommandSetMoney(Main main) {
-        this.main = main;
-    }
+    EconomyUtils eco = new EconomyUtils();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -48,13 +46,13 @@ public class CommandSetMoney implements TabExecutor {
 
             switch (args[0]) {
                 case "wallet" -> {
-                    main.eco.setWallet(target, amount);
-                    wallet = main.eco.getMoney(p, "wallet");
+                    eco.setWallet(target, amount);
+                    wallet = eco.getMoney(p, "wallet");
                     p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s wallet to " + symbol + wallet);
                 }
                 case "bank" -> {
-                    main.eco.setBank(target, amount);
-                    bank = main.eco.getMoney(p, "bank");
+                    eco.setBank(target, amount);
+                    bank = eco.getMoney(p, "bank");
                     p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s bank to " + symbol + bank);
                 }
                 default -> {

@@ -1,19 +1,17 @@
 package omen44.omens_economy.utils;
 
-import omen44.omens_economy.Main;
 import org.bukkit.Bukkit;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 public class SQLUtils {
-    private final Main plugin;
-    public SQLUtils(Main plugin) {
-        this.plugin = plugin;
+    private final Connection connection;
+    public SQLUtils(Connection connection) {
+        this.connection = connection;
     }
-
     /**
      * Sets the data declared into the mySQL.getConnection() database.
      * @param value     The data that needs to be set
@@ -24,7 +22,7 @@ public class SQLUtils {
      */
     public void setData(String value, String columnID, String equalsID, String column, String tableName) {
         try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + columnID + "=?");
             if (isNumType("int", value)) {
                 int valNum = Integer.parseInt(value);
                 ps.setInt(1, valNum);
@@ -60,7 +58,7 @@ public class SQLUtils {
     public String getDBString(String columnName, String columnID, String equalsID, String tableName) {
         try {
             String info;
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -85,7 +83,7 @@ public class SQLUtils {
     public int getDBInt(String columnName, String columnID, String equalsID, String tableName) {
         try {
             int info;
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -111,7 +109,7 @@ public class SQLUtils {
     public float getDBFloat(String columnName, String columnID, String equalsID, String tableName) {
         try {
             float info;
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -136,7 +134,7 @@ public class SQLUtils {
     public double getDBDouble(String columnName, String columnID, String equalsID, String tableName) {
         try {
             double info;
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -161,7 +159,7 @@ public class SQLUtils {
      */
     public void createDBTable(String name, String columnID) {
         try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + columnID + " VARCHAR(100), PRIMARY KEY" + " (" + columnID + "));");
+            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + columnID + " VARCHAR(100), PRIMARY KEY" + " (" + columnID + "));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,7 +175,7 @@ public class SQLUtils {
      */
     public void createDBColumn(String columnName, String dataType, String tableName) {
         try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + columnName + " " + dataType + ";");
+            PreparedStatement ps = connection.prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + columnName + " " + dataType + ";");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -193,7 +191,7 @@ public class SQLUtils {
      */
     public boolean rowExists(String columnID, String comparedValue, String tableName) {
         try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, comparedValue);
             ResultSet results = ps.executeQuery();
             //row is found
@@ -214,10 +212,10 @@ public class SQLUtils {
     public void createRow(String columnID, String accountID, String tableName) {
         if (!rowExists(columnID, accountID, tableName)) { // checks if the row does not already exist
             try {
-                PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("SELECT * FROM " + tableName);
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName);
                 ResultSet results = ps.executeQuery();
                 results.next();
-                PreparedStatement ps2 = plugin.SQL.getConnection().prepareStatement("INSERT IGNORE INTO " + tableName + " (" + columnID + ") VALUE (?)");
+                PreparedStatement ps2 = connection.prepareStatement("INSERT IGNORE INTO " + tableName + " (" + columnID + ") VALUE (?)");
                 ps2.setString(1, accountID);
                 ps2.executeUpdate();
             } catch (SQLException e) {
@@ -234,7 +232,7 @@ public class SQLUtils {
      */
     public void setDataType(String column, String dataType, String tableName) {
         try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("ALTER TABLE " + tableName + " MODIFY " + column + " " + dataType);
+            PreparedStatement ps = connection.prepareStatement("ALTER TABLE " + tableName + " MODIFY " + column + " " + dataType);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -249,7 +247,7 @@ public class SQLUtils {
      */
     public void remove(String columnID, String equalsID, String tableName) {
         try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("DELETE FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + columnID + "=?");
             ps.setString(1, equalsID);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -283,17 +281,24 @@ public class SQLUtils {
 
 
     /**
-     * Creates the accountID row if it does not exist.
+     * Creates the account table.
      */
-    public void createIDTable(String tableName, String firstColumn, String dataType) {
+    public void createAccountTable() {
         try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + tableName
-                    + " (accountID MEDIUMINT NOT NULL AUTO_INCREMENT,"
-                    + firstColumn + " " + dataType + ", PRIMARY KEY (accountID));");
+            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS accounts (accountID MEDIUMINT NOT NULL AUTO_INCREMENT, PRIMARY KEY (accountID));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void createDatabase(String dbName) {
+
+    }
+
+    public void createPlayer(int accountID) { // this assumes an ID has been pre-generated
+        createRow("accountID", String.valueOf(accountID), "economy");
+        createRow("accountID", String.valueOf(accountID), "shops");
     }
 }
 

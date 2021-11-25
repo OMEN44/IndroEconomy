@@ -12,22 +12,27 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public final class WhitelistRegister {
-    private final Main plugin;
-    public WhitelistRegister(Main plugin) {
-        this.plugin = plugin;
-    }
-
     private int playerID;
+    MySQL mySQL = new MySQL();
+    Connection con;
+    SQLUtils sqlUtils;
+    IDUtils id;
 
-    public String register(String discordIGN, String minecraftIGN) {
-        SQLUtils sqlUtils = new SQLUtils(plugin);
-        IDUtils id = new IDUtils(plugin);
+    public int register(String discordIGN, String minecraftIGN) {
+        con = mySQL.getConnection();
+        sqlUtils = new SQLUtils(con);
+        id = new IDUtils();
 
+        if (con == null) {
+            return 5; // means that the SQL database was incorrectly initialised
+        }
         String discordName = sqlUtils.getDBString("discordIGN", "discordIGN", discordIGN, "accounts");
-        if (discordName != null) {
-            return "E-DNAR"; // means that the discord username has already been registered.
+        if (discordName == null) {
+            return 1; // means that the discord username has already been registered.
         }
         boolean minecraftStatus;
         try {
@@ -42,21 +47,21 @@ public final class WhitelistRegister {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return "E-MCSD"; // means that there's something wrong with the mc name servers
+            return 2; // means that there's something wrong with the mc name servers
         }
         if (!minecraftStatus) {
-            return "E-MCNP"; // means that the minecraft username is either not a premium account or the authentication servers are down
+            return 3; // means that the minecraft username is either not a premium account or the authentication servers are down
         }
         String minecraftName = sqlUtils.getDBString("minecraftIGN", "discordIGN", minecraftIGN, "accounts");
         if (minecraftName != null) {
-            return "E-MCAR"; // means that the minecraft username has already been registered.
+            return 4; // means that the minecraft username has already been registered.
         }
         playerID = id.generateID(discordIGN, minecraftIGN);
         Player p = Bukkit.getServer().getPlayer(minecraftIGN);
         if (p != null) {
             p.setWhitelisted(true);
         }
-        return "valid";
+        return 0;
     }
 
     public int getPlayerID() {

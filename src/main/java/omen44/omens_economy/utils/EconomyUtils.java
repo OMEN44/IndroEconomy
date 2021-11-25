@@ -1,9 +1,11 @@
 package omen44.omens_economy.utils;
 
 import omen44.omens_economy.Main;
+import omen44.omens_economy.datamanager.MySQL;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 
+import java.sql.Connection;
 import java.util.Locale;
 
 public class EconomyUtils {
@@ -12,8 +14,9 @@ public class EconomyUtils {
     /* TODO: 13/10/2021 add functions:
     *   - transfer
     */
-
-    SQLUtils sqlUtils;
+    MySQL mySQL = new MySQL();
+    Connection connection = mySQL.getConnection();
+    SQLUtils sqlUtils = new SQLUtils(connection);
     ShortcutsUtils s = new ShortcutsUtils();
 
     public void setBank(Player player, int amount) {

@@ -3,18 +3,17 @@ package omen44.omens_economy.utils;
 import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.MySQL;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class IDUtils {
     private int accountID;
-    public Main main;
-    public IDUtils(Main main) {
-        this.main = main;
-    }
+
     MySQL mySQL = new MySQL();
-    SQLUtils sqlUtils = new SQLUtils(main);
+    Connection con = mySQL.getConnection();
+    SQLUtils sqlUtils = new SQLUtils(con);
 
     public int generateID(String discordIGN, String minecraftIGN) {
         int availableID = 0;
@@ -76,6 +75,18 @@ public class IDUtils {
         return discordIGN;
     }
 
+    public int getAccountID(String id) {
+        int accountID = 0;
+        try {
+            PreparedStatement ps = mySQL.getConnection().prepareStatement("SELECT minecraftIGN FROM accounts WHERE accountID=?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            accountID = rs.getInt("accountID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accountID;
+    }
 
     public int getAccountID() {
         return accountID;
