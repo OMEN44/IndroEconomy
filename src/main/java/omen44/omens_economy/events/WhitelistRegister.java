@@ -1,6 +1,7 @@
 package omen44.omens_economy.events;
 
 import omen44.omens_economy.Main;
+import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.utils.IDUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import org.bukkit.Bukkit;
@@ -13,16 +14,17 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public final class WhitelistRegister {
-    private Main plugin;
+    private final Main plugin;
     public WhitelistRegister(Main plugin) {
         this.plugin = plugin;
     }
 
-    SQLUtils sqlUtils = new SQLUtils(plugin);
-    IDUtils id;
-    private int playerID = 0;
+    private int playerID;
 
     public String register(String discordIGN, String minecraftIGN) {
+        SQLUtils sqlUtils = new SQLUtils(plugin);
+        IDUtils id = new IDUtils(plugin);
+
         String discordName = sqlUtils.getDBString("discordIGN", "discordIGN", discordIGN, "accounts");
         if (discordName != null) {
             return "E-DNAR"; // means that the discord username has already been registered.

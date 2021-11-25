@@ -8,7 +8,8 @@ import omen44.omens_economy.commands.economy.CommandTransfer;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.discordLink.Bot;
-import omen44.omens_economy.discordLink.CommandRegister;
+import omen44.omens_economy.discordLink.RegisterCommand;
+import omen44.omens_economy.events.WhitelistRegister;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
@@ -37,10 +38,13 @@ public class Main extends JavaPlugin implements Listener {
     public SQLUtils sqlUtils = new SQLUtils(this);
     public ShortcutsUtils s = new ShortcutsUtils();
     public EconomyUtils eco = new EconomyUtils();
-    public CommandRegister cr = new CommandRegister(this);
+    public RegisterCommand rc = new RegisterCommand(this);
+    public Bot bot = new Bot(this);
+    public WhitelistRegister wr;
 
     @Override
     public void onEnable() {
+        wr = new WhitelistRegister(this);
         PluginManager pm = getServer().getPluginManager();
         // Plugin startup logic
         this.saveDefaultConfig();
@@ -80,10 +84,6 @@ public class Main extends JavaPlugin implements Listener {
         getCommand("transfer").setTabCompleter(new CommandTransfer( ));
         getCommand("setmoney").setTabCompleter(new CommandSetMoney(this));
         getCommand("bal").setTabCompleter(new CommandBal(this));
-
-
-        // register listeners:
-        pm.registerEvents(new Main(), this);
 
         //create the discord bot
         try {

@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public class SQLUtils {
     private final Main plugin;
-
     public SQLUtils(Main plugin) {
         this.plugin = plugin;
     }

@@ -10,12 +10,11 @@ import java.sql.SQLException;
 public class MySQL {
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
-    private final String host = config.getString("database.host");
-    private final String port = config.getString("database.port");
-    private final String database = config.getString("database.database");
-    private final String username = config.getString("database.user");
-    String pass = config.getString("database.password");
-    private String password = pass;
+    private String host;
+    private String port;
+    private String database;
+    private String username;
+    private String password;
 
     private Connection connection;
 
