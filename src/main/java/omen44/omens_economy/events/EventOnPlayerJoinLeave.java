@@ -3,7 +3,6 @@ package omen44.omens_economy.events;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.utils.EconomyUtils;
-import omen44.omens_economy.utils.IDUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.ChatColor;
@@ -19,17 +18,15 @@ public class EventOnPlayerJoinLeave implements Listener {
     EconomyUtils eco = new EconomyUtils();
     ShortcutsUtils s;
     MySQL mySQL = new MySQL();
-    Connection conn = mySQL.connection;
+    Connection conn = mySQL.getConnection();
     SQLUtils sqlUtils = new SQLUtils(conn);
-    IDUtils idUtils = new IDUtils();
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         FileConfiguration config = ConfigTools.getFileConfig("config.yml");
-        int accountID = idUtils.getAccountID(player.getDisplayName());
 
-        sqlUtils.createPlayer(accountID);
+        sqlUtils.createPlayer(player.getPlayer().getUniqueId().toString());
         event.setJoinMessage(ChatColor.YELLOW + "Welcome to IndroCraft!");
         if (!player.hasPlayedBefore()) {
             eco.setBank(player, config.getInt("defaultAmount"));

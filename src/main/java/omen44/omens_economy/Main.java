@@ -34,6 +34,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
     private MySQL SQL = new MySQL();
@@ -100,19 +101,18 @@ public class Main extends JavaPlugin implements Listener {
 
     void dbCreation() {
         // handles creation of the economy table
-        sqlUtils.createDBTable("economy", "accountID");
+        sqlUtils.createDBTable("economy", "UUID");
         sqlUtils.createDBColumn("wallet", "VARCHAR(100)", "economy");
         sqlUtils.createDBColumn("bank", "VARCHAR(100)", "economy");
 
         // handles creation of the shops table
-        sqlUtils.createDBTable("shops", "accountID");
+        sqlUtils.createDBTable("shops", "UUID");
         sqlUtils.createDBColumn("shopID", "VARCHAR(100)", "shops");
         sqlUtils.createDBColumn("shopPrice", "VARCHAR(100)", "shops");
 
         // handles creation of the linked accounts table
-        sqlUtils.createAccountTable();
+        sqlUtils.createDBTable("accounts", "minecraftIGN");
         sqlUtils.createDBColumn("discordIGN", "VARCHAR(100)", "accounts");
-        sqlUtils.createDBColumn("minecraftIGN", "VARCHAR(100)", "accounts");
     }
 
     public MySQL getSQL() {

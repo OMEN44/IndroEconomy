@@ -1,11 +1,14 @@
 package omen44.omens_economy.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
+import java.util.UUID;
 
 public class SQLUtils {
     private final Connection connection;
@@ -15,14 +18,14 @@ public class SQLUtils {
     /**
      * Sets the data declared into the mySQL.getConnection() database.
      * @param value     The data that needs to be set
-     * @param columnID  The name of the column changed
+     * @param firstColumn  The name of the column changed
      * @param equalsID  The name of the item compared to
      * @param column    The column of the data inserted
      * @param tableName The name of the table that the data is being set to
      */
-    public void setData(String value, String columnID, String equalsID, String column, String tableName) {
+    public void setData(String value, String firstColumn, String equalsID, String column, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE " + tableName + " SET " + column + "=? WHERE " + firstColumn + "=?");
             if (isNumType("int", value)) {
                 int valNum = Integer.parseInt(value);
                 ps.setInt(1, valNum);
@@ -49,20 +52,20 @@ public class SQLUtils {
 
     /**
      * Gets a variable of type 'String' from the mySQL.getConnection() database.
-     * @param columnName The name of the column searched
-     * @param columnID The name of the column compared to
+     * @param selectedColumn The name of the column searched
+     * @param firstColumn The name of the column compared to
      * @param equalsID The name of the item compared to
      * @param tableName The name of the database table checked
      * @return The value of data type 'String'
      */
-    public String getDBString(String columnName, String columnID, String equalsID, String tableName) {
+    public String getDBString(String selectedColumn, String firstColumn, String equalsID, String tableName) {
         try {
             String info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + selectedColumn + " FROM " + tableName + " WHERE " + firstColumn + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                info = rs.getString(columnName);
+                info = rs.getString(selectedColumn);
                 return info;
             }
         } catch (SQLException e) {
@@ -74,20 +77,20 @@ public class SQLUtils {
     /**
      * Gets a variable of type 'int' from the mySQL.getConnection() database
      *
-     * @param columnName The name of the column searched.
-     * @param columnID   The name of the column compared to.
+     * @param selectedColumn The name of the column searched.
+     * @param firstColumn   The name of the column compared to.
      * @param equalsID   The name of the item compared to.
      * @param tableName  The name of the database table checked.
      * @return The value of data type 'int'.
      */
-    public int getDBInt(String columnName, String columnID, String equalsID, String tableName) {
+    public int getDBInt(String selectedColumn, String firstColumn, String equalsID, String tableName) {
         try {
             int info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + selectedColumn + " FROM " + tableName + " WHERE " + firstColumn + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                info = rs.getInt(columnName);
+                info = rs.getInt(selectedColumn);
                 return info;
             }
         } catch (SQLException e) {
@@ -100,20 +103,20 @@ public class SQLUtils {
     /**
      * Gets a variable of type 'float' from the mySQL.getConnection() database.
      *
-     * @param columnName The name of the column searched
-     * @param columnID   The name of the column compared to
+     * @param selectedColumn The name of the column searched
+     * @param firstColumn   The name of the column compared to
      * @param equalsID   The name of the item compared to
      * @param tableName  The name of the database table checked
      * @return The value of data type 'float'
      */
-    public float getDBFloat(String columnName, String columnID, String equalsID, String tableName) {
+    public float getDBFloat(String selectedColumn, String firstColumn, String equalsID, String tableName) {
         try {
             float info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + selectedColumn + " FROM " + tableName + " WHERE " + firstColumn + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                info = rs.getFloat(columnName);
+                info = rs.getFloat(selectedColumn);
                 return info;
             }
         } catch (SQLException e) {
@@ -125,20 +128,20 @@ public class SQLUtils {
     /**
      * Gets a variable of type 'float' from the mySQL.getConnection() database.
      *
-     * @param columnName The name of the column searched
-     * @param columnID   The name of the column compared to
+     * @param selectedColumn The name of the column searched
+     * @param firstColumn   The name of the column compared to
      * @param equalsID   The name of the item compared to
      * @param tableName  The name of the database table checked
      * @return The value of data type 'float'
      */
-    public double getDBDouble(String columnName, String columnID, String equalsID, String tableName) {
+    public double getDBDouble(String selectedColumn, String firstColumn, String equalsID, String tableName) {
         try {
             double info;
-            PreparedStatement ps = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT " + selectedColumn + " FROM " + tableName + " WHERE " + firstColumn + "=?");
             ps.setString(1, equalsID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                info = rs.getDouble(columnName);
+                info = rs.getDouble(selectedColumn);
                 return info;
             }
         } catch (SQLException e) {
@@ -155,11 +158,11 @@ public class SQLUtils {
      * Creates the table of the String 'name' if it does not exist.
      *
      * @param name     The name of the Table
-     * @param columnID The name of the first column of the database (usually "accountID")
+     * @param firstColumn The name of the first column of the database (usually "comparedValue")
      */
-    public void createDBTable(String name, String columnID) {
+    public void createDBTable(String name, String firstColumn) {
         try {
-            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + columnID + " VARCHAR(100), PRIMARY KEY" + " (" + columnID + "));");
+            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + name + " (" + firstColumn + " VARCHAR(100), PRIMARY KEY" + " (" + firstColumn + "));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -167,15 +170,15 @@ public class SQLUtils {
     }
 
     /**
-     * Creates a new column of string 'columnName' if it doesn't exist.
+     * Creates a new column of string 'selectedColumn' if it doesn't exist.
      * Appends the column to the table.
-     * @param columnName The name of the column added
+     * @param selectedColumn The name of the column added
      * @param dataType The data type the column uses (i.e. VarChar(100))
      * @param tableName The name of the table the column is getting added to (must exist)
      */
-    public void createDBColumn(String columnName, String dataType, String tableName) {
+    public void createDBColumn(String selectedColumn, String dataType, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + columnName + " " + dataType + ";");
+            PreparedStatement ps = connection.prepareStatement("ALTER TABLE " + tableName + " ADD COLUMN IF NOT EXISTS " + selectedColumn + " " + dataType + ";");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -184,14 +187,14 @@ public class SQLUtils {
 
     /**
      * Checks if a row already exists. (usually to test for if an ID already exists)
-     * @param columnID The first column of the row (usually accountID)
+     * @param firstColumn The first column of the row (usually comparedValue)
      * @param comparedValue The value that it's comparing to
      * @param tableName The table that the program is checking
      * @return true if exists, false if it doesn't
      */
-    public boolean rowExists(String columnID, String comparedValue, String tableName) {
+    public boolean rowExists(String firstColumn, String comparedValue, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + firstColumn + "=?");
             ps.setString(1, comparedValue);
             ResultSet results = ps.executeQuery();
             //row is found
@@ -205,18 +208,18 @@ public class SQLUtils {
     /**
      * Creates a new row of string 'rowName' and adds an ID to the first column.
      * Note: this does not check if the row exists, handled by {@see rowExists}
-     * @param columnID  The name of the first column (usually accountID)
-     * @param accountID The ID of the account added (should already be handled)
+     * @param firstColumn  The name of the first column (usually comparedValue)
+     * @param comparedValue The ID of the account added (should already be handled)
      * @param tableName The name of the table the column is getting added to (must exist)
      */
-    public void createRow(String columnID, String accountID, String tableName) {
-        if (!rowExists(columnID, accountID, tableName)) { // checks if the row does not already exist
+    public void createRow(String firstColumn, String comparedValue, String tableName) {
+        if (!rowExists(firstColumn, comparedValue, tableName)) { // checks if the row does not already exist
             try {
                 PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName);
                 ResultSet results = ps.executeQuery();
                 results.next();
-                PreparedStatement ps2 = connection.prepareStatement("INSERT IGNORE INTO " + tableName + " (" + columnID + ") VALUE (?)");
-                ps2.setString(1, accountID);
+                PreparedStatement ps2 = connection.prepareStatement("INSERT IGNORE INTO " + tableName + " (" + firstColumn + ") VALUE (?)");
+                ps2.setString(1, comparedValue);
                 ps2.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -241,13 +244,13 @@ public class SQLUtils {
 
     /**
      * Removes a row from the table.
-     * @param columnID The name of the column to compare to
+     * @param firstColumn The name of the column to compare to
      * @param equalsID The name of the item compared to
      * @param tableName The name of the table to remove from
      */
-    public void remove(String columnID, String equalsID, String tableName) {
+    public void remove(String firstColumn, String equalsID, String tableName) {
         try {
-            PreparedStatement ps = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + columnID + "=?");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + firstColumn + "=?");
             ps.setString(1, equalsID);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -285,20 +288,19 @@ public class SQLUtils {
      */
     public void createAccountTable() {
         try {
-            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS accounts (accountID MEDIUMINT NOT NULL AUTO_INCREMENT, PRIMARY KEY (accountID));");
+            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS accounts (comparedValue MEDIUMINT NOT NULL AUTO_INCREMENT, PRIMARY KEY (comparedValue));");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void createDatabase(String dbName) {
-
-    }
-
-    public void createPlayer(int accountID) { // this assumes an ID has been pre-generated
-        createRow("accountID", String.valueOf(accountID), "economy");
-        createRow("accountID", String.valueOf(accountID), "shops");
+    public void createPlayer(String playerUUID) {
+        String uuid = Objects.requireNonNull(Bukkit.getServer().getPlayer(playerUUID)).getUniqueId().toString();
+        System.out.println(uuid);
+        createRow("UUID", uuid, "economy");
+        createRow("UUID", uuid, "shops");
+        createRow("minecraftIGN", playerUUID, "accounts ");
     }
 }
 

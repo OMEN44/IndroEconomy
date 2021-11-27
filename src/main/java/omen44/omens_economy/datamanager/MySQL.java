@@ -16,7 +16,7 @@ public class MySQL {
     private final String username = config.getString("database.username");
     private final String password = config.getString("database.password");
 
-    public Connection connection;
+    Connection connection;
     public Connection getConnection() {
         connection = null;
         String pass = "";
