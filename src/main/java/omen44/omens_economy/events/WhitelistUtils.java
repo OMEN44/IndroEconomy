@@ -34,8 +34,7 @@ public final class WhitelistUtils {
             return 3; // means that the minecraft username has already been registered.
         }
 
-        sqlUtils.createRow("minecraftIGN", minecraftIGN, "accounts");
-        sqlUtils.createRow("discordIGN", discordIGN, "accounts");
+        sqlUtils.addAccount(discordIGN, minecraftIGN);
         return 4; // means that the system successfully registered your username
     }
 
@@ -48,23 +47,13 @@ public final class WhitelistUtils {
         }
 
         String discordName = sqlUtils.getDBString("discordIGN", "discordIGN", discordIGN, "accounts");
-        if (discordName.equals("")) {
-            return 2; // means that the discord username does not exist.
-        }
-
         String minecraftName = sqlUtils.getDBString("minecraftIGN", "discordIGN", discordIGN, "accounts");
-        if (minecraftName.equals("")) {
-            return 3; // means that the minecraft username does not exist.
-        }
-        Player p = Bukkit.getPlayer(minecraftName);
-        if (p == null) {
-            return 3; // means the same as above
+        System.out.println(discordName + " " +  minecraftName);
+        if (discordName.equals("") && minecraftName.equals("")) {
+            return 2; // means that the minecraft username does not exist.
         }
 
-        sqlUtils.remove("minecraftIGN", discordIGN, "accounts");
-        sqlUtils.remove("discordIGN", discordIGN, "accounts");
-
-        p.setWhitelisted(false);
-        return 4; // means that the system successfully registered your username
+        sqlUtils.remove("discordIGN", discordIGN, "accounts"); // deletes the entire row
+        return 3; // means that the system successfully registered your username
     }
 }

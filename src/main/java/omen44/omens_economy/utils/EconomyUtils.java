@@ -1,8 +1,6 @@
 package omen44.omens_economy.utils;
 
-import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.MySQL;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -22,22 +20,22 @@ public class EconomyUtils {
     public void setBank(Player player, int amount) {
         String uuid = player.getUniqueId().toString();
         String value = Integer.valueOf(amount).toString();
-        sqlUtils.setData(value, "UUID", uuid, "bank", "players");
+        sqlUtils.setData(value, "UUID", uuid, "bank", "economy");
     }
 
     public void setWallet(Player player, int amount) {
         String uuid = player.getUniqueId().toString();
         String value = Integer.valueOf(amount).toString();
-        sqlUtils.setData(value, "UUID", uuid, "wallet", "players");
+        sqlUtils.setData(value, "UUID", uuid, "wallet", "economy");
     }
 
     public int getMoney(Player player, String column) {
         int amount = 0;
         String uuid = player.getUniqueId().toString();
         if (column.equalsIgnoreCase("bank")) {
-            amount = sqlUtils.getDBInt("Bank", "UUID", uuid, "players");
+            amount = sqlUtils.getDBInt("bank", "UUID", uuid, "economy");
         } else if (column.equalsIgnoreCase("wallet")) {
-            amount = sqlUtils.getDBInt("Wallet", "UUID", uuid, "players");
+            amount = sqlUtils.getDBInt("wallet", "UUID", uuid, "economy");
         } else {
             System.out.println("Error: Invalid Column Input");
         }
@@ -53,14 +51,16 @@ public class EconomyUtils {
         }
         String receiver = target.getUniqueId().toString();
 
-        int senderWal = sqlUtils.getDBInt("Wallet", "UUID", sender, "players");
-        int receiverWal = sqlUtils.getDBInt("Wallet", "UUID", receiver, "players");
+        int senderWal = sqlUtils.getDBInt("wallet", "UUID", sender, "economy");
+        int receiverWal = sqlUtils.getDBInt("wallet", "UUID", receiver, "economy");
 
         if (senderWal >= amount) {
             receiverWal += amount;
             senderWal -= amount;
-            sqlUtils.setData(Integer.valueOf(receiverWal).toString(), "UUID", receiver, "Wallet", "players");
-            sqlUtils.setData(Integer.valueOf(senderWal).toString(), "UUID", sender, "Wallet", "players");
+            sqlUtils.setData(Integer.valueOf(receiverWal).toString(),
+                    "UUID", receiver, "wallet", "economy");
+            sqlUtils.setData(Integer.valueOf(senderWal).toString(),
+                    "UUID", sender, "wallet", "economy");
             return "Successful";
         }
         return "Unsuccessful";
@@ -70,20 +70,19 @@ public class EconomyUtils {
      * @param player - The player who called the transfer
      * @param to - Where is the money going to?
      * @param amount - How much money is getting transferred?
-     * @return true if the transfer was successful, false if the transfer was unsuccessful.
      */
     public void transferMoney(Player player, String to, int amount) {
         String target = player.getUniqueId().toString();
-        int wallet = sqlUtils.getDBInt("Wallet", "UUID", target, "players");
-        int bank = sqlUtils.getDBInt("Bank", "UUID", target, "players");
+        int wallet = sqlUtils.getDBInt("wallet", "UUID", target, "economy");
+        int bank = sqlUtils.getDBInt("bank", "UUID", target, "economy");
 
         switch (to.toLowerCase(Locale.ROOT)) {
             case "wallet" -> {
                 if (wallet >= amount) {
                     bank += amount;
                     wallet -= amount;
-                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "Wallet", "players");
-                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "Wallet", "players");
+                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
+                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
                     player.sendMessage(s.prefix + s.iMessage + "Transferred " + amount + " to wallet");
                 } else {
                     player.sendMessage(s.prefix + s.error + "Error: Not Enough Money in Wallet to Transfer");
@@ -93,8 +92,8 @@ public class EconomyUtils {
                 if (bank >= amount) {
                     wallet += amount; // adds the wallet from the amount
                     bank -= amount; // takes the bank from the amount
-                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "Wallet", "players");
-                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "Wallet", "players");
+                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
+                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
                     player.sendMessage(s.prefix + s.iMessage + "Transferred " + amount + " to bank");
                 } else {
                     player.sendMessage(s.prefix + s.error + "Error: Not Enough Money in Bank to Transfer");

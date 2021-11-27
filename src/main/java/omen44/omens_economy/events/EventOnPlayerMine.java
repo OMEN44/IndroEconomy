@@ -25,7 +25,6 @@ public class EventOnPlayerMine implements Listener {
         String block = event.getBlock().getType().toString();
         String symbol = config.getString("money.moneySymbol");
 
-
         List<String> blocks = new ArrayList<>(config.getConfigurationSection("blocks").getKeys(false));
         if (blocks.contains(block) &&
                 !(player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH))) {
@@ -34,8 +33,10 @@ public class EventOnPlayerMine implements Listener {
 
             Random random = new Random();
             String drop = drops.get(random.nextInt(drops.size()));
+
             int amount = eco.getMoney(player, "Wallet") + Integer.parseInt(drop);
             eco.setWallet(player, amount);
+
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_GREEN + "+" + symbol + Integer.parseInt(drop)));
         }
     }

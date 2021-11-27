@@ -114,12 +114,4 @@ public class Main extends JavaPlugin implements Listener {
         sqlUtils.createDBTable("accounts", "minecraftIGN");
         sqlUtils.createDBColumn("discordIGN", "VARCHAR(100)", "accounts");
     }
-
-    public MySQL getSQL() {
-        return SQL;
-    }
-
-    public void setSQL(MySQL SQL) {
-        this.SQL = SQL;
-    }
 }

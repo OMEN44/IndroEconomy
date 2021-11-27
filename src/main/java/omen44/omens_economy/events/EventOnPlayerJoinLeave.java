@@ -26,7 +26,7 @@ public class EventOnPlayerJoinLeave implements Listener {
         Player player = event.getPlayer();
         FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
-        sqlUtils.createPlayer(player.getPlayer().getUniqueId().toString());
+        sqlUtils.createPlayer(player);
         event.setJoinMessage(ChatColor.YELLOW + "Welcome to IndroCraft!");
         if (!player.hasPlayedBefore()) {
             eco.setBank(player, config.getInt("defaultAmount"));

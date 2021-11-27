@@ -46,6 +46,7 @@ public class CommandSetMoney implements TabExecutor {
 
             switch (args[0]) {
                 case "wallet" -> {
+                    System.out.println(target);
                     eco.setWallet(target, amount);
                     wallet = eco.getMoney(p, "wallet");
                     p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s wallet to " + symbol + wallet);
