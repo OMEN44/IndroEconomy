@@ -1,14 +1,10 @@
 package omen44.omens_economy.datamanager;
 
-import omen44.omens_economy.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ConfigTools {
     public static FileConfiguration getFileConfig(String fileName) {

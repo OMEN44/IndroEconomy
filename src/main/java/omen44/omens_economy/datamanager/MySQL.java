@@ -1,6 +1,5 @@
 package omen44.omens_economy.datamanager;
 
-import omen44.omens_economy.utils.SQLUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.Connection;
@@ -37,7 +36,6 @@ public class MySQL {
         System.out.println("Closing the Database...");
         try {
             connArg.close();
-            connArg = null;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -10,16 +10,19 @@ import java.sql.SQLException;
 
 public class SQLUtils {
     private final Connection connection;
+
     public SQLUtils(Connection connection) {
         this.connection = connection;
     }
+
     /**
-     * Sets the data declared into the mySQL.getConnection() database.
-     * @param value     The data that needs to be set
-     * @param searchedColumn  The name of the column changed
-     * @param equalsID  The name of the item compared to
-     * @param column    The column of the data inserted
-     * @param tableName The name of the table that the data is being set to
+     * Sets the data declared into the database.
+     *
+     * @param value          The data that needs to be set
+     * @param searchedColumn The name of the column changed
+     * @param equalsID       The name of the item compared to
+     * @param column         The column of the data inserted
+     * @param tableName      The name of the table that the data is being set to
      */
     public void setData(String value, String searchedColumn, String equalsID, String column, String tableName) {
         try {
@@ -50,10 +53,11 @@ public class SQLUtils {
 
     /**
      * Gets a variable of type 'String' from the mySQL.getConnection() database.
+     *
      * @param selectedColumn The name of the column searched
      * @param searchedColumn The name of the column compared to
-     * @param equalsID The name of the item compared to
-     * @param tableName The name of the database table checked
+     * @param equalsID       The name of the item compared to
+     * @param tableName      The name of the database table checked
      * @return The value of data type 'String'
      */
     public String getDBString(String selectedColumn, String searchedColumn, String equalsID, String tableName) {
@@ -76,9 +80,9 @@ public class SQLUtils {
      * Gets a variable of type 'int' from the mySQL.getConnection() database
      *
      * @param selectedColumn The name of the column searched.
-     * @param searchedColumn   The name of the column compared to.
-     * @param equalsID   The name of the item compared to.
-     * @param tableName  The name of the database table checked.
+     * @param searchedColumn The name of the column compared to.
+     * @param equalsID       The name of the item compared to.
+     * @param tableName      The name of the database table checked.
      * @return The value of data type 'int'.
      */
     public int getDBInt(String selectedColumn, String searchedColumn, String equalsID, String tableName) {
@@ -95,16 +99,15 @@ public class SQLUtils {
             e.printStackTrace();
         }
         return 0;
-
     }
 
     /**
      * Gets a variable of type 'float' from the mySQL.getConnection() database.
      *
      * @param selectedColumn The name of the column searched
-     * @param searchedColumn   The name of the column compared to
-     * @param equalsID   The name of the item compared to
-     * @param tableName  The name of the database table checked
+     * @param searchedColumn The name of the column compared to
+     * @param equalsID       The name of the item compared to
+     * @param tableName      The name of the database table checked
      * @return The value of data type 'float'
      */
     public float getDBFloat(String selectedColumn, String searchedColumn, String equalsID, String tableName) {
@@ -127,9 +130,9 @@ public class SQLUtils {
      * Gets a variable of type 'float' from the mySQL.getConnection() database.
      *
      * @param selectedColumn The name of the column searched
-     * @param searchedColumn   The name of the column compared to
-     * @param equalsID   The name of the item compared to
-     * @param tableName  The name of the database table checked
+     * @param searchedColumn The name of the column compared to
+     * @param equalsID       The name of the item compared to
+     * @param tableName      The name of the database table checked
      * @return The value of data type 'float'
      */
     public double getDBDouble(String selectedColumn, String searchedColumn, String equalsID, String tableName) {
@@ -149,13 +152,12 @@ public class SQLUtils {
     }
 
 
-
     // past here is where the creation is done
 
     /**
      * Creates the table of the String 'name' if it does not exist.
      *
-     * @param name     The name of the Table
+     * @param name           The name of the Table
      * @param searchedColumn The name of the first column of the database (usually "comparedValue")
      */
     public void createDBTable(String name, String searchedColumn) {
@@ -170,9 +172,10 @@ public class SQLUtils {
     /**
      * Creates a new column of string 'selectedColumn' if it doesn't exist.
      * Appends the column to the table.
+     *
      * @param selectedColumn The name of the column added
-     * @param dataType The data type the column uses (i.e. VarChar(100))
-     * @param tableName The name of the table the column is getting added to (must exist)
+     * @param dataType       The data type the column uses (i.e. VarChar(100))
+     * @param tableName      The name of the table the column is getting added to (must exist)
      */
     public void createDBColumn(String selectedColumn, String dataType, String tableName) {
         try {
@@ -185,9 +188,10 @@ public class SQLUtils {
 
     /**
      * Checks if a row already exists. (usually to test for if an ID already exists)
+     *
      * @param searchedColumn The first column of the row (usually comparedValue)
-     * @param comparedValue The value that it's comparing to
-     * @param tableName The table that the program is checking
+     * @param comparedValue  The value that it's comparing to
+     * @param tableName      The table that the program is checking
      * @return true if exists, false if it doesn't
      */
     public boolean rowExists(String searchedColumn, String comparedValue, String tableName) {
@@ -206,9 +210,10 @@ public class SQLUtils {
     /**
      * Creates a new row of string 'rowName' and adds an ID to the first column.
      * Note: this does not check if the row exists, handled by {@see rowExists}
-     * @param searchedColumn  The name of the first column (usually comparedValue)
-     * @param comparedValue The ID of the account added (should already be handled)
-     * @param tableName The name of the table the column is getting added to (must exist)
+     *
+     * @param searchedColumn The name of the first column (usually comparedValue)
+     * @param comparedValue  The ID of the account added (should already be handled)
+     * @param tableName      The name of the table the column is getting added to (must exist)
      */
     public void createRow(String searchedColumn, String comparedValue, String tableName) {
         if (!rowExists(searchedColumn, comparedValue, tableName)) { // checks if the row does not already exist
@@ -227,8 +232,9 @@ public class SQLUtils {
 
     /**
      * Sets the data type of the column.
-     * @param column The name of the column altered
-     * @param dataType The data type converted to
+     *
+     * @param column    The name of the column altered
+     * @param dataType  The data type converted to
      * @param tableName The name of the table adjusting
      */
     public void setDataType(String column, String dataType, String tableName) {
@@ -242,9 +248,10 @@ public class SQLUtils {
 
     /**
      * Removes a row from the table.
+     *
      * @param searchedColumn The name of the column to compare to
-     * @param equalsID The name of the item compared to
-     * @param tableName The name of the table to remove from
+     * @param equalsID       The name of the item compared to
+     * @param tableName      The name of the table to remove from
      */
     public void remove(String searchedColumn, String equalsID, String tableName) {
         try {
@@ -258,8 +265,9 @@ public class SQLUtils {
 
     /**
      * A calculation to determine what data type a number is.
+     *
      * @param type The data type it's comparing to.
-     * @param num The string of the number it's comparing to.
+     * @param num  The string of the number it's comparing to.
      * @return true if it's a valid number, false if it is anything else.
      */
     public boolean isNumType(String type, String num) {
@@ -298,24 +306,6 @@ public class SQLUtils {
         System.out.println(uuid);
         createRow("UUID", uuid, "economy");
         createRow("UUID", uuid, "shops");
-    }
-
-    public void addAccount(String discordIGN, String minecraftIGN) {
-        if (!rowExists("discordIGN", minecraftIGN, "accounts")) { // checks if the row does not already exist
-            try {
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM accounts");
-                ResultSet results = ps.executeQuery();
-                results.next();
-                PreparedStatement ps2 = connection.prepareStatement("INSERT INTO accounts (discordIGN, minecraftIGN) VALUE (?, ?)");
-                ps2.setString(1, discordIGN);
-                ps2.setString(2, minecraftIGN);
-                ps2.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println(discordIGN + " cannot be registered");
-        }
     }
 }
 

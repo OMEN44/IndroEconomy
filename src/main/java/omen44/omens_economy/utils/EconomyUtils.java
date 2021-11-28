@@ -42,14 +42,14 @@ public class EconomyUtils {
         return amount;
     }
 
-    public String sendMoney(Player from, Player target, int amount) {
+    public String sendMoney(Player from, Player to, int amount) {
         String sender = from.getUniqueId().toString();
         try {
-            target.getUniqueId();
+            to.getUniqueId();
         } catch (Exception e) {
             return "Target not found";
         }
-        String receiver = target.getUniqueId().toString();
+        String receiver = to.getUniqueId().toString();
 
         int senderWal = sqlUtils.getDBInt("wallet", "UUID", sender, "economy");
         int receiverWal = sqlUtils.getDBInt("wallet", "UUID", receiver, "economy");
@@ -99,9 +99,7 @@ public class EconomyUtils {
                     player.sendMessage(s.prefix + s.error + "Error: Not Enough Money in Bank to Transfer");
                 }
             }
-            default -> {
-                player.sendMessage(s.prefix + s.error + "Error: Incorrect Money Type");
-            }
+            default -> player.sendMessage(s.prefix + s.error + "Error: Incorrect Money Type");
         }
     }
 }

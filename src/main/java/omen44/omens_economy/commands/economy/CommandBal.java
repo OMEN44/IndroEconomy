@@ -1,10 +1,8 @@
 package omen44.omens_economy.commands.economy;
 
-import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,14 +23,14 @@ public class CommandBal implements TabExecutor {
     String symbol = config.getString("money.moneySymbol");
     EconomyUtils eco = new EconomyUtils();
 
-    public CommandBal() {}
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             int wallet = eco.getMoney(p, "wallet");
             int bank = eco.getMoney(p, "bank");
+
+            System.out.println(wallet + " " + bank);
 
             if (label.equalsIgnoreCase("bal")) {
                 String type;

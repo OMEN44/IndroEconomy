@@ -29,9 +29,15 @@ public class EventOnPlayerJoinLeave implements Listener {
         sqlUtils.createPlayer(player);
         event.setJoinMessage(ChatColor.YELLOW + "Welcome to IndroCraft!");
         if (!player.hasPlayedBefore()) {
+            eco.setWallet(player, 0);
             eco.setBank(player, config.getInt("defaultAmount"));
             player.sendMessage(s.prefix + "You start with " + config.getString("money.moneySymbol") + config.getInt("money.defaultAmount"));
         }
+
+        int wallet = eco.getMoney(player, "wallet");
+        int bank = eco.getMoney(player, "bank");
+
+        System.out.println(wallet + " " + bank);
     }
 
 

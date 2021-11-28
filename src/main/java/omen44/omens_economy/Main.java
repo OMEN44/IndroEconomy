@@ -1,13 +1,10 @@
 package omen44.omens_economy;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import omen44.omens_economy.commands.economy.CommandBal;
 import omen44.omens_economy.commands.economy.CommandSetMoney;
 import omen44.omens_economy.commands.economy.CommandTransfer;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
-import omen44.omens_economy.discordLink.Bot;
 import omen44.omens_economy.events.EventOnPlayerDeath;
 import omen44.omens_economy.events.EventOnPlayerJoinLeave;
 import omen44.omens_economy.events.EventOnPlayerMine;
@@ -15,26 +12,12 @@ import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.security.auth.login.LoginException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
     private MySQL SQL = new MySQL();
@@ -82,20 +65,11 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new EventOnPlayerJoinLeave(), this);
         pm.registerEvents(new EventOnPlayerDeath(), this);
         pm.registerEvents(new EventOnPlayerMine(), this);
-
-        //create the discord bot
-        try {
-            Bot.main(new String[] {config.getString("discord.token")});
-        } catch (LoginException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        Bot bot = new Bot();
-        bot.shutdownBot();
         MySQL.closeConnection(connection);
     }
 
@@ -109,9 +83,5 @@ public class Main extends JavaPlugin implements Listener {
         sqlUtils.createDBTable("shops", "UUID");
         sqlUtils.createDBColumn("shopID", "VARCHAR(100)", "shops");
         sqlUtils.createDBColumn("shopPrice", "VARCHAR(100)", "shops");
-
-        // handles creation of the linked accounts table
-        sqlUtils.createDBTable("accounts", "minecraftIGN");
-        sqlUtils.createDBColumn("discordIGN", "VARCHAR(100)", "accounts");
     }
 }
