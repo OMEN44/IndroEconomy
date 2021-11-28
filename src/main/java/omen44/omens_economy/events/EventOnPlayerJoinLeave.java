@@ -16,7 +16,7 @@ import java.sql.Connection;
 
 public class EventOnPlayerJoinLeave implements Listener {
     EconomyUtils eco = new EconomyUtils();
-    ShortcutsUtils s;
+    ShortcutsUtils s = new ShortcutsUtils();
     MySQL mySQL = new MySQL();
     Connection conn = mySQL.getConnection();
     SQLUtils sqlUtils = new SQLUtils(conn);
@@ -33,11 +33,6 @@ public class EventOnPlayerJoinLeave implements Listener {
             eco.setBank(player, config.getInt("defaultAmount"));
             player.sendMessage(s.prefix + "You start with " + config.getString("money.moneySymbol") + config.getInt("money.defaultAmount"));
         }
-
-        int wallet = eco.getMoney(player, "wallet");
-        int bank = eco.getMoney(player, "bank");
-
-        System.out.println(wallet + " " + bank);
     }
 
 

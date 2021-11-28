@@ -46,6 +46,7 @@ public class SQLUtils {
                 ps.setString(1, value);
                 ps.setString(2, equalsID);
             }
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
