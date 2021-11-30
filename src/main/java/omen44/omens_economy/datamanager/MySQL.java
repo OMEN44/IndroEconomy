@@ -1,6 +1,5 @@
 package omen44.omens_economy.datamanager;
 
-import omen44.omens_economy.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.Connection;
@@ -8,50 +7,53 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQL {
-
-
-    private Main main;
-    public MySQL(Main main) {this.main = main;}
-
     FileConfiguration config = ConfigTools.getFileConfig("config.yml");
 
-    private String host = config.getString("database.host");
-    private String port = config.getString("database.port");
-    private String database = config.getString("database.database");
-    private String username = config.getString("database.user");
-    String pass = config.getString("database.password");
-    private String password = pass;
+    private final String host = config.getString("database.host");
+    private final String port = config.getString("database.port");
+    private final String database = config.getString("database.database");
+    private final String username = config.getString("database.username");
+    private final String password = config.getString("database.password");
 
-
-    private Connection connection;
-
-    public boolean isConnected() {
-        return (connection == null ? false : true);
+    Connection connection;
+    public Connection getConnection() {
+        connection = null;
+        String pass = "";
+        if (!password.equalsIgnoreCase("blank")) {
+            pass = password;
+        }
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://"
+                    + host + ":" + port + "/" + database + "?useSSL=false"
+                    , username, pass);
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return connection;
     }
 
-    public void connect() throws ClassNotFoundException, SQLException {
-        String pass = config.getString("database.password");
-        if (pass.equalsIgnoreCase("passwordhere")){
-            password = "";
-        }
-
-        if (!isConnected()) {
-            connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSl=false", username, password);
+    public static void closeConnection(Connection connArg) {
+        System.out.println("Closing the Database...");
+        try {
+            connArg.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public void disconnect() {
-        if (isConnected()) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public static void printSQLException(SQLException ex) {
+        for (Throwable e : ex) {
+            if (e instanceof SQLException) {
+                e.printStackTrace(System.err);
+                System.err.println("SQLState: " + ((SQLException)e).getSQLState());
+                System.err.println("Error Code: " + ((SQLException)e).getErrorCode());
+                System.err.println("Message: " + e.getMessage());
+                Throwable t = ex.getCause();
+                while (t != null) {
+                    System.out.println("Cause: " + t);
+                    t = t.getCause();
+                }
             }
         }
     }
-
-    public Connection getConnection() {
-        return connection;
-    }
 }
-
