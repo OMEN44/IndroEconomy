@@ -18,9 +18,11 @@ import java.util.Random;
 
 public class EventOnPlayerMine implements Listener {
     EconomyUtils eco = new EconomyUtils();
+    ConfigTools configTools = new ConfigTools();
+
     @EventHandler
     public void onPlayerMine(BlockBreakEvent event) {
-        FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+        FileConfiguration config = configTools.getConfig("config.yml");
         Player player = event.getPlayer();
         String block = event.getBlock().getType().toString();
         String symbol = config.getString("money.moneySymbol");

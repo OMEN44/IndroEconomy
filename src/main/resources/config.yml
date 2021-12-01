@@ -38,8 +38,8 @@ blocks:
     - 1
 
 shop:
-  shopPrice: 250
-  shopLimit: 5
+  shopPrice: 250 # this is the default cost per shop available
+  shopLimit: 5 # this is how many shops a player can have, will be toggleable later on
 
 discord:
   token: "token_here"

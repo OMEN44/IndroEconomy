@@ -8,6 +8,7 @@ import omen44.omens_economy.datamanager.MySQL;
 import omen44.omens_economy.events.EventOnPlayerDeath;
 import omen44.omens_economy.events.EventOnPlayerJoinLeave;
 import omen44.omens_economy.events.EventOnPlayerMine;
+import omen44.omens_economy.events.EventOnShops;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.SQLUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
@@ -20,18 +21,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.Connection;
 
 public class Main extends JavaPlugin implements Listener {
-    private MySQL SQL = new MySQL();
+    private final MySQL SQL = new MySQL();
     public static Connection connection;
     ShortcutsUtils s = new ShortcutsUtils();
     SQLUtils sqlUtils;
     EconomyUtils eco = new EconomyUtils();
+    ConfigTools configTools = new ConfigTools();
 
     @Override
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
         // Plugin startup logic
-        this.saveDefaultConfig();
-        FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+        configTools.saveDefaultConfig("config.yml");
+
+        FileConfiguration config = configTools.getConfig("config.yml");
 
         // initialize classes:
         connection = SQL.getConnection();
@@ -65,6 +68,7 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new EventOnPlayerJoinLeave(), this);
         pm.registerEvents(new EventOnPlayerDeath(), this);
         pm.registerEvents(new EventOnPlayerMine(), this);
+        pm.registerEvents(new EventOnShops(), this);
     }
 
     @Override
@@ -80,8 +84,6 @@ public class Main extends JavaPlugin implements Listener {
         sqlUtils.createDBColumn("bank", "VARCHAR(100)", "economy");
 
         // handles creation of the shops table
-        sqlUtils.createDBTable("shops", "UUID");
-        sqlUtils.createDBColumn("shopID", "VARCHAR(100)", "shops");
-        sqlUtils.createDBColumn("shopPrice", "VARCHAR(100)", "shops");
+        sqlUtils.createShopsTable();
     }
 }

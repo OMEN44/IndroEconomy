@@ -1,7 +1,6 @@
 package omen44.omens_economy.utils;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -171,6 +170,23 @@ public class SQLUtils {
     }
 
     /**
+     * Creates a shops table if it does not exist.
+     */
+    public void createShopsTable() {
+        try {
+            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS shops (" +
+                    "shopID int NOT NULL AUTO_INCREMENT," +
+                    "shopOwner VARCHAR(100)," +
+                    "shopName VARCHAR(18)" +
+                    "shopPrice int," +
+                    "PRIMARY KEY (shopID));");
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Creates a new column of string 'selectedColumn' if it doesn't exist.
      * Appends the column to the table.
      *
@@ -188,7 +204,7 @@ public class SQLUtils {
     }
 
     /**
-     * Checks if a row already exists. (usually to test for if an ID already exists)
+     * Checks if a row already exists.
      *
      * @param searchedColumn The first column of the row (usually comparedValue)
      * @param comparedValue  The value that it's comparing to
@@ -287,26 +303,6 @@ public class SQLUtils {
             return false;
         }
         return true;
-    }
-
-
-    /**
-     * Creates the account table.
-     */
-    public void createAccountTable() {
-        try {
-            PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS accounts (comparedValue MEDIUMINT NOT NULL AUTO_INCREMENT, PRIMARY KEY (comparedValue));");
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createPlayer(Player playerUsername) {
-        String uuid = playerUsername.getUniqueId().toString();
-        System.out.println(uuid);
-        createRow("UUID", uuid, "economy");
-        createRow("UUID", uuid, "shops");
     }
 }
 

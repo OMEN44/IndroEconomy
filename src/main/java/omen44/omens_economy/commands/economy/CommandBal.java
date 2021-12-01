@@ -19,7 +19,8 @@ import java.util.List;
 
 public class CommandBal implements TabExecutor {
     ShortcutsUtils s = new ShortcutsUtils();
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
     EconomyUtils eco = new EconomyUtils();
 
@@ -35,9 +36,14 @@ public class CommandBal implements TabExecutor {
             if (label.equalsIgnoreCase("bal")) {
                 String type;
 
-                if (args.length == 1) type = args[0];
-                else if (args.length == 0) type = "";
-                else type = "error";
+                if (args.length == 1) {
+                    type = args[0];
+                } else if (args.length == 0) {
+                    type = "";
+                } else {
+                    p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                    return false;
+                }
 
                 switch (type) {
                     case "wallet" -> p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
@@ -46,10 +52,6 @@ public class CommandBal implements TabExecutor {
                         p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
                         p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
                     }
-                    default -> {
-                        p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
-                        return false;
-                    }
                 }
                 return true;
             } else {
@@ -57,7 +59,7 @@ public class CommandBal implements TabExecutor {
                 return false;
             }
         } else {
-            System.out.println("Error: Must be executed by a player!");
+            System.err.println("Error: Must be executed by a player!");
             return true;
         }
     }
@@ -71,6 +73,5 @@ public class CommandBal implements TabExecutor {
             return args1;
         }
         return null;
-
     }
 }

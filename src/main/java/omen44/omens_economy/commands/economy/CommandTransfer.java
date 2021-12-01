@@ -1,6 +1,5 @@
 package omen44.omens_economy.commands.economy;
 
-import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
@@ -22,12 +21,12 @@ import java.util.Locale;
  */
 
 public class CommandTransfer implements TabExecutor {
-    public Main main;
     ShortcutsUtils s = new ShortcutsUtils();
     EconomyUtils eco = new EconomyUtils();
-
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player) sender;
@@ -45,12 +44,16 @@ public class CommandTransfer implements TabExecutor {
             }
             switch (args[0]) {
                 case "wallet" -> {
-                    eco.transferMoney(p, "wallet", amount);
-                    p.sendMessage(s.prefix + s.nMessage + "You have " + symbol + wallet + " left");
+                    boolean result = eco.transferMoney(p, "wallet", amount);
+                    if (result) {
+                        p.sendMessage(s.prefix + s.nMessage + "You have " + symbol + wallet + " left");
+                    }
                 }
                 case "bank" -> {
-                    eco.transferMoney(p, "bank", amount);
-                    p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " left");
+                    boolean result = eco.transferMoney(p, "bank", amount);
+                    if ( result){
+                        p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " left");
+                    }
                 }
 
                 default -> {

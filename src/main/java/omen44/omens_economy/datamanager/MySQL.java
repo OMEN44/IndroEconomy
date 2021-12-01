@@ -7,7 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQL {
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getConfig("config.yml");
 
     private final String host = config.getString("database.host");
     private final String port = config.getString("database.port");

@@ -1,6 +1,5 @@
 package omen44.omens_economy.commands.economy;
 
-import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
 import omen44.omens_economy.utils.ShortcutsUtils;
@@ -18,23 +17,26 @@ import java.util.List;
 /*
     This class implements:
         - /setmoney <bank/wallet> <target> <amount>
+
+    TODO: add a way for the console to edit usernames
 */
 
 public class CommandSetMoney implements TabExecutor {
-    public Main main;
     ShortcutsUtils s = new ShortcutsUtils();
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
     EconomyUtils eco = new EconomyUtils();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        //Server s = (Server) sender
         Player p = (Player) sender;
 
-        int wallet;
-        int bank;
+        int wallet = 0;
+        int bank = 0;
+        int amount = 0;
         Player target = Bukkit.getPlayer(args[1]);
-        int amount;
 
         if (label.equalsIgnoreCase("setmoney") && args.length == 3){
             try {
@@ -46,7 +48,6 @@ public class CommandSetMoney implements TabExecutor {
 
             switch (args[0]) {
                 case "wallet" -> {
-                    System.out.println(target);
                     eco.setWallet(target, amount);
                     wallet = eco.getMoney(p, "wallet");
                     p.sendMessage(s.prefix + ChatColor.YELLOW + "Set " + args[1] + "'s wallet to " + symbol + wallet);
@@ -70,7 +71,6 @@ public class CommandSetMoney implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        Player player = (Player) sender;
         if (args.length == 1) {
             List<String> args1 = new ArrayList<>();
             args1.add("bank");

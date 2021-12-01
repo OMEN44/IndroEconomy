@@ -11,10 +11,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class EventOnPlayerDeath implements Listener {
     EconomyUtils eco = new EconomyUtils();
+    ConfigTools configTools = new ConfigTools();
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         ShortcutsUtils s = new ShortcutsUtils();
-        FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+        FileConfiguration config = configTools.getConfig("config.yml");
 
         //initialise the values needed
         Player player = event.getEntity().getPlayer();

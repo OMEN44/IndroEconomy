@@ -20,13 +20,14 @@ public class EventOnPlayerJoinLeave implements Listener {
     MySQL mySQL = new MySQL();
     Connection conn = mySQL.getConnection();
     SQLUtils sqlUtils = new SQLUtils(conn);
+    ConfigTools configTools = new ConfigTools();
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+        FileConfiguration config = configTools.getConfig("config.yml");
 
-        sqlUtils.createPlayer(player);
+        sqlUtils.createRow("UUID", event.getPlayer().getUniqueId().toString(), "economy");
         event.setJoinMessage(ChatColor.YELLOW + "Welcome to IndroCraft!");
         if (!player.hasPlayedBefore()) {
             eco.setWallet(player, 0);
