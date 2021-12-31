@@ -40,7 +40,7 @@ public class CommandTransfer implements TabExecutor {
                 return false;
             }
             switch (args[0]) {
-                case "wallet" -> {
+                case "bw" -> {
                     boolean result = eco.transferMoney(p, "wallet", amount);
                     if (result) {
                         p.sendMessage(mPrefix + mNormal + "Transfer successful.");
@@ -50,7 +50,7 @@ public class CommandTransfer implements TabExecutor {
                         p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
                     }
                 }
-                case "bank" -> {
+                case "wb" -> {
                     boolean result = eco.transferMoney(p, "bank", amount);
                     if (result) {
                         p.sendMessage(mPrefix + mNormal + "Transfer successful.");
@@ -78,8 +78,8 @@ public class CommandTransfer implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> playerNames = new ArrayList<>();
-            playerNames.add("bank");
-            playerNames.add("wallet");
+            playerNames.add("wb");
+            playerNames.add("bw");
             return playerNames;
         }
         if (args.length == 2) {

@@ -83,8 +83,8 @@ public class EconomyUtils {
                 if (wallet >= amount) {
                     bank += amount;
                     wallet -= amount;
-                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
-                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
+                    sqlUtils.setData(String.valueOf(wallet), "UUID", target, "wallet", "economy");
+                    sqlUtils.setData(String.valueOf(bank), "UUID", target, "wallet", "economy");
                     return true;
                 } else {
                     return false;
@@ -94,8 +94,8 @@ public class EconomyUtils {
                 if (bank >= amount) {
                     wallet += amount; // adds the wallet from the amount
                     bank -= amount; // takes the bank from the amount
-                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
-                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
+                    sqlUtils.setData(String.valueOf(wallet), "UUID", target, "wallet", "economy");
+                    sqlUtils.setData(String.valueOf(bank), "UUID", target, "wallet", "economy");
                     return true;
                 } else {
                     return false;

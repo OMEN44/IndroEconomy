@@ -22,24 +22,40 @@ database:
   port: 3306 # default port for MariaDB and MySQL
   database: indrocraft # name of your database. A database server can contain multiple databases
   username: root
-  password: blank # if database has no password leave the password as blank
+  password: Unimouse12  # if database has no password leave the password as blank
 
 money:
   moneySymbol: $ # the symbol that the plugin will use to present the money with
-  deathLossPercent: 10 # when player's die, how much percent of their money do you want them to lose?
   defaultAmount: 200 # what amount do you want players to start with?
+
+  deathLoss: true # when players die, should they drop their wallet?
+  killerGainMoney: false # should the killer of a player gain their lost money?
+  killerGainMoneyPercentage: 20 # what percentage of money should the killer get?
 
 blocks:
   DIAMOND_ORE:
     - 100
+    - 75
+    - 50
+  GOLD_ORE:
+    - 75
+    - 50
+    - 25
+  IRON_ORE:
+    - 50
+    - 25
+    - 10
+    - 5
   COAL_ORE:
-    - 20
+    - 10
     - 5
     - 1
+
+# you can ignore this section
 
 shop:
   shopPrice: 250 # this is the default cost per shop available
   shopLimit: 5 # this is how many shops a player can have, will be toggleable later on
 
 discord:
-  token: "token_here"
+  token: "token_here" # leave blank

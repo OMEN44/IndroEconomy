@@ -46,11 +46,11 @@ public class CommandPay implements TabExecutor {
                             return true;
                         }
                         case "unsuccessful" -> {
-                            p.sendMessage(mPrefix + mImportant + "Transfer Unsuccessful, not enough Money!");
+                            p.sendMessage(mPrefix + mImportant + "Transfer Unsuccessful, not enough money.");
                             return true;
                         }
                         case "target not found" -> {
-                            p.sendMessage(mPrefix + mWarning + "Warning: Player does not exist");
+                            p.sendMessage(mPrefix + mWarning + "Warning: Player does not exist.");
                             return true;
                         }
                     }

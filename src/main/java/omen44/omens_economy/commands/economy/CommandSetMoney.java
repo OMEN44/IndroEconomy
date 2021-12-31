@@ -32,9 +32,9 @@ public class CommandSetMoney implements TabExecutor {
         //Server s = (Server) sender
         Player p = (Player) sender;
 
-        int wallet = 0;
-        int bank = 0;
-        int amount = 0;
+        int wallet;
+        int bank;
+        int amount;
         Player target = Bukkit.getPlayer(args[1]);
 
         if (label.equalsIgnoreCase("setmoney") && args.length == 3){
