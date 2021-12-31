@@ -21,7 +21,7 @@ database:
   host: localhost # host of your database
   port: 3306 # default port for MariaDB and MySQL
   database: indrocraft # name of your database. A database server can contain multiple databases
-  user: root
+  username: root
   password: blank # if database has no password leave the password as blank
 
 money:
@@ -38,8 +38,8 @@ blocks:
     - 1
 
 shop:
-  shopPrice: 250
-  shopLimit: 5
+  shopPrice: 250 # this is the default cost per shop available
+  shopLimit: 5 # this is how many shops a player can have, will be toggleable later on
 
 discord:
   token: "token_here"

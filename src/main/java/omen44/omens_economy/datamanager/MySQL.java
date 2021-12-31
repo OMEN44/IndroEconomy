@@ -7,7 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQL {
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getConfig("config.yml");
 
     private final String host = config.getString("database.host");
     private final String port = config.getString("database.port");
@@ -24,7 +25,7 @@ public class MySQL {
         }
         try {
             connection = DriverManager.getConnection("jdbc:mysql://"
-                    + host + ":" + port + "/" + database + "?useSSL=false"
+                            + host + ":" + port + "/" + database + "?useSSL=false"
                     , username, pass);
         } catch (SQLException e) {
             printSQLException(e);
@@ -37,7 +38,7 @@ public class MySQL {
         try {
             connArg.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            printSQLException(e);
         }
     }
 

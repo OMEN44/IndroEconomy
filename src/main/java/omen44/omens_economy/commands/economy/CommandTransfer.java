@@ -1,11 +1,7 @@
 package omen44.omens_economy.commands.economy;
 
-import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
-import omen44.omens_economy.utils.ShortcutsUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -14,7 +10,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import static omen44.omens_economy.utils.ShortcutsUtils.*;
 
 /*
     This class handles:
@@ -22,12 +19,11 @@ import java.util.Locale;
  */
 
 public class CommandTransfer implements TabExecutor {
-    public Main main;
-    ShortcutsUtils s = new ShortcutsUtils();
     EconomyUtils eco = new EconomyUtils();
-
-    FileConfiguration config = ConfigTools.getFileConfig("config.yml");
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player) sender;
@@ -40,52 +36,40 @@ public class CommandTransfer implements TabExecutor {
             try {
                 amount = Integer.parseInt(args[1]);
             } catch (NumberFormatException ex){
-                p.sendMessage(s.prefix + s.error + "Error: Invalid Number");
+                p.sendMessage(mPrefix + mError + "Error: Invalid Number");
                 return false;
             }
             switch (args[0]) {
                 case "wallet" -> {
-                    eco.transferMoney(p, "wallet", amount);
-                    p.sendMessage(s.prefix + s.nMessage + "You have " + symbol + wallet + " left");
+                    boolean result = eco.transferMoney(p, "wallet", amount);
+                    if (result) {
+                        p.sendMessage(mPrefix + mNormal + "Transfer successful.");
+                        p.sendMessage(mPrefix + mNormal + "Bank Balance: " + symbol + bank);
+                        p.sendMessage(mPrefix + mNormal + "Wallet Balance: " + symbol + wallet);
+                    } else {
+                        p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
+                    }
                 }
                 case "bank" -> {
-                    eco.transferMoney(p, "bank", amount);
-                    p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " left");
+                    boolean result = eco.transferMoney(p, "bank", amount);
+                    if (result) {
+                        p.sendMessage(mPrefix + mNormal + "Transfer successful.");
+                        p.sendMessage(mPrefix + mNormal + "Bank Balance: " + symbol + bank);
+                        p.sendMessage(mPrefix + mNormal + "Wallet Balance: " + symbol + wallet);
+                    } else {
+                        p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
+                    }
                 }
 
                 default -> {
-                    List<String> playerNames = new ArrayList<>();
-                    Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-                    Bukkit.getServer().getOnlinePlayers().toArray(players);
-                    for (Player value : players) {
-                        playerNames.add(value.getName());
-                    }
-                    Player target = Bukkit.getServer().getPlayer(args[1]);
-                    if (playerNames.contains(args[1])) {
-                        String result = eco.sendMoney(p, target, amount);
-                        switch (result.toLowerCase(Locale.ROOT)) {
-                            case "successful" -> {
-                                p.sendMessage(s.prefix + s.iMessage + "Transfer Successful!");
-                                return true;
-                            }
-                            case "unsuccessful" -> {
-                                p.sendMessage(s.prefix + s.nMessage + "Transfer Unsuccessful, not enough Money!");
-                                return true;
-                            }
-                            case "target not found" -> {
-                                p.sendMessage(s.prefix + s.nMessage + "Warning: Player Not Found!");
-                                return true;
-                            }
-                        }
-                    } else {
-                        p.sendMessage(s.prefix + s.error + "Error: Invalid Syntax");
-                        return false;
-                    }
+                    p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
+                    return false;
                 }
             }
             return true;
+
         } else {
-            p.sendMessage(s.prefix + s.error + "Error: Invalid Syntax");
+            p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
             return false;
         }
     }
@@ -94,12 +78,6 @@ public class CommandTransfer implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> playerNames = new ArrayList<>();
-            Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-            Bukkit.getServer().getOnlinePlayers().toArray(players);
-            for (Player value : players) {
-                playerNames.add(value.getName());
-            }
-
             playerNames.add("bank");
             playerNames.add("wallet");
             return playerNames;
