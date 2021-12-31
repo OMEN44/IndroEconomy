@@ -2,7 +2,6 @@ package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
-import omen44.omens_economy.utils.ShortcutsUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,12 +12,13 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import static omen44.omens_economy.utils.ShortcutsUtils.*;
+
 /*this class handles
 - /bal (wallet/bank)
  */
 
 public class CommandBal implements TabExecutor {
-    ShortcutsUtils s = new ShortcutsUtils();
     ConfigTools configTools = new ConfigTools();
     FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
@@ -28,10 +28,8 @@ public class CommandBal implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            int wallet = eco.getMoney(p, "wallet");
-            int bank = eco.getMoney(p, "bank");
-
-            System.out.println(wallet + " " + bank);
+            final int wallet = eco.getMoney(p, "wallet");
+            final int bank = eco.getMoney(p, "bank");
 
             if (label.equalsIgnoreCase("bal")) {
                 String type;
@@ -41,21 +39,21 @@ public class CommandBal implements TabExecutor {
                 } else if (args.length == 0) {
                     type = "";
                 } else {
-                    p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                    p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
                     return false;
                 }
 
                 switch (type) {
-                    case "wallet" -> p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
-                    case "bank" -> p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
+                    case "wallet" -> p.sendMessage(mPrefix + mNormal + "You have " + symbol + wallet + " in your wallet");
+                    case "bank" -> p.sendMessage(mPrefix + mNormal + "You have " + symbol + bank + " in your bank");
                     case "" -> {
-                        p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + bank + " in your bank");
-                        p.sendMessage(s.prefix + ChatColor.YELLOW + "You have " + symbol + wallet + " in your wallet");
+                        p.sendMessage(mPrefix + mNormal + "You have " + symbol + bank + " in your bank");
+                        p.sendMessage(mPrefix + mNormal + "You have " + symbol + wallet + " in your wallet");
                     }
                 }
                 return true;
             } else {
-                p.sendMessage(s.prefix + ChatColor.RED + "Error: Invalid Syntax");
+                p.sendMessage(mPrefix + ChatColor.RED + "Error: Invalid Syntax");
                 return false;
             }
         } else {

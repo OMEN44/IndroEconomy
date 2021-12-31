@@ -67,6 +67,7 @@ public class EconomyUtils {
     }
 
     /**
+     * Note: does not handle messages
      * @param player - The player who called the transfer
      * @param to - Where is the money going to?
      * @param amount - How much money is getting transferred?
@@ -84,10 +85,8 @@ public class EconomyUtils {
                     wallet -= amount;
                     sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
                     sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
-                    player.sendMessage(s.prefix + s.iMessage + "Transferred " + amount + " to wallet");
                     return true;
                 } else {
-                    player.sendMessage(s.prefix + s.error + "Error: Not Enough Money in Wallet to Transfer");
                     return false;
                 }
             }
@@ -97,14 +96,11 @@ public class EconomyUtils {
                     bank -= amount; // takes the bank from the amount
                     sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
                     sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
-                    player.sendMessage(s.prefix + s.iMessage + "Transferred " + amount + " to bank");
                     return true;
                 } else {
-                    player.sendMessage(s.prefix + s.error + "Error: Not Enough Money in Bank to Transfer");
                     return false;
                 }
             }
-            default -> player.sendMessage(s.prefix + s.error + "Error: Incorrect Money Type");
         }
         return false;
     }
