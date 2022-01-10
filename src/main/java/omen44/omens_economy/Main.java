@@ -20,12 +20,14 @@ import java.sql.Connection;
 import static omen44.omens_economy.utils.ShortcutsUtils.mPrefix;
 
 public class Main extends JavaPlugin {
+    //public static Main getInstance;
     MySQL SQL;
     Connection connection;
     SQLUtils sqlUtils;
 
     @Override
     public void onEnable() {
+        // getInstance = this;
         PluginManager pm = getServer().getPluginManager();
         ConfigTools configTools = new ConfigTools();
         SQL = new MySQL();

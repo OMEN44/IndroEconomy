@@ -3,6 +3,7 @@ package omen44.omens_economy.commands.economy;
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -29,43 +30,46 @@ public class CommandSetMoney implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        //Server s = (Server) sender
-        Player p = (Player) sender;
+        if (sender instanceof Player) {
+            Player p = (Player) sender;
+            if (label.equalsIgnoreCase("setmoney") && args.length == 3) {
+                String type = args[0];
+                Player target = Bukkit.getServer().getPlayer(args[1]);
+                int amount;
+                try {
+                    amount = Integer.parseInt(args[1]);
+                    if (amount <= 0) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException e) {
+                    p.sendMessage(mWarning + "<amount> must be a positive number bigger than 0.");
+                    return true;
+                }
 
-        int wallet = 0;
-        int bank = 0;
-        int amount = 0;
-        Player target = Bukkit.getPlayer(args[1]);
+                if (target == null) {
+                    p.sendMessage(mWarning + "Target must be active");
+                    return true;
+                }
 
-        if (label.equalsIgnoreCase("setmoney") && args.length == 3){
-            try {
-                amount = Integer.parseInt(args[2]);
-            } catch (NumberFormatException ex){
-                p.sendMessage(mPrefix + mError + "Error: Invalid Number");
-                return false;
+                switch (type) {
+                    case "wallet" -> {
+                        eco.setWallet(target, amount);
+                        int wallet = eco.getWallet(p);
+                        p.sendMessage(mPrefix + mNormal + "Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s wallet to " + symbol + wallet);
+                        return true;
+                    }
+                    case "bank" -> {
+                        eco.setBank(target, amount);
+                        int bank = eco.getBank(p);
+                        p.sendMessage(mPrefix + mNormal + "Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s bank to " + symbol + bank);
+                        return true;
+                    }
+                }
             }
-
-            switch (args[0]) {
-                case "wallet" -> {
-                    eco.setWallet(target, amount);
-                    wallet = eco.getMoney(p, "wallet");
-                    p.sendMessage(mPrefix + mNormal + "Set " + args[1] + "'s wallet to " + symbol + wallet);
-                }
-                case "bank" -> {
-                    eco.setBank(target, amount);
-                    bank = eco.getMoney(p, "bank");
-                    p.sendMessage(mPrefix + mNormal + "Set " + args[1] + "'s bank to " + symbol + bank);
-                }
-                default -> {
-                    p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
-                    return false;
-                }
-            }
-            return true;
         } else {
-            p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
-            return false;
+            Bukkit.getLogger().warning("Warning: Only player executable");
         }
+        return true;
     }
 
     @Override

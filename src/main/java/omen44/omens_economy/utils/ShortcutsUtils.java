@@ -3,7 +3,7 @@ package omen44.omens_economy.utils;
 import org.bukkit.ChatColor;
 
 public class ShortcutsUtils {
-    public static final String mPrefix = ChatColor.BLUE + "[OMEN'S ECONOMY] " + ChatColor.WHITE;
+    public static final String mPrefix = ChatColor.BLUE + "[" + ChatColor.YELLOW + "OMEN'S ECONOMY" + ChatColor.BLUE + "]" + ChatColor.WHITE;
     public static final ChatColor mError = ChatColor.RED;
     public static final ChatColor mWarning = ChatColor.YELLOW;
     public static final ChatColor mImportant = ChatColor.GOLD;

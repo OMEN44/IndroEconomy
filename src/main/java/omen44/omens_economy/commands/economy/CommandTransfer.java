@@ -2,6 +2,8 @@ package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -26,61 +28,59 @@ public class CommandTransfer implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player p = (Player) sender;
+        if (sender instanceof Player) {
+            Player p = (Player) sender;
 
-        int wallet = eco.getMoney(p, "wallet");
-        int bank = eco.getMoney(p, "bank");
-        int amount;
+            int amount;
 
-        if (label.equalsIgnoreCase("transfer") && args.length == 2) {
-            try {
-                amount = Integer.parseInt(args[1]);
-            } catch (NumberFormatException ex){
-                p.sendMessage(mPrefix + mError + "Error: Invalid Number");
-                return false;
-            }
-            switch (args[0]) {
-                case "wallet" -> {
-                    boolean result = eco.transferMoney(p, "wallet", amount);
-                    if (result) {
-                        p.sendMessage(mPrefix + mNormal + "Transfer successful.");
-                        p.sendMessage(mPrefix + mNormal + "Bank Balance: " + symbol + bank);
-                        p.sendMessage(mPrefix + mNormal + "Wallet Balance: " + symbol + wallet);
-                    } else {
-                        p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
+            if (label.equalsIgnoreCase("transfer") && args.length == 2) {
+                try {
+                    amount = Integer.parseInt(args[1]);
+                    if (amount <= 0) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException ex) {
+                    p.sendMessage(mPrefix + mError + "Error: Must be a number above 0");
+                    return true;
+                }
+                switch (args[0]) {
+                    case "deposit" -> {
+                        boolean result = eco.depositPlayer(p, amount);
+                        if (result) {
+                            p.sendMessage(mPrefix + mNormal + "Deposited " + ChatColor.YELLOW + symbol + amount +
+                                    mNormal + "to the bank");
+                        } else {
+                            p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
+                        }
+                    }
+                    case "bank" -> {
+                        boolean result = eco.withdrawPlayer(p, amount);
+                        if (result) {
+                            p.sendMessage(mPrefix + mNormal + "Withdrew " + ChatColor.YELLOW + symbol + amount +
+                                    mNormal + "from the bank");
+                        } else {
+                            p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
+                        }
+                    }
+                    default -> {
+                        return false;
                     }
                 }
-                case "bank" -> {
-                    boolean result = eco.transferMoney(p, "bank", amount);
-                    if (result) {
-                        p.sendMessage(mPrefix + mNormal + "Transfer successful.");
-                        p.sendMessage(mPrefix + mNormal + "Bank Balance: " + symbol + bank);
-                        p.sendMessage(mPrefix + mNormal + "Wallet Balance: " + symbol + wallet);
-                    } else {
-                        p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
-                    }
-                }
-
-                default -> {
-                    p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
-                    return false;
-                }
+                return true;
             }
-            return true;
-
         } else {
-            p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
-            return false;
+            Bukkit.getLogger().warning("Warning: Only player executable");
         }
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            List<String> playerNames = new ArrayList<>();
-            playerNames.add("bank");
-            playerNames.add("wallet");
-            return playerNames;
+            List<String> args1 = new ArrayList<>();
+            args1.add("bank");
+            args1.add("wallet");
+            return args1;
         }
         if (args.length == 2) {
             List<String> args2 = new ArrayList<>();

@@ -1,21 +1,24 @@
 package omen44.omens_economy.utils;
 
+import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.datamanager.MySQL;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
-import java.util.Locale;
 
 public class EconomyUtils {
-
-
-    /* TODO: 13/10/2021 add functions:
-    *   - transfer
-    */
     MySQL mySQL = new MySQL();
     Connection connection = mySQL.getConnection();
     SQLUtils sqlUtils = new SQLUtils(connection);
-    ShortcutsUtils s = new ShortcutsUtils();
+    ConfigTools configTools = new ConfigTools();
+    FileConfiguration config = configTools.getConfig("config.yml");
+
+    public void createPlayerAccount(Player player) {
+        sqlUtils.createRow("UUID", player.getUniqueId().toString(), "economy");
+        setWallet(player, 0);
+        setBank(player, config.getInt("defaultAmount"));
+    }
 
     public void setBank(Player player, int amount) {
         String uuid = player.getUniqueId().toString();
@@ -29,78 +32,53 @@ public class EconomyUtils {
         sqlUtils.setData(value, "UUID", uuid, "wallet", "economy");
     }
 
-    public int getMoney(Player player, String column) {
-        int amount = 0;
+    public int getWallet(Player player) {
         String uuid = player.getUniqueId().toString();
-        if (column.equalsIgnoreCase("bank")) {
-            amount = sqlUtils.getDBInt("bank", "UUID", uuid, "economy");
-        } else if (column.equalsIgnoreCase("wallet")) {
-            amount = sqlUtils.getDBInt("wallet", "UUID", uuid, "economy");
-        } else {
-            System.out.println("Error: Invalid Column Input");
-        }
-        return amount;
+        return sqlUtils.getDBInt("wallet", "UUID", uuid, "economy");
     }
 
-    public String sendMoney(Player from, Player to, int amount) {
-        String sender = from.getUniqueId().toString();
-        try {
-            to.getUniqueId();
-        } catch (Exception e) {
-            return "Target not found";
-        }
-        String receiver = to.getUniqueId().toString();
+    public int getBank(Player player) {
+        String uuid = player.getUniqueId().toString();
+        return sqlUtils.getDBInt("bank", "UUID", uuid, "economy");
+    }
 
-        int senderWal = sqlUtils.getDBInt("wallet", "UUID", sender, "economy");
-        int receiverWal = sqlUtils.getDBInt("wallet", "UUID", receiver, "economy");
+    public boolean sendMoney(Player sender, Player receiver, int amount) {
+        int senderWal = getWallet(sender);
+        int receiverWal = getWallet(receiver);
 
         if (senderWal >= amount) {
             receiverWal += amount;
             senderWal -= amount;
-            sqlUtils.setData(Integer.valueOf(receiverWal).toString(),
-                    "UUID", receiver, "wallet", "economy");
-            sqlUtils.setData(Integer.valueOf(senderWal).toString(),
-                    "UUID", sender, "wallet", "economy");
-            return "Successful";
+            setWallet(sender, senderWal);
+            setWallet(receiver, receiverWal);
+            return true;
         }
-        return "Unsuccessful";
+        return false;
     }
 
-    /**
-     * Note: does not handle messages
-     * @param player - The player who called the transfer
-     * @param to - Where is the money going to?
-     * @param amount - How much money is getting transferred?
-     * @return true if the transfer was successful, false if it wasn't
-     */
-    public boolean transferMoney(Player player, String to, int amount) {
-        String target = player.getUniqueId().toString();
-        int wallet = sqlUtils.getDBInt("wallet", "UUID", target, "economy");
-        int bank = sqlUtils.getDBInt("bank", "UUID", target, "economy");
+    public boolean depositPlayer(Player source, int amount) {
+        int wallet = getWallet(source);
+        int bank = getBank(source);
 
-        switch (to.toLowerCase(Locale.ROOT)) {
-            case "wallet" -> {
-                if (wallet >= amount) {
-                    bank += amount;
-                    wallet -= amount;
-                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
-                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            case "bank" -> {
-                if (bank >= amount) {
-                    wallet += amount; // adds the wallet from the amount
-                    bank -= amount; // takes the bank from the amount
-                    sqlUtils.setData(Integer.valueOf(wallet).toString(), "UUID", target, "wallet", "economy");
-                    sqlUtils.setData(Integer.valueOf(bank).toString(), "UUID", target, "wallet", "economy");
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+        if (wallet >= amount) {
+            wallet -= amount;
+            bank += amount;
+            setWallet(source, wallet);
+            setBank(source, bank);
+            return true;
+        }
+        return false;
+    }
+    public boolean withdrawPlayer(Player source, int amount) {
+        int wallet = getWallet(source);
+        int bank = getBank(source);
+
+        if (bank >= amount) {
+            wallet += amount;
+            bank -= amount;
+            setWallet(source, wallet);
+            setBank(source, bank);
+            return true;
         }
         return false;
     }

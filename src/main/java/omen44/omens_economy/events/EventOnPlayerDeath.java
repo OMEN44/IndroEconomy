@@ -17,17 +17,16 @@ public class EventOnPlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         FileConfiguration config = configTools.getConfig("config.yml");
+        String symbol = config.getString("money.moneySymbol");
 
         //initialise the values needed
         Player player = event.getEntity();
-        double moneyLossPercent = config.getInt("money.deathLossPercent") / 100.0;
-        int wallet = eco.getMoney(player, "wallet");
-        String symbol = config.getString("money.moneySymbol");
-        double moneyLost = wallet * moneyLossPercent;
-        int finalWallet = wallet - (int) moneyLost;
+        int wallet = eco.getWallet(player);
+        double moneyLost = wallet-(config.getInt("money.deathLossPercent") / 100.0);
+        wallet -= moneyLost;
 
         //reduce their wallet by the percentage
-        player.sendMessage(mPrefix + "You have died!\n" + mPrefix + "You have lost " + symbol + moneyLost);
-        eco.setWallet(player, finalWallet);
+        player.sendMessage(mPrefix + "You have died and lost " + symbol + moneyLost);
+        eco.setWallet(player, wallet);
     }
 }

@@ -2,6 +2,7 @@ package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.datamanager.ConfigTools;
 import omen44.omens_economy.utils.EconomyUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static omen44.omens_economy.utils.ShortcutsUtils.*;
+import static omen44.omens_economy.utils.ShortcutsUtils.mNormal;
 
 /*this class handles
 - /bal (wallet/bank)
@@ -28,36 +29,26 @@ public class CommandBal implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            final int wallet = eco.getMoney(p, "wallet");
-            final int bank = eco.getMoney(p, "bank");
-
             if (label.equalsIgnoreCase("bal")) {
+                final int wallet = eco.getWallet(p);
+                final int bank = eco.getBank(p);
                 String type;
 
-                if (args.length == 1) {
+                try {
                     type = args[0];
-                } else if (args.length == 0) {
+                } catch (NullPointerException e) {
                     type = "";
-                } else {
-                    p.sendMessage(mPrefix + mError + "Error: Invalid Syntax");
-                    return false;
                 }
 
                 switch (type) {
-                    case "wallet" -> p.sendMessage(mPrefix + mNormal + "You have " + symbol + wallet + " in your wallet");
-                    case "bank" -> p.sendMessage(mPrefix + mNormal + "You have " + symbol + bank + " in your bank");
-                    case "" -> {
-                        p.sendMessage(mPrefix + mNormal + "You have " + symbol + bank + " in your bank");
-                        p.sendMessage(mPrefix + mNormal + "You have " + symbol + wallet + " in your wallet");
-                    }
+                    case "wallet": p.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);
+                    case "bank": p.sendMessage(mNormal + "Bank Balance: " + symbol + bank);
+                    default: p.sendMessage(mNormal + "Total Balance: " + symbol + wallet + bank);
                 }
-                return true;
-            } else {
-                p.sendMessage(mPrefix + ChatColor.RED + "Error: Invalid Syntax");
-                return false;
             }
+            return false;
         } else {
-            System.err.println("Error: Must be executed by a player!");
+            Bukkit.getLogger().warning("Warning: Only player executable");
             return true;
         }
     }
@@ -66,8 +57,8 @@ public class CommandBal implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> args1 = new ArrayList<>();
-            args1.add("bank");
-            args1.add("wallet");
+            args1.add(ChatColor.YELLOW + "bank");
+            args1.add(ChatColor.YELLOW + "wallet");
             return args1;
         }
         return null;
