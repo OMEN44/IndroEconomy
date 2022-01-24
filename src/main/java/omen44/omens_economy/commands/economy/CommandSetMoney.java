@@ -35,10 +35,11 @@ public class CommandSetMoney implements TabExecutor {
             if (label.equalsIgnoreCase("setmoney") && args.length == 3) {
                 String type = args[0];
                 Player target = Bukkit.getServer().getPlayer(args[1]);
+
                 int amount;
                 try {
                     amount = Integer.parseInt(args[1]);
-                    if (amount <= 0) {
+                    if (amount < 0) {
                         throw new NumberFormatException();
                     }
                 } catch (NumberFormatException e) {

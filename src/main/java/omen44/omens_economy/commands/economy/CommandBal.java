@@ -36,14 +36,14 @@ public class CommandBal implements TabExecutor {
 
                 try {
                     type = args[0];
-                } catch (NullPointerException e) {
+                } catch (ArrayIndexOutOfBoundsException e) {
                     type = "";
                 }
 
                 switch (type) {
                     case "wallet": p.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);
                     case "bank": p.sendMessage(mNormal + "Bank Balance: " + symbol + bank);
-                    default: p.sendMessage(mNormal + "Total Balance: " + symbol + wallet + bank);
+                    default: p.sendMessage(mNormal + "Total Balance: " + symbol + wallet+bank);
                 }
             }
             return false;

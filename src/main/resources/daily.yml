@@ -1,0 +1,5 @@
+# this is where daily rewards are saved, do not access.
+# format:
+# - uuid: day
+daily:
+  - UUID: 5

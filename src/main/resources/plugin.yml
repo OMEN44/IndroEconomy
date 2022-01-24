@@ -19,11 +19,15 @@ commands:
     description: allows you to transfer
     usage: /transfer <wallet/bank/target> <amount>
     permission: omensEconomy.command.transfer
-#  buyshop:
-#    description: turns the next chest you place into a chest shop
-#    usage: /buyshop <price>
-#    permission: omensEconomy.command.buyshop
-#  cancelshop:
+  createshop:
+    description: turns the next chest you place into a chest shop
+    usage: /buyshop <price>
+    permission: omensEconomy.command.buyshop
+  opshop:
+    description: Creates the online shop
+    usage: /opshop
+    permission: omensEconomy.command.opshop
+#  breakshop:
 #    description: stops the next chest you place from turning into a chestshop
 #    usage: /cancelshop
 #    permission: omensEconomy.command.cancelshop

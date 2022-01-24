@@ -24,6 +24,8 @@ database:
   username: root
   password: blank # if database has no password leave the password as blank
 
+save-data: YAML # how should the data be saved as? (MySQL or YAML)
+
 money:
   moneySymbol: $ # the symbol that the plugin will use to present the money with
   deathLossPercent: 10 # when player's die, how much percent of their money do you want them to lose?
@@ -40,6 +42,3 @@ blocks:
 shop:
   shopPrice: 250 # this is the default cost per shop available
   shopLimit: 5 # this is how many shops a player can have, will be toggleable later on
-
-discord:
-  token: "token_here"

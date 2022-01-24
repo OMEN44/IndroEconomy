@@ -1,18 +1,20 @@
 package omen44.omens_economy.utils;
 
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.datamanager.MySQL;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.sql.Connection;
-
 public class EconomyUtils {
-    MySQL mySQL = new MySQL();
-    Connection connection = mySQL.getConnection();
-    SQLUtils sqlUtils = new SQLUtils(connection);
     ConfigTools configTools = new ConfigTools();
     FileConfiguration config = configTools.getConfig("config.yml");
+
+    private final String host = config.getString("database.host");
+    private final String port = config.getString("database.port");
+    private final String database = config.getString("database.database");
+    private final String username = config.getString("database.username");
+    private final String password = config.getString("database.password");
+
+    SQLUtils sqlUtils = new SQLUtils(database, host, port, username, password);
 
     public void createPlayerAccount(Player player) {
         sqlUtils.createRow("UUID", player.getUniqueId().toString(), "economy");
@@ -34,12 +36,12 @@ public class EconomyUtils {
 
     public int getWallet(Player player) {
         String uuid = player.getUniqueId().toString();
-        return sqlUtils.getDBInt("wallet", "UUID", uuid, "economy");
+        return sqlUtils.getInt("wallet", "UUID", uuid, "economy");
     }
 
     public int getBank(Player player) {
         String uuid = player.getUniqueId().toString();
-        return sqlUtils.getDBInt("bank", "UUID", uuid, "economy");
+        return sqlUtils.getInt("bank", "UUID", uuid, "economy");
     }
 
     public boolean sendMoney(Player sender, Player receiver, int amount) {
@@ -54,6 +56,32 @@ public class EconomyUtils {
             return true;
         }
         return false;
+    }
+
+    // modifies wallet
+    public void addWallet(Player player, int amount) {
+        int wallet = getWallet(player);
+        wallet += amount;
+        setWallet(player, wallet);
+    }
+
+    public void minusWallet(Player player, int amount) {
+        int wallet = getWallet(player);
+        wallet -= amount;
+        setWallet(player, wallet);
+    }
+    
+    // modifies bank
+    public void addBank(Player player, int amount) {
+        int bank = getBank(player);
+        bank += amount;
+        setBank(player, bank);
+    }
+
+    public void minusBank(Player player, int amount) {
+        int bank = getBank(player);
+        bank -= amount;
+        setBank(player, bank);
     }
 
     public boolean depositPlayer(Player source, int amount) {

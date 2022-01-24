@@ -14,13 +14,13 @@ import static omen44.omens_economy.utils.ShortcutsUtils.mNormal;
 import static omen44.omens_economy.utils.ShortcutsUtils.mWarning;
 
 public class CommandPay implements TabExecutor {
-    EconomyUtils eco = new EconomyUtils();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // format: /pay <player> <amount>
         if (sender instanceof Player) {
             Player p = (Player) sender;
+            EconomyUtils eco = new EconomyUtils();
             if (label.equalsIgnoreCase("pay") && args.length == 2) {
                 Player target = Bukkit.getServer().getPlayer(args[0]);
                 if (target == null) {
@@ -38,17 +38,18 @@ public class CommandPay implements TabExecutor {
                     p.sendMessage(mWarning + "<amount> must be a positive number.");
                     return true;
                 }
+
                 boolean result = eco.sendMoney(p, target, amount);
                 if (result) {
-                    p.sendMessage(mNormal + "Payment Successful");
+                    p.sendMessage(mNormal + "Payment Successful.");
                 } else {
-                    p.sendMessage(mWarning + "Payment could not be made");
+                    p.sendMessage(mWarning + "Payment could not be made.");
                 }
             }
         }
         return false;
     }
-    
+
     @Override
     public List<String> onTabComplete( CommandSender sender,  Command command,  String alias,  String[] args) {
         if (args.length == 1) {

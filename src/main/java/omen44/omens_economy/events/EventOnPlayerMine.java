@@ -36,7 +36,7 @@ public class EventOnPlayerMine implements Listener {
             Random random = new Random();
             String drop = drops.get(random.nextInt(drops.size()));
 
-            int amount = eco.getMoney(player, "Wallet") + Integer.parseInt(drop);
+            int amount = eco.getWallet(player) + Integer.parseInt(drop);
             eco.setWallet(player, amount);
 
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_GREEN + "+" + symbol + Integer.parseInt(drop)));
