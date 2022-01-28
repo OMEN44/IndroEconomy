@@ -11,6 +11,7 @@ import omen44.omens_economy.events.EventOnPlayerDeath;
 import omen44.omens_economy.events.EventOnPlayerJoinLeave;
 import omen44.omens_economy.events.EventOnPlayerMine;
 import omen44.omens_economy.events.EventOnShops;
+import omen44.omens_economy.utils.JsonSaver;
 import omen44.omens_economy.utils.SQLUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,8 +25,7 @@ import static omen44.omens_economy.utils.ShortcutsUtils.mPrefix;
 public class Main extends JavaPlugin {
     Connection connection;
     SQLUtils sqlUtils;
-
-
+    JsonSaver jsonSaver;
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -35,6 +35,7 @@ public class Main extends JavaPlugin {
         ConfigTools configTools = new ConfigTools();
         configTools.saveDefaultConfig("config.yml");
         FileConfiguration config = configTools.getConfig("config.yml");
+        jsonSaver = new JsonSaver();
 
         final String host = config.getString("database.host");
         final String port = config.getString("database.port");
@@ -94,5 +95,6 @@ public class Main extends JavaPlugin {
         sqlUtils.createTable("economy", "UUID");
         sqlUtils.createColumn("wallet", "INT(100)", "economy");
         sqlUtils.createColumn("bank", "INT(100)", "economy");
+        jsonSaver.init("daily");
     }
 }
