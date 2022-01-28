@@ -1,7 +1,7 @@
 package omen44.omens_economy.events;
 
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +11,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import static omen44.omens_economy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerDeath implements Listener {
-    EconomyUtils eco = new EconomyUtils();
+    SQLeconomy eco = new SQLeconomy();
     ConfigTools configTools = new ConfigTools();
 
     @EventHandler

@@ -1,7 +1,7 @@
 package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -26,7 +26,7 @@ public class CommandSetMoney implements TabExecutor {
     ConfigTools configTools = new ConfigTools();
     FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
-    EconomyUtils eco = new EconomyUtils();
+    SQLeconomy eco = new SQLeconomy();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -38,7 +38,7 @@ public class CommandSetMoney implements TabExecutor {
 
                 int amount;
                 try {
-                    amount = Integer.parseInt(args[1]);
+                    amount = Integer.parseInt(args[2]);
                     if (amount < 0) {
                         throw new NumberFormatException();
                     }

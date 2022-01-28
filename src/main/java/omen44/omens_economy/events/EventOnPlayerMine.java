@@ -3,7 +3,7 @@ package omen44.omens_economy.events;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 public class EventOnPlayerMine implements Listener {
-    EconomyUtils eco = new EconomyUtils();
+    SQLeconomy eco = new SQLeconomy();
     ConfigTools configTools = new ConfigTools();
 
     @EventHandler

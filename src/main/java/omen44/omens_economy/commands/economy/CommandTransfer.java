@@ -1,7 +1,7 @@
 package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -21,7 +21,7 @@ import static omen44.omens_economy.utils.ShortcutsUtils.*;
  */
 
 public class CommandTransfer implements TabExecutor {
-    EconomyUtils eco = new EconomyUtils();
+    SQLeconomy eco = new SQLeconomy();
     ConfigTools configTools = new ConfigTools();
     FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
@@ -44,8 +44,8 @@ public class CommandTransfer implements TabExecutor {
                     return true;
                 }
                 switch (args[0]) {
-                    case "deposit" -> {
-                        boolean result = eco.depositPlayer(p, amount);
+                    case "wallet" -> {
+                        boolean result = eco.transferMoney(p, "wallet", amount);
                         if (result) {
                             p.sendMessage(mPrefix + mNormal + "Deposited " + ChatColor.YELLOW + symbol + amount +
                                     mNormal + "to the bank");
@@ -54,7 +54,7 @@ public class CommandTransfer implements TabExecutor {
                         }
                     }
                     case "bank" -> {
-                        boolean result = eco.withdrawPlayer(p, amount);
+                        boolean result = eco.transferMoney(p, "bank", amount);
                         if (result) {
                             p.sendMessage(mPrefix + mNormal + "Withdrew " + ChatColor.YELLOW + symbol + amount +
                                     mNormal + "from the bank");

@@ -1,25 +1,19 @@
 package omen44.omens_economy.events;
 
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import omen44.omens_economy.utils.SQLUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.UUID;
-
-import static omen44.omens_economy.utils.ShortcutsUtils.mNormal;
 import static omen44.omens_economy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerJoinLeave implements Listener {
-    EconomyUtils eco = new EconomyUtils();
+    SQLeconomy eco = new SQLeconomy();
     ConfigTools configTools = new ConfigTools();
     FileConfiguration config = configTools.getConfig("config.yml");
 
@@ -31,7 +25,7 @@ public class EventOnPlayerJoinLeave implements Listener {
 
     SQLUtils sqlUtils = new SQLUtils(database, host, port, username, password);
 
-    HashMap<UUID, LocalDateTime> cooldown = new HashMap<>();
+    //HashMap<UUID, LocalDateTime> cooldown = new HashMap<>();
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
@@ -41,7 +35,7 @@ public class EventOnPlayerJoinLeave implements Listener {
 
         // getting config values
         String symbol = config.getString("money.moneySymbol");
-        int defaultMoney = config.getInt("defaultAmount");
+        int defaultMoney = config.getInt("money.defaultAmount");
 
         // creating a player if they don't exist
         if (!player.hasPlayedBefore()) {
@@ -51,6 +45,7 @@ public class EventOnPlayerJoinLeave implements Listener {
             player.sendMessage(mPrefix + "You start with " + symbol + defaultMoney);
         }
 
+        /*
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime tomorrow = LocalDateTime.now().plusHours(1L);
 
@@ -90,5 +85,6 @@ public class EventOnPlayerJoinLeave implements Listener {
             eco.addWallet(player, nextAmount);
             player.sendMessage(mNormal + "" + days + " day streak achieved! " + symbol + nextAmount + "earned.");
         }
+         */
     }
 }

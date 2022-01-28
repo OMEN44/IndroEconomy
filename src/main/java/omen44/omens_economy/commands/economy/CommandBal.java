@@ -1,9 +1,8 @@
 package omen44.omens_economy.commands.economy;
 
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -23,14 +22,15 @@ public class CommandBal implements TabExecutor {
     ConfigTools configTools = new ConfigTools();
     FileConfiguration config = configTools.getConfig("config.yml");
     String symbol = config.getString("money.moneySymbol");
-    EconomyUtils eco = new EconomyUtils();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (label.equalsIgnoreCase("bal")) {
+                SQLeconomy eco = new SQLeconomy();
                 final int wallet = eco.getWallet(p);
+                Bukkit.getLogger().info(String.valueOf(wallet));
                 final int bank = eco.getBank(p);
                 String type;
 
@@ -41,24 +41,26 @@ public class CommandBal implements TabExecutor {
                 }
 
                 switch (type) {
-                    case "wallet": p.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);
-                    case "bank": p.sendMessage(mNormal + "Bank Balance: " + symbol + bank);
-                    default: p.sendMessage(mNormal + "Total Balance: " + symbol + wallet+bank);
+                    case "wallet" -> p.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);
+                    case "bank" -> p.sendMessage(mNormal + "Bank Balance: " + symbol + bank);
+                    default -> {
+                        final int finalAmount = wallet + bank;
+                        p.sendMessage(mNormal + "Total Balance: " + symbol + finalAmount);
+                    }
                 }
             }
-            return false;
         } else {
             Bukkit.getLogger().warning("Warning: Only player executable");
-            return true;
         }
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> args1 = new ArrayList<>();
-            args1.add(ChatColor.YELLOW + "bank");
-            args1.add(ChatColor.YELLOW + "wallet");
+            args1.add("bank");
+            args1.add("wallet");
             return args1;
         }
         return null;

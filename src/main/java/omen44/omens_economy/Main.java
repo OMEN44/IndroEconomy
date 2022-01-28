@@ -25,6 +25,7 @@ public class Main extends JavaPlugin {
     Connection connection;
     SQLUtils sqlUtils;
 
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -33,7 +34,6 @@ public class Main extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         ConfigTools configTools = new ConfigTools();
         configTools.saveDefaultConfig("config.yml");
-        configTools.saveDefaultConfig("daily.yml");
         FileConfiguration config = configTools.getConfig("config.yml");
 
         final String host = config.getString("database.host");
@@ -92,7 +92,7 @@ public class Main extends JavaPlugin {
     void dbCreation() {
         // handles creation of the economy table
         sqlUtils.createTable("economy", "UUID");
-        sqlUtils.createColumn("wallet", "VARCHAR(100)", "economy");
-        sqlUtils.createColumn("bank", "VARCHAR(100)", "economy");
+        sqlUtils.createColumn("wallet", "INT(100)", "economy");
+        sqlUtils.createColumn("bank", "INT(100)", "economy");
     }
 }

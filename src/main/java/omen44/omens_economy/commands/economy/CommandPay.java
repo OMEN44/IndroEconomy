@@ -1,6 +1,6 @@
 package omen44.omens_economy.commands.economy;
 
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,7 +20,7 @@ public class CommandPay implements TabExecutor {
         // format: /pay <player> <amount>
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            EconomyUtils eco = new EconomyUtils();
+            SQLeconomy eco = new SQLeconomy();
             if (label.equalsIgnoreCase("pay") && args.length == 2) {
                 Player target = Bukkit.getServer().getPlayer(args[0]);
                 if (target == null) {

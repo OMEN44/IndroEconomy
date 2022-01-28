@@ -2,7 +2,7 @@ package omen44.omens_economy.commands.shops;
 
 import omen44.omens_economy.Main;
 import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.EconomyUtils;
+import omen44.omens_economy.utils.SQLeconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ public class CommandCreateShop implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            EconomyUtils eco = new EconomyUtils();
+            SQLeconomy eco = new SQLeconomy();
 
             if (label.equalsIgnoreCase("createShop") && args.length == 1) {
                 int playerWallet = eco.getWallet(p);
