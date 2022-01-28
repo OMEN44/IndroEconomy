@@ -86,7 +86,7 @@ public class CommandOpShop implements CommandExecutor, Listener {
                                 }
                                 itemMeta.addEnchant(enchantment, maxEnchLvl, true);
                                 percentRoll = random.nextInt(100);
-                            } while (percentRoll <= extraEnchChance || enchCount != 3);
+                            } while (percentRoll <= extraEnchChance && enchCount != 3);
 
                             //giving the player the book
                             enchBook.setItemMeta(itemMeta);
@@ -133,7 +133,7 @@ public class CommandOpShop implements CommandExecutor, Listener {
                                 }
                                 itemMeta.addEnchant(enchantment, maxEnchLvl, true);
                                 percentRoll = random.nextInt(100);
-                            } while (percentRoll <= extraEnchChance || enchCount != 4);
+                            } while (percentRoll <= extraEnchChance && enchCount != 4);
 
                             //giving the player the book
                             enchBook.setItemMeta(itemMeta);
@@ -180,7 +180,7 @@ public class CommandOpShop implements CommandExecutor, Listener {
                                 }
                                 itemMeta.addEnchant(enchantment, maxEnchLvl, true);
                                 percentRoll = random.nextInt(100);
-                            } while (percentRoll <= extraEnchChance || enchCount != 5);
+                            } while (percentRoll <= extraEnchChance && enchCount != 5);
 
                             //giving the player the book
                             enchBook.setItemMeta(itemMeta);
