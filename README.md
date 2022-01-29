@@ -3,15 +3,22 @@ Economy plugin by OMEN44
 
 This is a economy plugin that uses MariaDB to save data.
 
+## Features:
+- daily rewards
+- OP shop
+- Chest shops
+
 
 Command Syntax:
 - () = optional argument
 - <> = mandatory argument
 
 Player Commands:
-- /bal (wallet|bank) gets the balance of the player
-- /transfer <targetPlayer> <wallet|bank> <amount>
-- /pay <targetPlayer> <amount>
-
+  - /bal (bank/wallet)
+  - /pay <player> <amount>
+  - /transfer <bank/wallet> <amount>
+  - /opshop
+  
 Admin Commands:
-- /setmoney <targetPlayer> <wallet|bank> <amount>
+  - /setmoney <bank/wallet> <player> <amount>
+  
