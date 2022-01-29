@@ -125,14 +125,17 @@ public class EventOnShops implements Listener {
             Integer shopCost = container.get(nsk, PersistentDataType.INTEGER);
 
             if (shopCost == null || ownerUUID == null) return;
-            if (p.isOp()) {
-                event.setCancelled(false);
-                return;
-            }
-            event.setCancelled(true);
-            if (ownerUUID.equals(p.getUniqueId().toString())) {
+
+
+            if (ownerUUID.equals(p.getUniqueId().toString()) && !(p.hasMetadata("canBreakShop"))) {
+                event.setCancelled(true);
                 p.sendMessage(mWarning + "Use /breakshop standing on top of the chest to break the chestshop");
+            } else if (p.isOp() || p.hasMetadata("canBreakShop")) {
+                p.removeMetadata("canBreakShop", Main.getPlugin(Main.class));
+                p.sendMessage(mNormal + "Breaking a ChestShop!");
+                event.setCancelled(false);
             } else {
+                event.setCancelled(true);
                 p.sendMessage(mWarning + "Only the owner of this shop can break this chestshop");
             }
         }
