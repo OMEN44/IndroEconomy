@@ -1,7 +1,7 @@
-package io.github.omen44.IndroEconomy.events;
+package io.github.omen44.indroEconomy.events;
 
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;

@@ -1,6 +1,6 @@
-package io.github.omen44.IndroEconomy.datamanager;
+package io.github.omen44.indroEconomy.datamanager;
 
-import io.github.omen44.IndroEconomy.IndroEconomy;
+import io.github.omen44.indroEconomy.IndroEconomy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;

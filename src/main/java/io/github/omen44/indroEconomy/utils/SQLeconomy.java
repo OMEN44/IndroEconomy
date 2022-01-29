@@ -1,6 +1,6 @@
-package io.github.omen44.IndroEconomy.utils;
+package io.github.omen44.indroEconomy.utils;
 
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -58,7 +58,7 @@ public class SQLeconomy {
 
     public boolean transferMoney(Player source, String type, int value) {
         if (type.equalsIgnoreCase("wallet")) { // from wallet to bank
-            if (value >= getWallet(source)) {
+            if (value <= getWallet(source)) {
                 int wallet = getWallet(source);
                 int bank = getBank(source);
 
@@ -72,7 +72,7 @@ public class SQLeconomy {
                 return false;
             }
         } else if (type.equalsIgnoreCase("bank")) { // from bank to wallet
-            if (value >= getBank(source)) {
+            if (value <= getBank(source)) {
                 int wallet = getWallet(source);
                 int bank = getBank(source);
 

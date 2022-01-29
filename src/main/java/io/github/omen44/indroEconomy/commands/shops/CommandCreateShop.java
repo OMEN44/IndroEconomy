@@ -1,8 +1,8 @@
-package io.github.omen44.IndroEconomy.commands.shops;
+package io.github.omen44.indroEconomy.commands.shops;
 
-import io.github.omen44.IndroEconomy.IndroEconomy;
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.IndroEconomy;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.*;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
 
 public class CommandCreateShop implements TabExecutor {
     ConfigTools configTools = new ConfigTools();

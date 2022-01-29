@@ -1,9 +1,9 @@
-package io.github.omen44.IndroEconomy.events;
+package io.github.omen44.indroEconomy.events;
 
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
-import io.github.omen44.IndroEconomy.utils.JsonSaver;
-import io.github.omen44.IndroEconomy.utils.SQLUtils;
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.JsonSaver;
+import io.github.omen44.indroEconomy.utils.SQLUtils;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.mNormal;
-import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.mPrefix;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerJoinLeave implements Listener {
     SQLeconomy eco = new SQLeconomy();

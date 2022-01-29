@@ -1,7 +1,7 @@
-package io.github.omen44.IndroEconomy.commands.economy;
+package io.github.omen44.indroEconomy.commands.economy;
 
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.*;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
 
 /*
     This class implements:
@@ -56,13 +56,13 @@ public class CommandSetMoney implements TabExecutor {
                     case "wallet" -> {
                         eco.setWallet(target, amount);
                         int wallet = eco.getWallet(p);
-                        p.sendMessage(mPrefix + mNormal + "Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s wallet to " + symbol + wallet);
+                        p.sendMessage(mPrefix + mNormal + " Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s wallet to " + symbol + wallet);
                         return true;
                     }
                     case "bank" -> {
                         eco.setBank(target, amount);
                         int bank = eco.getBank(p);
-                        p.sendMessage(mPrefix + mNormal + "Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s bank to " + symbol + bank);
+                        p.sendMessage(mPrefix + mNormal + " Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s bank to " + symbol + bank);
                         return true;
                     }
                 }

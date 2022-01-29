@@ -1,9 +1,9 @@
-package io.github.omen44.IndroEconomy.events;
+package io.github.omen44.indroEconomy.events;
 
-import io.github.omen44.IndroEconomy.IndroEconomy;
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
-import io.github.omen44.IndroEconomy.utils.ShortcutsUtils;
+import io.github.omen44.indroEconomy.IndroEconomy;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

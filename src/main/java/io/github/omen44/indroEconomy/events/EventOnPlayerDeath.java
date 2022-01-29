@@ -1,14 +1,14 @@
-package io.github.omen44.IndroEconomy.events;
+package io.github.omen44.indroEconomy.events;
 
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.mPrefix;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerDeath implements Listener {
     SQLeconomy eco = new SQLeconomy();

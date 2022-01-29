@@ -1,6 +1,6 @@
-package io.github.omen44.IndroEconomy.utils;
+package io.github.omen44.indroEconomy.utils;
 
-import io.github.omen44.IndroEconomy.IndroEconomy;
+import io.github.omen44.indroEconomy.IndroEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;

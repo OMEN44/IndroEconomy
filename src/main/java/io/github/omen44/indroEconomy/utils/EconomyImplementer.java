@@ -1,6 +1,6 @@
-package io.github.omen44.IndroEconomy.utils;
+package io.github.omen44.indroEconomy.utils;
 
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;

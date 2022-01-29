@@ -1,6 +1,6 @@
-package io.github.omen44.IndroEconomy.commands.opShop;
+package io.github.omen44.indroEconomy.commands.opShop;
 
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Random;
 
-import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.*;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
 
 public class CommandOpShop implements CommandExecutor, Listener {
     @Override

@@ -1,7 +1,7 @@
-package io.github.omen44.IndroEconomy.commands.economy;
+package io.github.omen44.indroEconomy.commands.economy;
 
-import io.github.omen44.IndroEconomy.utils.SQLeconomy;
-import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.*;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
 
 /*
     This class handles:
@@ -47,19 +47,19 @@ public class CommandTransfer implements TabExecutor {
                     case "wallet" -> {
                         boolean result = eco.transferMoney(p, "wallet", amount);
                         if (result) {
-                            p.sendMessage(mPrefix + mNormal + "Deposited " + ChatColor.YELLOW + symbol + amount +
-                                    mNormal + "to the bank");
+                            p.sendMessage(mPrefix + mNormal + " Deposited " + ChatColor.YELLOW + symbol + amount +
+                                    mNormal + " to the bank");
                         } else {
-                            p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
+                            p.sendMessage(mPrefix + mWarning + " Unable to transfer due to insufficient funds.");
                         }
                     }
                     case "bank" -> {
                         boolean result = eco.transferMoney(p, "bank", amount);
                         if (result) {
-                            p.sendMessage(mPrefix + mNormal + "Withdrew " + ChatColor.YELLOW + symbol + amount +
-                                    mNormal + "from the bank");
+                            p.sendMessage(mPrefix + mNormal + " Withdrew " + ChatColor.YELLOW + symbol + amount +
+                                    mNormal + " from the bank");
                         } else {
-                            p.sendMessage(mPrefix + mWarning + "Unable to transfer due to insufficient funds.");
+                            p.sendMessage(mPrefix + mWarning + " Unable to transfer due to insufficient funds.");
                         }
                     }
                     default -> {

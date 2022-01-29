@@ -1,7 +1,7 @@
-package io.github.omen44.IndroEconomy.commands.shops;
+package io.github.omen44.indroEconomy.commands.shops;
 
-import io.github.omen44.IndroEconomy.IndroEconomy;
-import io.github.omen44.IndroEconomy.utils.ShortcutsUtils;
+import io.github.omen44.indroEconomy.IndroEconomy;
+import io.github.omen44.indroEconomy.utils.ShortcutsUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
