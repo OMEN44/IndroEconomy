@@ -17,21 +17,19 @@ public class JsonSaver {
     public Plugin plugin = IndroEconomy.getPlugin(IndroEconomy.class);
 
 
-    public void init(String fileName) {
+    public void createFile(String fileName) {
         try {
-            file = new FileWriter(plugin.getDataFolder().getAbsolutePath() + File.separator + fileName + ".json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                file.flush();
-                file.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            File file1 = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + fileName + ".json");
+            if (file1.createNewFile()) {
+                System.out.println("File created: " + file1.getName());
+            } else {
+                System.out.println("File already exists.");
             }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
-
 
     /**
      *

@@ -1,8 +1,14 @@
 package io.github.omen44.indroEconomy.utils;
 
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class SQLeconomy {
     SQLUtils sqlUtils;
@@ -18,6 +24,12 @@ public class SQLeconomy {
         final String password = config.getString("database.password");
 
         this.sqlUtils = new SQLUtils(database, host, port, username, password);
+    }
+
+    public void createAccount(Player player, int defaultMoney) {
+        sqlUtils.createRow("UUID", player.getUniqueId().toString(), "economy");
+        setWallet(player, defaultMoney);
+        setBank(player, 0);
     }
 
     public void setBank(Player player, int amount) {
@@ -87,6 +99,25 @@ public class SQLeconomy {
             }
         }
         return false;
+    }
+
+    public boolean hasAccount(Player player) {
+        String uuid = player.getUniqueId().toString();
+        return sqlUtils.rowExists("wallet", uuid, "economy");
+    }
+
+    public List<String> getAccountList(String filter) {
+        ArrayList<String> list = new ArrayList<>(sqlUtils.getEntireColumn(filter, "economy"));
+        if (!(filter.equalsIgnoreCase("playernames"))) {
+            return list;
+        } else {
+            ArrayList<String> playerNames = new ArrayList<>();
+            for (String item : list) {
+                UUID uuid = UUID.fromString(item);
+                playerNames.add(Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName());
+            }
+            return playerNames;
+        }
     }
 
     public void addWallet(Player player, int value) {

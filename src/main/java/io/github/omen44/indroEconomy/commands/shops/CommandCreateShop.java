@@ -56,10 +56,9 @@ public class CommandCreateShop implements TabExecutor {
                     return true;
                 }
 
-                // generating a shop id for the item.
 
                 // creating the item that the player will place
-                ItemStack chestShop = new ItemStack(Material.CHEST, 1);
+                ItemStack chestShop = new ItemStack(Material.BARREL, 1);
                 if (chestShop.getItemMeta() == null) {
                     p.sendMessage(mWarning + "There is a problem with the plugin, ping an admin about this.");
                     return true;

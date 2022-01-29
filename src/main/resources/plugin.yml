@@ -1,33 +1,33 @@
 name: IndroEconomy
-version: 1.1.1
+version: 1.1.2
 main: io.github.omen44.indroEconomy.IndroEconomy
 api-version: 1.17
 commands:
   bal:
     description: allows you to check your balance and send it
     usage: /bal (wallet/bank)
-    permission: omensEconomy.command.bal
+    permission: IndroEconomy.command.bal
   pay:
     description: allows you to transfer some of your wallet to another online player
     usage: /pay <player> <amount>
-    permission: omensEconomy.command.pay
+    permission: IndroEconomy.command.pay
   setmoney:
     description: allows admins to set your money
     usage: /setmoney <bank/wallet> <target> <amount>
-    permission: omensEconomy.admin.command.setmoney
+    permission: IndroEconomy.admin.command.setmoney
   transfer:
     description: allows you to transfer
     usage: /transfer <wallet/bank/target> <amount>
-    permission: omensEconomy.command.transfer
+    permission: IndroEconomy.command.transfer
   createshop:
     description: turns the next chest you place into a chest shop
     usage: /buyshop <price>
-    permission: omensEconomy.command.buyshop
+    permission: IndroEconomy.command.createshop
   opshop:
     description: Creates the online shop
     usage: /opshop
-    permission: omensEconomy.command.opshop
+    permission: IndroEconomy.command.opshop
   breakshop:
     description: Breaks the chest you are standing on if it is your shop (essentially deleting it)
     usage: /breakshop
-    permission: omensEconomy.command.breakshop
+    permission: IndroEconomy.command.breakshop

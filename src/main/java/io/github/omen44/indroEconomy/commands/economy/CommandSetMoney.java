@@ -30,45 +30,41 @@ public class CommandSetMoney implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (label.equalsIgnoreCase("setmoney") && args.length == 3) {
-                String type = args[0];
-                Player target = Bukkit.getServer().getPlayer(args[1]);
+        if (label.equalsIgnoreCase("setmoney") && args.length == 3) {
+            String type = args[0];
+            Player target = Bukkit.getServer().getPlayer(args[1]);
 
-                int amount;
-                try {
-                    amount = Integer.parseInt(args[2]);
-                    if (amount < 0) {
-                        throw new NumberFormatException();
-                    }
-                } catch (NumberFormatException e) {
-                    p.sendMessage(mWarning + "<amount> must be a positive number bigger than 0.");
+            int amount;
+            try {
+                amount = Integer.parseInt(args[2]);
+                if (amount < 0 || amount >= 100000000) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                sender.sendMessage(mWarning + "<amount> must be a positive number bigger than 0, " +
+                        "and smaller than 10,000,000.");
+                return true;
+            }
+
+            if (target == null) {
+                sender.sendMessage(mWarning + "Target must Exist!");
+                return true;
+            }
+
+            switch (type) {
+                case "wallet" -> {
+                    eco.setWallet(target, amount);
+                    int wallet = eco.getWallet(target);
+                    sender.sendMessage(mPrefix + mNormal + " Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s wallet to " + symbol + wallet);
                     return true;
                 }
-
-                if (target == null) {
-                    p.sendMessage(mWarning + "Target must be active");
+                case "bank" -> {
+                    eco.setBank(target, amount);
+                    int bank = eco.getBank(target);
+                    sender.sendMessage(mPrefix + mNormal + " Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s bank to " + symbol + bank);
                     return true;
-                }
-
-                switch (type) {
-                    case "wallet" -> {
-                        eco.setWallet(target, amount);
-                        int wallet = eco.getWallet(p);
-                        p.sendMessage(mPrefix + mNormal + " Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s wallet to " + symbol + wallet);
-                        return true;
-                    }
-                    case "bank" -> {
-                        eco.setBank(target, amount);
-                        int bank = eco.getBank(p);
-                        p.sendMessage(mPrefix + mNormal + " Set " + ChatColor.YELLOW + target.getName() + mNormal + "'s bank to " + symbol + bank);
-                        return true;
-                    }
                 }
             }
-        } else {
-            Bukkit.getLogger().warning("Warning: Only player executable");
         }
         return true;
     }
@@ -77,18 +73,12 @@ public class CommandSetMoney implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> args1 = new ArrayList<>();
-            args1.add("bank");
             args1.add("wallet");
+            args1.add("bank");
             return args1;
         }
         if (args.length == 2) {
-            List<String> playerNames = new ArrayList<>();
-            Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-            Bukkit.getServer().getOnlinePlayers().toArray(players);
-            for (Player value : players) {
-                playerNames.add(value.getName());
-            }
-            return playerNames;
+            return new ArrayList<>(eco.getAccountList("UUID"));
         }
         if (args.length == 3) {
             List<String> args3 = new ArrayList<>();

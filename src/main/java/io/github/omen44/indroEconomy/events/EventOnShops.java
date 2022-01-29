@@ -7,8 +7,7 @@ import io.github.omen44.indroEconomy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
+import org.bukkit.block.Barrel;
 import org.bukkit.block.TileState;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -26,7 +25,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class EventOnShops implements Listener {
     @EventHandler
     public void onShopCreate(BlockPlaceEvent event) {
-        if (event.getBlock().getType() != Material.CHEST) return;
+        if (event.getBlock().getType() != Material.BARREL) return;
         if (!(event.getBlock().getState() instanceof TileState)) return;
 
         ItemMeta itemMeta = event.getItemInHand().getItemMeta();
@@ -64,10 +63,10 @@ public class EventOnShops implements Listener {
         SQLeconomy eco = new SQLeconomy();
 
 
-        if (ih instanceof Chest || ih instanceof DoubleChest) {
-            Chest chest = (Chest) event.getInventory().getHolder();
-            if (chest == null) return;
-            PersistentDataContainer container = chest.getPersistentDataContainer();
+        if (ih instanceof Barrel) {
+            Barrel barrel = (Barrel) event.getInventory().getHolder();
+            if (barrel == null) return;
+            PersistentDataContainer container = barrel.getPersistentDataContainer();
             NamespacedKey nsk = new NamespacedKey(IndroEconomy.getPlugin(IndroEconomy.class), "chestprice");
 
             String ownerUUID = container.get(nsk, PersistentDataType.STRING);
@@ -113,10 +112,10 @@ public class EventOnShops implements Listener {
 
     @EventHandler
     public void onChestBreak(BlockBreakEvent event) {
-        if (event.getBlock() instanceof Chest) {
+        if (event.getBlock() instanceof Barrel) {
             Player p = event.getPlayer();
-            Chest chest = (Chest) event.getBlock();
-            PersistentDataContainer container = chest.getPersistentDataContainer();
+            Barrel barrel = (Barrel) event.getBlock();
+            PersistentDataContainer container = barrel.getPersistentDataContainer();
             NamespacedKey nsk = new NamespacedKey(IndroEconomy.getPlugin(IndroEconomy.class), "chestprice");
 
             String ownerUUID = container.get(nsk, PersistentDataType.STRING);
@@ -127,7 +126,7 @@ public class EventOnShops implements Listener {
 
             if (ownerUUID.equals(p.getUniqueId().toString()) && !(p.hasMetadata("canBreakShop"))) {
                 event.setCancelled(true);
-                p.sendMessage(ShortcutsUtils.mWarning + "Use /breakshop standing on top of the chest to break the chestshop");
+                p.sendMessage(ShortcutsUtils.mWarning + "Use /breakshop standing on top of the barrel to break the chestshop");
             } else if (p.isOp() || p.hasMetadata("canBreakShop")) {
                 p.removeMetadata("canBreakShop", IndroEconomy.getPlugin(IndroEconomy.class));
                 p.sendMessage(ShortcutsUtils.mNormal + "Breaking a ChestShop!");

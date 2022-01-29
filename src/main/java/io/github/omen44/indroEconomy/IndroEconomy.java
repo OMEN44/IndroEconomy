@@ -95,6 +95,6 @@ public class IndroEconomy extends JavaPlugin {
         sqlUtils.createTable("economy", "UUID");
         sqlUtils.createColumn("wallet", "INT(100)", "economy");
         sqlUtils.createColumn("bank", "INT(100)", "economy");
-        jsonSaver.init("daily");
+        jsonSaver.createFile("daily");
     }
 }

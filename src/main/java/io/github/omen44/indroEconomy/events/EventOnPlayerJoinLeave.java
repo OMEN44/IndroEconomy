@@ -45,9 +45,7 @@ public class EventOnPlayerJoinLeave implements Listener {
 
         // creating a player if they don't exist
         if (!player.hasPlayedBefore()) {
-            sqlUtils.createRow("UUID", event.getPlayer().getUniqueId().toString(), "economy");
-            eco.setWallet(player, defaultMoney);
-            eco.setBank(player, 0);
+            eco.createAccount(event.getPlayer(), defaultMoney);
             player.sendMessage(mPrefix + "You start with " + symbol + defaultMoney);
         }
         dailyRewardtask(player);
