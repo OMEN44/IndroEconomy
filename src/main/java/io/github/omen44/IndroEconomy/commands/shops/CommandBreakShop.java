@@ -1,6 +1,7 @@
-package omen44.omens_economy.commands.shops;
+package io.github.omen44.IndroEconomy.commands.shops;
 
-import omen44.omens_economy.Main;
+import io.github.omen44.IndroEconomy.IndroEconomy;
+import io.github.omen44.IndroEconomy.utils.ShortcutsUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,8 +14,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import static omen44.omens_economy.utils.ShortcutsUtils.mWarning;
-
 public class CommandBreakShop implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -26,17 +25,17 @@ public class CommandBreakShop implements CommandExecutor {
                 if (location.getBlock().getType().equals(Material.CHEST)) {
                     Chest chest = (Chest) location.getBlock();
 
-                    NamespacedKey key = new NamespacedKey(Main.getPlugin(Main.class), "chestshop");
+                    NamespacedKey key = new NamespacedKey(IndroEconomy.getPlugin(IndroEconomy.class), "chestshop");
                     PersistentDataContainer container = chest.getPersistentDataContainer();
                     String playerUUID = container.get(key, PersistentDataType.STRING);
 
                     if (playerUUID == null) {
                         player.sendMessage("The block you are standing on is not a chest shop");
                     } else if (playerUUID.equalsIgnoreCase(player.getUniqueId().toString())) {
-                        player.setMetadata("canBreakShop", new FixedMetadataValue(Main.getPlugin(Main.class), true));
+                        player.setMetadata("canBreakShop", new FixedMetadataValue(IndroEconomy.getPlugin(IndroEconomy.class), true));
                         player.breakBlock(chest.getBlock());
                     } else {
-                        player.sendMessage(mWarning + "You do not own this chestshop!");
+                        player.sendMessage(ShortcutsUtils.mWarning + "You do not own this chestshop!");
                     }
                 }
             }

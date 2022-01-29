@@ -1,6 +1,6 @@
-package omen44.omens_economy.utils;
+package io.github.omen44.IndroEconomy.utils;
 
-import omen44.omens_economy.datamanager.ConfigTools;
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 

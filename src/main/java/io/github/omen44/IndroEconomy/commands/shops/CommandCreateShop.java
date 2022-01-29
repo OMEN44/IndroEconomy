@@ -1,8 +1,8 @@
-package omen44.omens_economy.commands.shops;
+package io.github.omen44.IndroEconomy.commands.shops;
 
-import omen44.omens_economy.Main;
-import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.IndroEconomy;
+import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static omen44.omens_economy.utils.ShortcutsUtils.*;
+import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.*;
 
 public class CommandCreateShop implements TabExecutor {
     ConfigTools configTools = new ConfigTools();
@@ -65,7 +65,7 @@ public class CommandCreateShop implements TabExecutor {
                     return true;
                 }
 
-                NamespacedKey nsk = new NamespacedKey(Main.getPlugin(Main.class), "chestprice");
+                NamespacedKey nsk = new NamespacedKey(IndroEconomy.getPlugin(IndroEconomy.class), "chestprice");
                 ItemMeta chestMeta = chestShop.getItemMeta();
                 chestMeta.setDisplayName(p.getName() + "'s shop, priced at " + ChatColor.YELLOW + symbol + playerShopPrice);
                 PersistentDataContainer container = chestMeta.getPersistentDataContainer();

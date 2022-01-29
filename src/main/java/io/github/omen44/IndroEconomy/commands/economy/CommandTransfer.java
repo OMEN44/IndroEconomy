@@ -1,7 +1,7 @@
-package omen44.omens_economy.commands.economy;
+package io.github.omen44.IndroEconomy.commands.economy;
 
-import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static omen44.omens_economy.utils.ShortcutsUtils.*;
+import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.*;
 
 /*
     This class handles:

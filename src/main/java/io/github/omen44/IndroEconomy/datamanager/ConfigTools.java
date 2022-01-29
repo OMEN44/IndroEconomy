@@ -1,6 +1,6 @@
-package omen44.omens_economy.datamanager;
+package io.github.omen44.IndroEconomy.datamanager;
 
-import omen44.omens_economy.Main;
+import io.github.omen44.IndroEconomy.IndroEconomy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class ConfigTools {
-    public Plugin plugin = Main.getPlugin(Main.class);
+    public Plugin plugin = IndroEconomy.getPlugin(IndroEconomy.class);
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 

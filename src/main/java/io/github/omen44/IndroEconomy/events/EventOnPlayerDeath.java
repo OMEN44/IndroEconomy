@@ -1,14 +1,14 @@
-package omen44.omens_economy.events;
+package io.github.omen44.IndroEconomy.events;
 
-import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import static omen44.omens_economy.utils.ShortcutsUtils.mPrefix;
+import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerDeath implements Listener {
     SQLeconomy eco = new SQLeconomy();

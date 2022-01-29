@@ -1,8 +1,9 @@
-package omen44.omens_economy.events;
+package io.github.omen44.IndroEconomy.events;
 
-import omen44.omens_economy.Main;
-import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.IndroEconomy;
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -22,9 +23,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import static omen44.omens_economy.utils.ShortcutsUtils.mNormal;
-import static omen44.omens_economy.utils.ShortcutsUtils.mWarning;
-
 public class EventOnShops implements Listener {
     @EventHandler
     public void onShopCreate(BlockPlaceEvent event) {
@@ -34,7 +32,7 @@ public class EventOnShops implements Listener {
         ItemMeta itemMeta = event.getItemInHand().getItemMeta();
         if (itemMeta == null) return;
         PersistentDataContainer container1 = itemMeta.getPersistentDataContainer();
-        NamespacedKey key = new NamespacedKey(Main.getPlugin(Main.class), "chestprice");
+        NamespacedKey key = new NamespacedKey(IndroEconomy.getPlugin(IndroEconomy.class), "chestprice");
 
         if (!(container1.has(key, PersistentDataType.INTEGER) && container1.has(key, PersistentDataType.STRING))) return;
         Integer shopCost = container1.get(key, PersistentDataType.INTEGER);
@@ -48,7 +46,7 @@ public class EventOnShops implements Listener {
         container.set(key, PersistentDataType.INTEGER, shopCost);
         container.set(key, PersistentDataType.STRING, ownerUUID);
         state.update();
-        event.getPlayer().sendMessage(mNormal + "Successfully generated a chestshop");
+        event.getPlayer().sendMessage(ShortcutsUtils.mNormal + "Successfully generated a chestshop");
     }
 
     @EventHandler
@@ -70,7 +68,7 @@ public class EventOnShops implements Listener {
             Chest chest = (Chest) event.getInventory().getHolder();
             if (chest == null) return;
             PersistentDataContainer container = chest.getPersistentDataContainer();
-            NamespacedKey nsk = new NamespacedKey(Main.getPlugin(Main.class), "chestprice");
+            NamespacedKey nsk = new NamespacedKey(IndroEconomy.getPlugin(IndroEconomy.class), "chestprice");
 
             String ownerUUID = container.get(nsk, PersistentDataType.STRING);
             Integer shopCost = container.get(nsk, PersistentDataType.INTEGER);
@@ -88,25 +86,25 @@ public class EventOnShops implements Listener {
                 if (current.getType().equals(Material.AIR)) {
                     // player put item to inventory
                      p.sendMessage("<" + ownerDisplayName + ">" +
-                             mNormal + "Stop that! I'm not taking your rubbish!");
+                             ShortcutsUtils.mNormal + "Stop that! I'm not taking your rubbish!");
                      event.setCancelled(true);
                 } else if (!current.getType().equals(Material.AIR) && cursor.getType().equals(Material.AIR)) {
                     // player take item from inventory
                     if (wallet >= shopCost) {
                         p.sendMessage("<" + ownerDisplayName + ">" +
-                                mNormal + " That'll be " + symbol + shopCost);
+                                ShortcutsUtils.mNormal + " That'll be " + symbol + shopCost);
                         eco.minusWallet(p, shopCost);
                         eco.addWallet(owner, shopCost);
-                        owner.sendMessage(p.getName() + mNormal + "has bought from your shop");
+                        owner.sendMessage(p.getName() + ShortcutsUtils.mNormal + "has bought from your shop");
                     } else {
                         p.sendMessage("<" + ownerDisplayName + ">" +
-                                mNormal + " You know, you have to pay for that, right?");
+                                ShortcutsUtils.mNormal + " You know, you have to pay for that, right?");
                         event.setCancelled(true);
                     }
                 } else if (!current.getType().equals(Material.AIR) && !cursor.getType().equals(Material.AIR)) {
                     // player swap item in inventory
                     p.sendMessage("<" + ownerDisplayName + ">"
-                            + mNormal + " Stop that! I'm not taking your rubbish!");
+                            + ShortcutsUtils.mNormal + " Stop that! I'm not taking your rubbish!");
                     event.setCancelled(true);
                 }
             }
@@ -119,7 +117,7 @@ public class EventOnShops implements Listener {
             Player p = event.getPlayer();
             Chest chest = (Chest) event.getBlock();
             PersistentDataContainer container = chest.getPersistentDataContainer();
-            NamespacedKey nsk = new NamespacedKey(Main.getPlugin(Main.class), "chestprice");
+            NamespacedKey nsk = new NamespacedKey(IndroEconomy.getPlugin(IndroEconomy.class), "chestprice");
 
             String ownerUUID = container.get(nsk, PersistentDataType.STRING);
             Integer shopCost = container.get(nsk, PersistentDataType.INTEGER);
@@ -129,14 +127,14 @@ public class EventOnShops implements Listener {
 
             if (ownerUUID.equals(p.getUniqueId().toString()) && !(p.hasMetadata("canBreakShop"))) {
                 event.setCancelled(true);
-                p.sendMessage(mWarning + "Use /breakshop standing on top of the chest to break the chestshop");
+                p.sendMessage(ShortcutsUtils.mWarning + "Use /breakshop standing on top of the chest to break the chestshop");
             } else if (p.isOp() || p.hasMetadata("canBreakShop")) {
-                p.removeMetadata("canBreakShop", Main.getPlugin(Main.class));
-                p.sendMessage(mNormal + "Breaking a ChestShop!");
+                p.removeMetadata("canBreakShop", IndroEconomy.getPlugin(IndroEconomy.class));
+                p.sendMessage(ShortcutsUtils.mNormal + "Breaking a ChestShop!");
                 event.setCancelled(false);
             } else {
                 event.setCancelled(true);
-                p.sendMessage(mWarning + "Only the owner of this shop can break this chestshop");
+                p.sendMessage(ShortcutsUtils.mWarning + "Only the owner of this shop can break this chestshop");
             }
         }
     }

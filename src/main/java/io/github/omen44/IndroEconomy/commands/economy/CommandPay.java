@@ -1,6 +1,7 @@
-package omen44.omens_economy.commands.economy;
+package io.github.omen44.IndroEconomy.commands.economy;
 
-import omen44.omens_economy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -9,9 +10,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static omen44.omens_economy.utils.ShortcutsUtils.mNormal;
-import static omen44.omens_economy.utils.ShortcutsUtils.mWarning;
 
 public class CommandPay implements TabExecutor {
 
@@ -24,7 +22,7 @@ public class CommandPay implements TabExecutor {
             if (label.equalsIgnoreCase("pay") && args.length == 2) {
                 Player target = Bukkit.getServer().getPlayer(args[0]);
                 if (target == null) {
-                    p.sendMessage(mWarning + "Target must be active to pay");
+                    p.sendMessage(ShortcutsUtils.mWarning + "Target must be active to pay");
                     return true;
                 }
 
@@ -35,15 +33,15 @@ public class CommandPay implements TabExecutor {
                         throw new NumberFormatException();
                     }
                 } catch (NumberFormatException e) {
-                    p.sendMessage(mWarning + "<amount> must be a positive number.");
+                    p.sendMessage(ShortcutsUtils.mWarning + "<amount> must be a positive number.");
                     return true;
                 }
 
                 boolean result = eco.sendMoney(p, target, amount);
                 if (result) {
-                    p.sendMessage(mNormal + "Payment Successful.");
+                    p.sendMessage(ShortcutsUtils.mNormal + "Payment Successful.");
                 } else {
-                    p.sendMessage(mWarning + "Payment could not be made.");
+                    p.sendMessage(ShortcutsUtils.mWarning + "Payment could not be made.");
                 }
             }
         }

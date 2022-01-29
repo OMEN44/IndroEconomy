@@ -1,6 +1,6 @@
-name: omens_economy
-version: 1.0
-main: omen44.omens_economy.Main
+name: IndroEconomy
+version: 1.1.0
+main: io.github.omen44.omens_economy.IndroEconomy
 api-version: 1.17
 commands:
   bal:

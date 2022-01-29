@@ -1,7 +1,8 @@
-package omen44.omens_economy.commands.economy;
+package io.github.omen44.IndroEconomy.commands.economy;
 
-import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.utils.SQLeconomy;
+import io.github.omen44.IndroEconomy.utils.ShortcutsUtils;
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,8 +12,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static omen44.omens_economy.utils.ShortcutsUtils.mNormal;
 
 /*this class handles
 - /bal (wallet/bank)
@@ -41,11 +40,11 @@ public class CommandBal implements TabExecutor {
                 }
 
                 switch (type) {
-                    case "wallet" -> p.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);
-                    case "bank" -> p.sendMessage(mNormal + "Bank Balance: " + symbol + bank);
+                    case "wallet" -> p.sendMessage(ShortcutsUtils.mNormal + "Wallet Balance: " + symbol + wallet);
+                    case "bank" -> p.sendMessage(ShortcutsUtils.mNormal + "Bank Balance: " + symbol + bank);
                     default -> {
                         final int finalAmount = wallet + bank;
-                        p.sendMessage(mNormal + "Total Balance: " + symbol + finalAmount);
+                        p.sendMessage(ShortcutsUtils.mNormal + "Total Balance: " + symbol + finalAmount);
                     }
                 }
             }

@@ -1,6 +1,6 @@
-package omen44.omens_economy.utils;
+package io.github.omen44.IndroEconomy.utils;
 
-import omen44.omens_economy.Main;
+import io.github.omen44.IndroEconomy.IndroEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class JsonSaver {
     private FileWriter file;
-    public Plugin plugin = Main.getPlugin(Main.class);
+    public Plugin plugin = IndroEconomy.getPlugin(IndroEconomy.class);
 
 
     public void init(String fileName) {

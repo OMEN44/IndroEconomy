@@ -1,4 +1,4 @@
-package omen44.omens_economy.utils;
+package io.github.omen44.IndroEconomy.utils;
 
 import java.sql.*;
 import java.util.ArrayList;

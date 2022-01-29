@@ -1,8 +1,14 @@
-package omen44.omens_economy.utils;
+package io.github.omen44.IndroEconomy.utils;
 
-public class EconomyImplementer {
-    // implements Economy
-    /*
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
+
+import java.util.List;
+
+public class EconomyImplementer implements Economy {
     SQLeconomy eco = new SQLeconomy();
 
     @Override
@@ -105,9 +111,7 @@ public class EconomyImplementer {
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double value) {
-        OfflinePlayer offlinePlayer = Bukkit.getPlayer(playerName);
-        withdrawPlayer(offlinePlayer, value);
-        return EconomyResponse.ResponseType.SUCCESS ;
+        return null;
     }
 
     @Override
@@ -145,6 +149,24 @@ public class EconomyImplementer {
         return null;
     }
 
+    @Override
+    public boolean createPlayerAccount(String playerName) {
+        return false;
+    }
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
+        return false;
+    }
+
+    @Override
+    public boolean createPlayerAccount(String playerName, String world) {
+        return false;
+    }
+
+    @Override
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String playerName) {
+        return false;
+    }
 
     // ignore for the moment
     @Override
@@ -206,24 +228,4 @@ public class EconomyImplementer {
     public List<String> getBanks() {
         return null;
     }
-
-    @Override
-    public boolean createPlayerAccount(String playerName) {
-        return false;
-    }
-    @Override
-    public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
-        return false;
-    }
-
-    @Override
-    public boolean createPlayerAccount(String playerName, String world) {
-        return false;
-    }
-
-    @Override
-    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String playerName) {
-        return false;
-    }
-     */
 }

@@ -1,18 +1,18 @@
-package omen44.omens_economy;
+package io.github.omen44.IndroEconomy;
 
-import omen44.omens_economy.commands.economy.CommandBal;
-import omen44.omens_economy.commands.economy.CommandPay;
-import omen44.omens_economy.commands.economy.CommandSetMoney;
-import omen44.omens_economy.commands.economy.CommandTransfer;
-import omen44.omens_economy.commands.opShop.CommandOpShop;
-import omen44.omens_economy.commands.shops.CommandCreateShop;
-import omen44.omens_economy.datamanager.ConfigTools;
-import omen44.omens_economy.events.EventOnPlayerDeath;
-import omen44.omens_economy.events.EventOnPlayerJoinLeave;
-import omen44.omens_economy.events.EventOnPlayerMine;
-import omen44.omens_economy.events.EventOnShops;
-import omen44.omens_economy.utils.JsonSaver;
-import omen44.omens_economy.utils.SQLUtils;
+import io.github.omen44.IndroEconomy.events.EventOnPlayerJoinLeave;
+import io.github.omen44.IndroEconomy.commands.economy.CommandBal;
+import io.github.omen44.IndroEconomy.commands.economy.CommandPay;
+import io.github.omen44.IndroEconomy.commands.economy.CommandSetMoney;
+import io.github.omen44.IndroEconomy.commands.economy.CommandTransfer;
+import io.github.omen44.IndroEconomy.commands.opShop.CommandOpShop;
+import io.github.omen44.IndroEconomy.commands.shops.CommandCreateShop;
+import io.github.omen44.IndroEconomy.datamanager.ConfigTools;
+import io.github.omen44.IndroEconomy.events.EventOnPlayerDeath;
+import io.github.omen44.IndroEconomy.events.EventOnPlayerMine;
+import io.github.omen44.IndroEconomy.events.EventOnShops;
+import io.github.omen44.IndroEconomy.utils.JsonSaver;
+import io.github.omen44.IndroEconomy.utils.SQLUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -20,9 +20,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
 
-import static omen44.omens_economy.utils.ShortcutsUtils.mPrefix;
+import static io.github.omen44.IndroEconomy.utils.ShortcutsUtils.mPrefix;
 
-public class Main extends JavaPlugin {
+public class IndroEconomy extends JavaPlugin {
     Connection connection;
     SQLUtils sqlUtils;
     JsonSaver jsonSaver;

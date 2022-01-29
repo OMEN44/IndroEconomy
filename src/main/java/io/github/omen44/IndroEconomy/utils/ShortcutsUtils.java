@@ -1,4 +1,4 @@
-package omen44.omens_economy.utils;
+package io.github.omen44.IndroEconomy.utils;
 
 import org.bukkit.ChatColor;
 

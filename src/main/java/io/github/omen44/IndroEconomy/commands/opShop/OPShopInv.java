@@ -1,4 +1,4 @@
-package omen44.omens_economy.commands.opShop;
+package io.github.omen44.IndroEconomy.commands.opShop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
