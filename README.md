@@ -1,4 +1,4 @@
-# omens_economy
+# IndroEconomy
 Economy plugin by OMEN44
 
 This is a economy plugin that uses MariaDB to save data.
