@@ -1,7 +1,7 @@
 package io.github.omen44.indroEconomy.events;
 
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
-import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 public class EventOnPlayerMine implements Listener {
-    SQLeconomy eco = new SQLeconomy();
+    EconomyUtils eco = new EconomyUtils();
     ConfigTools configTools = new ConfigTools();
 
     @EventHandler

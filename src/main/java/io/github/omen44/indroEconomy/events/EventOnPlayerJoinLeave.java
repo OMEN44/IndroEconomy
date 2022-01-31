@@ -1,9 +1,7 @@
 package io.github.omen44.indroEconomy.events;
 
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
-import io.github.omen44.indroEconomy.utils.JsonSaver;
-import io.github.omen44.indroEconomy.utils.SQLUtils;
-import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,18 +18,9 @@ import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerJoinLeave implements Listener {
-    SQLeconomy eco = new SQLeconomy();
+    EconomyUtils eco = new EconomyUtils();
     ConfigTools configTools = new ConfigTools();
-    FileConfiguration config = configTools.getConfig("config.yml");
-
-    private final String host = config.getString("database.host");
-    private final String port = config.getString("database.port");
-    private final String database = config.getString("database.database");
-    private final String username = config.getString("database.username");
-    private final String password = config.getString("database.password");
-
-    SQLUtils sqlUtils = new SQLUtils(database, host, port, username, password);
-    HashMap<UUID, LocalDateTime> cooldown = new HashMap<>();
+    HashMap<String, LocalDateTime> cooldown = new HashMap<>();
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
@@ -44,24 +33,24 @@ public class EventOnPlayerJoinLeave implements Listener {
         int defaultMoney = config.getInt("money.defaultAmount");
 
         // creating a player if they don't exist
-        if (!player.hasPlayedBefore()) {
-            eco.createAccount(event.getPlayer(), defaultMoney);
+        if (!player.hasPlayedBefore() || !eco.hasAccount(player)) {
+            eco.createAccount(player);
             player.sendMessage(mPrefix + "You start with " + symbol + defaultMoney);
         }
-        dailyRewardtask(player);
+        // dailyRewardtask(player);
     }
 
-
+    /*
     public void dailyRewardtask(Player player) {
         // initialising values
         FileConfiguration config = configTools.getConfig("config.yml");
         String symbol = config.getString("money.moneySymbol");
         LocalDateTime currentTime = LocalDateTime.now();
-        UUID playerUUID = player.getUniqueId();
-        JsonSaver jsonSaver = new JsonSaver();
+        String playerUUID = player.getUniqueId().toString();
+
         int days;
         try {
-            days = Integer.parseInt(jsonSaver.getString(playerUUID.toString(), "daily"));
+            days = jsonSaver.getInt(playerUUID, "daily");
         } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("JSON file returned null, assuming 0.");
             days = 0;
@@ -101,4 +90,5 @@ public class EventOnPlayerJoinLeave implements Listener {
             player.sendMessage(mNormal + "" + days + " day streak achieved! " + symbol + nextAmount + "earned.");
         }
     }
+     */
 }

@@ -2,7 +2,7 @@ package io.github.omen44.indroEconomy.events;
 
 import io.github.omen44.indroEconomy.IndroEconomy;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
-import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import io.github.omen44.indroEconomy.utils.ShortcutsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -60,7 +60,7 @@ public class EventOnShops implements Listener {
         final ItemStack cursor = event.getCursor();
         final Player p = (Player) event.getWhoClicked();
         InventoryHolder ih = event.getInventory().getHolder();
-        SQLeconomy eco = new SQLeconomy();
+        EconomyUtils eco = new EconomyUtils();
 
 
         if (ih instanceof Barrel) {

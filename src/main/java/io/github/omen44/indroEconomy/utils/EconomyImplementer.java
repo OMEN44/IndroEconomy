@@ -3,13 +3,15 @@ package io.github.omen44.indroEconomy.utils;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
 public class EconomyImplementer implements Economy {
-    SQLeconomy eco = new SQLeconomy();
+    EconomyUtils eco = new EconomyUtils();
 
     @Override
     public boolean isEnabled() {
@@ -51,121 +53,175 @@ public class EconomyImplementer implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
+        OfflinePlayer player = Bukkit.getPlayer(playerName);
+        if (player != null) {
+            return hasAccount(player);
+        }
         return false;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return false;
+        if (offlinePlayer.getPlayer() != null) {
+            return eco.hasAccount(offlinePlayer.getPlayer());
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean hasAccount(String playerName, String world) {
-        return false;
+        return hasAccount(playerName);
     }
 
     @Override
-    public boolean hasAccount(OfflinePlayer offlinePlayer, String playerName) {
-        return false;
+    public boolean hasAccount(OfflinePlayer offlinePlayer, String world) {
+        return hasAccount(offlinePlayer);
     }
 
     @Override
     public double getBalance(String playerName) {
+        OfflinePlayer player = Bukkit.getPlayer(playerName);
+        if (player != null) {
+            getBalance(player);
+        }
         return 0;
     }
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
+        if (offlinePlayer.getPlayer() != null) {
+            return eco.getWallet(offlinePlayer.getPlayer());
+        }
         return 0;
     }
 
     @Override
     public double getBalance(String playerName, String world) {
-        return 0;
+        return getBalance(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer, String playerName) {
-        return 0;
+        return getBalance(offlinePlayer);
     }
 
     @Override
     public boolean has(String playerName, double value) {
+        OfflinePlayer player = Bukkit.getPlayer(playerName);
+        if (player != null) {
+            return has(player, value);
+        }
         return false;
     }
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double value) {
+        if (offlinePlayer.getPlayer() != null) {
+            Player player = offlinePlayer.getPlayer();
+            int wallet = eco.getWallet(player);
+            return ((int) value) <= wallet;
+        }
         return false;
     }
 
     @Override
     public boolean has(String playerName, String world, double value) {
-        return false;
+        return has(playerName, value);
     }
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, String playerName, double value) {
-        return false;
+        return has(offlinePlayer, value);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double value) {
+        OfflinePlayer player = Bukkit.getPlayer(playerName);
+        if (player != null) {
+            return withdrawPlayer(player, value);
+        }
         return null;
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double value) {
+        if (offlinePlayer.getPlayer() != null) {
+            Player player = offlinePlayer.getPlayer();
+            eco.minusWallet(player, (int) value);
+            int wallet = eco.getWallet(player);
+
+            return new EconomyResponse(value, wallet, EconomyResponse.ResponseType.SUCCESS, "Unknown Error!");
+        }
         return null;
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, String world, double value) {
-        return null;
+        return withdrawPlayer(playerName, value);
     }
 
     @Override
-    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String playerName, double value) {
-        return null;
+    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String world, double value) {
+        return withdrawPlayer(offlinePlayer, value);
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double value) {
+        OfflinePlayer player = Bukkit.getPlayer(playerName);
+        if (player != null) {
+            return depositPlayer(player, value);
+        }
         return null;
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double value) {
+        if (offlinePlayer.getPlayer() != null) {
+            Player player = offlinePlayer.getPlayer();
+            eco.addWallet(player, (int) value);
+            int wallet = eco.getWallet(player);
+
+            return new EconomyResponse(value, wallet, EconomyResponse.ResponseType.SUCCESS, "Unknown Error!");
+        }
         return null;
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, String world, double value) {
-        return null;
+        return depositPlayer(playerName, value);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String playerName, double value) {
-        return null;
+        return depositPlayer(offlinePlayer, value);
     }
 
     @Override
     public boolean createPlayerAccount(String playerName) {
+        OfflinePlayer player = Bukkit.getPlayer(playerName);
+        if (player != null) {
+            return createPlayerAccount(player);
+        }
         return false;
     }
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
+        if (offlinePlayer.getPlayer() != null) {
+            ConfigTools configTools = new ConfigTools();
+            return eco.createAccount(offlinePlayer.getPlayer());
+        }
         return false;
     }
 
     @Override
     public boolean createPlayerAccount(String playerName, String world) {
-        return false;
+        return createPlayerAccount(playerName);
     }
 
     @Override
-    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String playerName) {
-        return false;
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String world) {
+        return createPlayerAccount(offlinePlayer);
     }
 
     // ignore for the moment

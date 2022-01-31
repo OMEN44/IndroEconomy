@@ -1,7 +1,7 @@
 package io.github.omen44.indroEconomy.commands.shops;
 
 import io.github.omen44.indroEconomy.IndroEconomy;
-import io.github.omen44.indroEconomy.utils.SQLeconomy;
+import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,7 +32,7 @@ public class CommandCreateShop implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            SQLeconomy eco = new SQLeconomy();
+            EconomyUtils eco = new EconomyUtils();
 
             if (label.equalsIgnoreCase("createShop") && args.length == 1) {
                 int playerWallet = eco.getWallet(p);
