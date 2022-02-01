@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
@@ -39,7 +40,8 @@ public class CommandTransfer extends SubCommand {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("This is a player only command!");
         } else {
-            if (args.length > 3) {
+            Player player = (Player) commandSender;
+            if (args.length == 3) {
                 ConfigTools configTools = new ConfigTools();
                 FileConfiguration config = configTools.getConfig("config.yml");
                 String symbol = config.getString("money.moneySymbol");
@@ -47,7 +49,6 @@ public class CommandTransfer extends SubCommand {
                 EconomyUtils eco = new EconomyUtils();
 
                 // initialise values
-                Player player = (Player) commandSender;
                 String type = args[1];
                 int amount = Integer.parseInt(args[2]);
 
@@ -66,12 +67,24 @@ public class CommandTransfer extends SubCommand {
                 } else {
                     player.sendMessage(mWarning + "Payment could not be done, cancelling transaction!");
                 }
+            } else {
+                player.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco transfer <bank/wallet> <amount>");
             }
         }
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] strings) {
+    public List<String> getSubcommandArguments(Player player, String[] args) {
+        List<String> arguments = new ArrayList<>();
+        if (args.length == 2) {
+            arguments.add("wallet");
+            arguments.add("bank");
+            return arguments;
+        }
+        if (args.length == 3) {
+            arguments.add("<amount>");
+            return arguments;
+        }
         return null;
     }
 }

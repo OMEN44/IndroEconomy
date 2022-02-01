@@ -5,7 +5,7 @@ import io.github.omen44.indroEconomy.events.EventOnPlayerJoinLeave;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.events.EventOnPlayerDeath;
 import io.github.omen44.indroEconomy.events.EventOnPlayerMine;
-import io.github.omen44.indroEconomy.events.EventOnShops;
+import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
 import io.github.omen44.indroEconomy.utils.EconomyImplementer;
 import io.github.omen44.indroEconomy.utils.SQLUtils;
 import me.kodysimpson.simpapi.command.CommandManager;
@@ -17,6 +17,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
@@ -84,13 +85,17 @@ public class IndroEconomy extends JavaPlugin {
             e.printStackTrace();
         }
 
+        try {
+            EconomyStorageUtil.saveAccounts();
+            EconomyStorageUtil.loadAccounts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //register events
         pm.registerEvents(new EventOnPlayerJoinLeave(), this);
         pm.registerEvents(new EventOnPlayerDeath(), this);
         pm.registerEvents(new EventOnPlayerMine(), this);
-        pm.registerEvents(new EventOnShops(), this);
-
     }
 
     @Override

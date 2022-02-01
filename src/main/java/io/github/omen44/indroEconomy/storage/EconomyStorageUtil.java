@@ -1,4 +1,4 @@
-package io.github.omen44.indroEconomy.utils;
+package io.github.omen44.indroEconomy.storage;
 
 import com.google.gson.Gson;
 import io.github.omen44.indroEconomy.IndroEconomy;

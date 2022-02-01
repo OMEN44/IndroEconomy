@@ -1,19 +1,19 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
+import io.github.omen44.indroEconomy.models.EconomyModel;
+import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
 
@@ -54,7 +54,7 @@ public class CommandSetMoney extends SubCommand {
             ConfigTools configTools = new ConfigTools();
             FileConfiguration config = configTools.getConfig("config.yml");
 
-            if (args.length > 3 && commandSender.hasPermission("indroEconomy.admin.setMoney")) {
+            if (args.length == 4 && commandSender.hasPermission("indroEconomy.admin.setMoney")) {
                 // initialising values
                 final String symbol = config.getString("money.moneySymbol");
                 final String type = args[1];
@@ -74,18 +74,35 @@ public class CommandSetMoney extends SubCommand {
                 if (type.equals("wallet")) {
                     eco.setWallet(target, amount);
                     int wallet = eco.getWallet(target);
-                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&aSet &a" + target.getName() + "'s &fwallet to " + symbol + wallet));
+                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fwallet to " + symbol + wallet));
                 } else if (type.equals("bank")) {
                     eco.setBank(target, amount);
                     int bank = eco.getBank(target);
-                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&aSet &a" + target.getName() + "'s &fbank to " + symbol + bank));
+                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fbank to " + symbol + bank));
                 }
             }
         }
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] strings) {
+    public List<String> getSubcommandArguments(Player player, String[] args) {
+        List<String> arguments = new ArrayList<>();
+        if (args.length == 2) {
+            arguments.add("bank");
+            arguments.add("wallet");
+            return arguments;
+        }
+        if (args.length == 3) {
+            List<EconomyModel> economyModels = EconomyStorageUtil.findAllAccounts();
+            for (EconomyModel model : economyModels) {
+                arguments.add(Objects.requireNonNull(Bukkit.getPlayer(model.getPlayerUUID())).getName());
+            }
+            return arguments;
+        }
+        if (args.length == 4) {
+            arguments.add("<amount>");
+            return arguments;
+        }
         return null;
     }
 }

@@ -12,20 +12,20 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class ConfigTools {
-    public Plugin plugin = IndroEconomy.getPlugin(IndroEconomy.class);
+    public Plugin plugin = IndroEconomy.getPlugin();
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 
     public void reloadConfig(String fileName) {
-        if (this.configFile == null) {
-            this.configFile = new File(plugin.getDataFolder(), fileName);
+        if (configFile == null) {
+            configFile = new File(plugin.getDataFolder(), fileName);
         }
 
-        this.dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
+        dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
         InputStream defaultStream = plugin.getResource(fileName);
         if (defaultStream != null) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
-            this.dataConfig.setDefaults(defaultConfig);
+            dataConfig.setDefaults(defaultConfig);
         }
 
     }

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class EconomyModel {
 
-    private String id;
+    private final String id;
 
     private UUID playerUUID;
     private int wallet;
@@ -42,7 +42,5 @@ public class EconomyModel {
         this.playerUUID = playerUUID;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() {return id;}
 }

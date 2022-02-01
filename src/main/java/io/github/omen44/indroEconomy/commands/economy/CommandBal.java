@@ -1,14 +1,13 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
-import io.github.omen44.indroEconomy.utils.EconomyImplementer;
-import io.github.omen44.indroEconomy.utils.EconomyStorageUtil;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
@@ -49,20 +48,26 @@ public class CommandBal extends SubCommand {
             final int wallet = eco.getWallet(player);
             final int bank = eco.getBank(player);
             final int totalBalance = wallet + bank;
-            if (args.length > 1) {
+            if (args.length == 2) {
                 if (args[1].equalsIgnoreCase("wallet")) {
                     player.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);
                 } else if (args[1].equalsIgnoreCase("bank")) {
                     player.sendMessage(mNormal + "Bank Balance: " + symbol +  bank);
                 }
             } else {
-                player.sendMessage(mNormal + "Total Amount: " + totalBalance);
+                player.sendMessage(mNormal + "Total Amount: " + symbol + totalBalance);
             }
         }
     }
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
+        List<String> arguments = new ArrayList<>();
+        if (args.length == 2) {
+            arguments.add("bank");
+            arguments.add("wallet");
+            return arguments;
+        }
         return null;
     }
 }

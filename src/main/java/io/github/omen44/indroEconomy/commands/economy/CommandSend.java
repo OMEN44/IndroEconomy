@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
@@ -47,7 +48,7 @@ public class CommandSend extends SubCommand {
             EconomyUtils eco = new EconomyUtils();
 
             // /eco pay <player> <amount>
-            if (args.length > 3) {
+            if (args.length == 3) {
                 Player target = Bukkit.getPlayer(args[1]);
                 int amount = Integer.parseInt(args[2]);
 
@@ -79,6 +80,11 @@ public class CommandSend extends SubCommand {
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
+        List<String> arguments = new ArrayList<>();
+        if (args.length == 3) {
+            arguments.add("<amount>");
+            return arguments;
+        }
         return null;
     }
 }
