@@ -50,10 +50,13 @@ public class CommandSend extends SubCommand {
             // /eco pay <player> <amount>
             if (args.length == 3) {
                 Player target = Bukkit.getPlayer(args[1]);
-                int amount = Integer.parseInt(args[2]);
+                int amount;
+
 
                 // error checkers
-                if (amount <= 0 || amount >= 100000000) {
+                try {
+                    amount = Integer.parseInt(args[2]);
+                } catch (NumberFormatException e) {
                     player.sendMessage(mNormal + "<amount> must be a positive, non-negative integer!");
                     return;
                 }
@@ -81,6 +84,13 @@ public class CommandSend extends SubCommand {
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
         List<String> arguments = new ArrayList<>();
+        if (args.length == 2) {
+            List<Player> playerList = new ArrayList<>(Bukkit.getOnlinePlayers());
+            for (Player value : playerList) {
+                arguments.add(value.getName());
+            }
+            return arguments;
+        }
         if (args.length == 3) {
             arguments.add("<amount>");
             return arguments;

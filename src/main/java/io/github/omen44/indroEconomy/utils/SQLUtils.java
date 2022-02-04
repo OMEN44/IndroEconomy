@@ -33,7 +33,7 @@ public class SQLUtils {
         this.username = username;
         this.database = database;
         this.host = host;
-        this.port = port;;
+        this.port = port;
 
         this.conn = getConnection();
     }

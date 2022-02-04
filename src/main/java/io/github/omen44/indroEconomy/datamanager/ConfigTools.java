@@ -21,7 +21,7 @@ public class ConfigTools {
             configFile = new File(plugin.getDataFolder(), fileName);
         }
 
-        dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
+            dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
         InputStream defaultStream = plugin.getResource(fileName);
         if (defaultStream != null) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));

@@ -54,32 +54,40 @@ public class CommandSetMoney extends SubCommand {
             ConfigTools configTools = new ConfigTools();
             FileConfiguration config = configTools.getConfig("config.yml");
 
-            if (args.length == 4 && commandSender.hasPermission("indroEconomy.admin.setMoney")) {
-                // initialising values
-                final String symbol = config.getString("money.moneySymbol");
-                final String type = args[1];
-                final Player target = Bukkit.getPlayer(args[2]);
-                final int amount = Integer.parseInt(args[3]);
+            if (commandSender.hasPermission("indroEconomy.admin.setMoney")) {
+                if (args.length == 4) {
+                    // initialising values
+                    final String symbol = config.getString("money.moneySymbol");
+                    final String type = args[1];
+                    final Player target = Bukkit.getPlayer(args[2]);
+                    int amount;
 
-                if (amount <= 0 || amount >= 100000000) {
-                    commandSender.sendMessage(mNormal + "<amount> must be a positive, non-negative integer!");
-                    return;
-                }
+                    try {
+                        amount = Integer.parseInt(args[3]);
+                    } catch (NumberFormatException e) {
+                        commandSender.sendMessage(mNormal + "<amount> must be a positive, non-negative integer!");
+                        return;
+                    }
 
-                if (target == null || !eco.hasAccount(target)) {
-                    commandSender.sendMessage(mWarning + "<target> must be a valid Minecraft Username, and have joined at least once!");
-                    return;
-                }
+                    if (target == null || !eco.hasAccount(target)) {
+                        commandSender.sendMessage(mWarning + "<target> must be a valid Minecraft Username, and have joined at least once!");
+                        return;
+                    }
 
-                if (type.equals("wallet")) {
-                    eco.setWallet(target, amount);
-                    int wallet = eco.getWallet(target);
-                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fwallet to " + symbol + wallet));
-                } else if (type.equals("bank")) {
-                    eco.setBank(target, amount);
-                    int bank = eco.getBank(target);
-                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fbank to " + symbol + bank));
+                    if (type.equals("wallet")) {
+                        eco.setWallet(target, amount);
+                        int wallet = eco.getWallet(target);
+                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fwallet to " + symbol + wallet));
+                    } else if (type.equals("bank")) {
+                        eco.setBank(target, amount);
+                        int bank = eco.getBank(target);
+                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fbank to " + symbol + bank));
+                    }
+                } else {
+                    commandSender.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco setmoney <player> <amount>");
                 }
+            } else {
+                commandSender.sendMessage(mError + "You do not have permission to do this!");
             }
         }
     }
@@ -93,9 +101,8 @@ public class CommandSetMoney extends SubCommand {
             return arguments;
         }
         if (args.length == 3) {
-            List<EconomyModel> economyModels = EconomyStorageUtil.findAllAccounts();
-            for (EconomyModel model : economyModels) {
-                arguments.add(Objects.requireNonNull(Bukkit.getPlayer(model.getPlayerUUID())).getName());
+            for (Player player1: Bukkit.getOnlinePlayers()) {
+                arguments.add(player1.getName());
             }
             return arguments;
         }

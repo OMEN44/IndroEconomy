@@ -22,11 +22,11 @@ public class EventOnPlayerDeath implements Listener {
         //initialise the values needed
         Player player = event.getEntity();
         int wallet = eco.getWallet(player);
-        double moneyLost = wallet-(config.getInt("money.deathLossPercent") / 100.0);
+        double moneyLost = wallet*(config.getInt("money.deathLossPercent") / 100.0);
         wallet -= moneyLost;
 
         //reduce their wallet by the percentage
-        player.sendMessage(mPrefix + "You have died and lost " + symbol + moneyLost);
+        player.sendMessage(mPrefix + "You have died and lost " + symbol + ((int) (moneyLost)));
         eco.setWallet(player, wallet);
     }
 }

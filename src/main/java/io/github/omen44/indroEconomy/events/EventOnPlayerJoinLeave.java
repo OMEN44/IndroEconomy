@@ -26,14 +26,13 @@ public class EventOnPlayerJoinLeave implements Listener {
     public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         FileConfiguration config = configTools.getConfig("config.yml");
-        event.setJoinMessage(ChatColor.YELLOW + "Welcome to IndroCraft!");
 
         // getting config values
         String symbol = config.getString("money.moneySymbol");
         int defaultMoney = config.getInt("money.defaultAmount");
 
         // creating a player if they don't exist
-        if (!player.hasPlayedBefore() || !eco.hasAccount(player)) {
+        if (!player.hasPlayedBefore() && !eco.hasAccount(player)) {
             eco.createAccount(player);
             player.sendMessage(mPrefix + "You start with " + symbol + defaultMoney);
         }

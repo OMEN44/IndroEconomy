@@ -50,10 +50,16 @@ public class CommandTransfer extends SubCommand {
 
                 // initialise values
                 String type = args[1];
-                int amount = Integer.parseInt(args[2]);
+                int amount;
+                try {
+                    amount = Integer.parseInt(args[2]);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(mNormal + "<amount> must be a positive, non-negative integer!");
+                    return;
+                }
 
                 if (type == null) {
-                    commandSender.sendMessage("This is a player only command!");
+                    player.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco transfer <bank/wallet> <amount>");
                     return;
                 }
 

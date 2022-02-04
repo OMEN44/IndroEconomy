@@ -1,5 +1,6 @@
 package io.github.omen44.indroEconomy.utils;
 
+import io.github.omen44.indroEconomy.IndroEconomy;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -20,7 +21,7 @@ public class EconomyImplementer implements Economy {
 
     @Override
     public String getName() {
-        return "Omen's Economy";
+        return IndroEconomy.getPlugin().getName();
     }
 
     @Override

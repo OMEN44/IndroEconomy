@@ -104,6 +104,11 @@ public class IndroEconomy extends JavaPlugin {
         if (connection != null) {
             sqlUtils.closeConnection(connection);
         }
+        try {
+            EconomyStorageUtil.saveAccounts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void dbCreation() {
