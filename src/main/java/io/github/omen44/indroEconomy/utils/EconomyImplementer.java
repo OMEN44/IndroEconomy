@@ -209,7 +209,6 @@ public class EconomyImplementer implements Economy {
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
         if (offlinePlayer.getPlayer() != null) {
-            ConfigTools configTools = new ConfigTools();
             return eco.createAccount(offlinePlayer.getPlayer());
         }
         return false;
