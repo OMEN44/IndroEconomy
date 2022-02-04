@@ -67,6 +67,11 @@ public class EconomyStorageUtil {
                 return model;
             }
         }
+        try {
+            saveAccounts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

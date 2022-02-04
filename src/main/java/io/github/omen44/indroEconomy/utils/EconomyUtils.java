@@ -161,6 +161,7 @@ public class EconomyUtils {
         return false;
     }
 
+
     public boolean hasAccount(Player player) {
         String uuid = player.getUniqueId().toString();
         if (compare(this.dataType, "mysql")) {

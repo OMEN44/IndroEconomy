@@ -17,8 +17,8 @@
 #     - <amount of $>
 #     - <amount of $>
 
-# accepts JSON and MYSQL, more to be added soon
-saveType: JSON
+# accepts JSON, MySQL and SQLite more to be added soon
+saveData: JSON
 
 # This is to be filled in if the save data is MySql
 database:

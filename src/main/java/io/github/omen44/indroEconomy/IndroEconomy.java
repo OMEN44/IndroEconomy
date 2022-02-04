@@ -8,6 +8,8 @@ import io.github.omen44.indroEconomy.events.EventOnPlayerMine;
 import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
 import io.github.omen44.indroEconomy.utils.EconomyImplementer;
 import io.github.omen44.indroEconomy.utils.SQLUtils;
+import io.github.omen44.indroEconomy.utils.sqlite.Database;
+import io.github.omen44.indroEconomy.utils.sqlite.SQLite;
 import me.kodysimpson.simpapi.command.CommandManager;
 import me.kodysimpson.simpapi.menu.MenuManager;
 import net.milkbowl.vault.economy.Economy;
@@ -27,6 +29,7 @@ public class IndroEconomy extends JavaPlugin {
     SQLUtils sqlUtils;
 
     private static IndroEconomy plugin;
+    private Database db;
 
     @Override
     public void onEnable() {
@@ -65,6 +68,9 @@ public class IndroEconomy extends JavaPlugin {
             } else {
                 Bukkit.getLogger().severe("Database not connected!");
             }
+        } else if (dataType.equalsIgnoreCase("sqlite")) {
+            this.db = new SQLite(this);
+            this.db.load();
         }
 
         String symbol = config.getString("money.moneySymbol");
@@ -80,7 +86,8 @@ public class IndroEconomy extends JavaPlugin {
             CommandManager.createCoreCommand(this, "eco",
                     "The Economy Module of the Plugin.", "/eco",
                     null,
-                    CommandBal.class, CommandOpShop.class, CommandSend.class, CommandSetMoney.class, CommandTransfer.class);
+                    CommandBal.class, CommandOpShop.class, CommandSend.class, CommandSetMoney.class,
+                    CommandTransfer.class, CommandGamble.class);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

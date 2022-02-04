@@ -1,5 +1,5 @@
 name: IndroEconomy
-version: 2.0.0
+version: 2.0.1
 main: io.github.omen44.indroEconomy.IndroEconomy
 api-version: 1.17
 depend:
