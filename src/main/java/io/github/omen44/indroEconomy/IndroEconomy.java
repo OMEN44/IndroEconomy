@@ -27,9 +27,8 @@ import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
 public class IndroEconomy extends JavaPlugin {
     Connection connection;
     SQLUtils sqlUtils;
-
-    private static IndroEconomy plugin;
     private Database db;
+    private static IndroEconomy plugin;
 
     @Override
     public void onEnable() {
@@ -87,7 +86,7 @@ public class IndroEconomy extends JavaPlugin {
                     "The Economy Module of the Plugin.", "/eco",
                     null,
                     CommandBal.class, CommandOpShop.class, CommandSend.class, CommandSetMoney.class,
-                    CommandTransfer.class, CommandGamble.class);
+                    CommandTransfer.class, CommandGamble.class, CommandCreateAccount.class);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -125,7 +124,11 @@ public class IndroEconomy extends JavaPlugin {
         sqlUtils.createColumn("bank", "INT(100)", "economy");
     }
 
-    public static IndroEconomy getPlugin() {
+    public static IndroEconomy getInstance() {
         return plugin;
+    }
+
+    public Database getRDatabase() {
+        return this.db;
     }
 }

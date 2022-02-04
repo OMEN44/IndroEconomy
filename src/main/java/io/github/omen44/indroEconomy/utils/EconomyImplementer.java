@@ -21,7 +21,7 @@ public class EconomyImplementer implements Economy {
 
     @Override
     public String getName() {
-        return IndroEconomy.getPlugin().getName();
+        return IndroEconomy.getInstance().getName();
     }
 
     @Override

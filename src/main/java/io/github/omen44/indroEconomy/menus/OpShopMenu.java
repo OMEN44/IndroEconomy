@@ -48,6 +48,13 @@ public class OpShopMenu extends Menu {
 
         EconomyUtils eco = new EconomyUtils();
 
+        try {
+            int wallet = eco.getWallet(player);
+        } catch (NullPointerException e) {
+            player.sendMessage("Your account doesn't exist, contact an admin to get it fixed");
+            return;
+        }
+
         int extraEnchChance;
         int overlevelChance;
         int maxEnchants;

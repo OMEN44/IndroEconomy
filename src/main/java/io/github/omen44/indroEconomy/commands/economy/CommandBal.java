@@ -45,9 +45,18 @@ public class CommandBal extends SubCommand {
             FileConfiguration config = configTools.getConfig("config.yml");
             String symbol = config.getString("money.moneySymbol");
 
-            final int wallet = eco.getWallet(player);
-            final int bank = eco.getBank(player);
-            final int totalBalance = wallet + bank;
+            int wallet;
+            int bank;
+            int totalBalance;
+
+            try {
+                wallet = eco.getWallet(player);
+                bank = eco.getBank(player);
+                totalBalance = wallet + bank;
+            } catch (NullPointerException e) {
+                player.sendMessage("Your account doesn't exist, contact an admin to get it fixed");
+                return;
+            }
             if (args.length == 2) {
                 if (args[1].equalsIgnoreCase("wallet")) {
                     player.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);

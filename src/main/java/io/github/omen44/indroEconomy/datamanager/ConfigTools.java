@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class ConfigTools {
-    public Plugin plugin = IndroEconomy.getPlugin();
+    public Plugin plugin = IndroEconomy.getInstance();
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 

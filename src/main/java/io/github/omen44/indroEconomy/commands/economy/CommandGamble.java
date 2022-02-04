@@ -46,7 +46,14 @@ public class CommandGamble extends SubCommand {
             if (args.length > 0) {
                 EconomyUtils eco = new EconomyUtils();
                 String format = args[1];
-                int playerWallet = eco.getWallet(player);
+
+                int playerWallet;
+                try {
+                    playerWallet = eco.getWallet(player);
+                } catch (NullPointerException e) {
+                    player.sendMessage("Your account doesn't exist, contact an admin to get it fixed");
+                    return;
+                }
                 switch (format) {
                     case "slots" -> {
                         player.sendMessage(mNormal + "Sorry, but this is under construction!");

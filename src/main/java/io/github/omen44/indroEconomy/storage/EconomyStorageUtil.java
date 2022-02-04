@@ -5,7 +5,6 @@ import io.github.omen44.indroEconomy.IndroEconomy;
 import io.github.omen44.indroEconomy.models.EconomyModel;
 import org.bukkit.entity.Player;
 
-import javax.annotation.processing.Filer;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,7 +96,7 @@ public class EconomyStorageUtil {
 
     public static void saveAccounts() throws IOException {
         Gson gson = new Gson();
-        File file = new File(IndroEconomy.getPlugin().getDataFolder().getAbsolutePath() + File.separator + "economy.json");
+        File file = new File(IndroEconomy.getInstance().getDataFolder().getAbsolutePath() + File.separator + "economy.json");
         file.getParentFile().mkdir();
         file.createNewFile();
         Writer writer = new FileWriter(file, false);
@@ -109,7 +108,7 @@ public class EconomyStorageUtil {
     public static void loadAccounts() throws IOException {
 
         Gson gson = new Gson();
-        File file = new File(IndroEconomy.getPlugin().getDataFolder().getAbsolutePath() + File.separator + "economy.json");
+        File file = new File(IndroEconomy.getInstance().getDataFolder().getAbsolutePath() + File.separator + "economy.json");
         if (file.exists()) {
             Reader reader = new FileReader(file);
             EconomyModel[] model = gson.fromJson(reader, EconomyModel[].class);
