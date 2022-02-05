@@ -59,7 +59,7 @@ public class CommandTransfer extends SubCommand {
                 }
 
                 if (type == null) {
-                    player.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco transfer <bank/wallet> <amount>");
+                    player.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco transfer <deposit/withdraw> <amount>");
                     return;
                 }
 

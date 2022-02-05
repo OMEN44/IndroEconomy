@@ -1,7 +1,5 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
-import io.github.omen44.indroEconomy.models.EconomyModel;
-import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
@@ -13,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
 

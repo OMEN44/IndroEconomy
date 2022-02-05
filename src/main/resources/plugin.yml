@@ -4,3 +4,7 @@ main: io.github.omen44.indroEconomy.IndroEconomy
 api-version: 1.17
 depend:
   - Vault
+permissions: {
+               "indroEconomy.admin.setmoney",
+               "indroEconomy.gamble"
+}

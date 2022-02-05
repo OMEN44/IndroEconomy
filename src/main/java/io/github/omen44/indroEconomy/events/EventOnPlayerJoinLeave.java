@@ -2,8 +2,6 @@ package io.github.omen44.indroEconomy.events;
 
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,9 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.UUID;
 
-import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
 import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerJoinLeave implements Listener {

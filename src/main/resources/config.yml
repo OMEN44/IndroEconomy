@@ -17,21 +17,14 @@
 #     - <amount of $>
 #     - <amount of $>
 
-# accepts JSON, MySQL, and SQLite more to be added soon
-saveData: JSON
-
-# This is to be filled in if the save data is MySql
-database:
-  host: localhost # host of your database
-  port: 3306 # default port for MariaDB and MySQL
-  database: indrocraft # name of your database. A database server can contain multiple databases
-  username: root
-  password: blank # if database has no password leave the password as blank
-
 money:
   moneySymbol: $ # the symbol that the plugin will use to present the money with
   deathLossPercent: 10 # when player's die, how much percent of their money do you want them to lose?
   defaultAmount: 200 # what amount do you want players to start with?
+
+back:
+  backAllowed: false
+  backCost: 2000
 
 # example for the Block Earning system
 blocks:

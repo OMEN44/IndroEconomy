@@ -1,5 +1,6 @@
 package io.github.omen44.indroEconomy.menus;
 
+import io.github.omen44.indroEconomy.IndroEconomy;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
 import me.kodysimpson.simpapi.exceptions.MenuManagerException;
 import me.kodysimpson.simpapi.exceptions.MenuManagerNotSetupException;
@@ -13,13 +14,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.bukkit.Material.RED_STAINED_GLASS_PANE;
 
 public class MysteryMenu extends Menu {
+    private int clicks = 1;
     public MysteryMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
     }
@@ -41,19 +46,33 @@ public class MysteryMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) throws MenuManagerNotSetupException, MenuManagerException {
-        int clicks = 3;
         Player player = playerMenuUtility.getOwner();
+        if (player.hasMetadata("clicksRemaining")) {
+            List<MetadataValue> keys = player.getMetadata("clicksRemaining");
+            for (MetadataValue key : keys) {
+                if (key.getOwningPlugin() == IndroEconomy.getInstance()) {
+                    this.clicks = key.asInt();
+                    break;
+                }
+            }
+        }
         if (e.getCurrentItem() == null) return;
         if (e.getCurrentItem().getType().equals(RED_STAINED_GLASS_PANE)) {
             player.closeInventory();
         } else {
             int currentItemIndex = e.getCurrentItem().getItemMeta().getCustomModelData();
-            String openedPresentID = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmZlNzMyYjNlY2IyZmFiYzAzOGZiMDZkYjhjNTNhN2ZmYjAzMGRiOTI1NDRlMWIyMjU2ZjAxY2IyZWI4MjJiNyJ9fX0=";
-            inventory.setItem(currentItemIndex, SkullCreator.itemFromBase64(openedPresentID));
+            String openedPresentID = "http://textures.minecraft.net/texture/bfe732b3ecb2fabc038fb06db8c53a7ffb030db92544e1b2256f01cb2eb822b7";
+            inventory.setItem(currentItemIndex, SkullCreator.itemFromUrl(openedPresentID));
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
-            playerMenuUtility.setData("clicksRemaining", clicks);
+            this.clicks--;
+            player.setMetadata("clicksRemaining", new FixedMetadataValue(IndroEconomy.getInstance(), clicks));
+
+            List<String> lore = new ArrayList<>();
+            lore.add(ColorTranslator.translateColorCodes("&6Clicks Remaining: 3"));
+
+            inventory.setItem(49, makeItem(Material.TOTEM_OF_UNDYING, ChatColor.YELLOW + "INFO", String.valueOf(lore)));
         }
-        if ((int) (playerMenuUtility.getData("clicksRemaining")) == 0) {
+        if (this.clicks <= 0) {
             player.sendMessage(ChatColor.GOLD + "Out of Clicks, see you soon!");
             player.closeInventory();
         }
@@ -61,23 +80,22 @@ public class MysteryMenu extends Menu {
 
     @Override
     public void setMenuItems() {
-        String closedPresentID = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM5ZmQyMjRlZTJkYzdjODQ1NTZjOWMyZTgyYTJkOTVkMWFlMzU1Yzc5YWY3YjU4NTliOTUxMzhjMjVjZjkxOCJ9fX0=";
-        ItemStack mysteryBox = SkullCreator.itemFromBase64(closedPresentID);
+        String closedPresentID = "http://textures.minecraft.net/texture/8c9fd224ee2dc7c84556c9c2e82a2d95d1ae355c79af7b5859b95138c25cf918";
+        ItemStack mysteryBox = SkullCreator.itemFromUrl(closedPresentID);
         ItemMeta mysteryMeta = mysteryBox.getItemMeta();
 
         assert mysteryMeta != null;
         mysteryMeta.setDisplayName(ColorTranslator.translateColorCodes("&6Mystery Box"));
 
-        for (int i = 0; i < 44; i++) {
-            mysteryMeta.setCustomModelData(i);
+        for (int i = 1; i < 46; i++) {
+            mysteryMeta.setCustomModelData(i-1);
             mysteryBox.setItemMeta(mysteryMeta);
             inventory.addItem(mysteryBox);
         }
 
-        int clicksRemain = (int) playerMenuUtility.getData("clicksRemaining");
         List<String> lore = new ArrayList<>();
-        lore.add(ColorTranslator.translateColorCodes("&6Clicks Remaining: " + clicksRemain));
+        lore.add(ColorTranslator.translateColorCodes("&6Clicks Remaining: 3"));
 
-        inventory.setItem(48, makeItem(Material.TOTEM_OF_UNDYING, ChatColor.YELLOW + "INFO", String.valueOf(lore)));
+        inventory.setItem(49, makeItem(Material.TOTEM_OF_UNDYING, ChatColor.YELLOW + "INFO", String.valueOf(lore)));
     }
 }
