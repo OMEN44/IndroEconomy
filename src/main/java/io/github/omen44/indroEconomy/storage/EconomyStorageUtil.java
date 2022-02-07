@@ -1,9 +1,9 @@
 package io.github.omen44.indroEconomy.storage;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.omen44.indroEconomy.IndroEconomy;
-import io.github.omen44.indroEconomy.models.EconomyModel;
-import org.bukkit.entity.Player;
+import io.github.omen44.indroEconomy.models.PlayerEconomyModel;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ public class EconomyStorageUtil {
 
     //CRUD - Create, Read, Update, Delete
 
-    private static ArrayList<EconomyModel> economy = new ArrayList<>();
+    private static ArrayList<PlayerEconomyModel> economy = new ArrayList<>();
 
-    public static EconomyModel createAccount(Player p, int wallet, int bank) {
+    public static PlayerEconomyModel createAccount(UUID uuid, int wallet, int bank) {
 
-        EconomyModel model = new EconomyModel(p.getUniqueId(), wallet, bank);
+        PlayerEconomyModel model = new PlayerEconomyModel(uuid, wallet, bank);
         economy.add(model);
         try {
             saveAccounts();
@@ -29,9 +29,9 @@ public class EconomyStorageUtil {
         return model;
     }
 
-    public static EconomyModel findAccount(String id) {
+    public static PlayerEconomyModel findAccount(String id) {
         // linear search
-        for (EconomyModel model : economy) {
+        for (PlayerEconomyModel model : economy) {
             if (model.getId().equalsIgnoreCase(id)) {
                 return model;
             }
@@ -39,9 +39,9 @@ public class EconomyStorageUtil {
         return null;
     }
 
-    public static EconomyModel findAccount(UUID uuid) {
+    public static PlayerEconomyModel findAccount(UUID uuid) {
         // linear search
-        for (EconomyModel model : economy) {
+        for (PlayerEconomyModel model : economy) {
             if (model.getPlayerUUID().equals(uuid)) {
                 return model;
             }
@@ -49,9 +49,9 @@ public class EconomyStorageUtil {
         return null;
     }
 
-    public static EconomyModel updateAccount(String id, EconomyModel newAccount) {
+    public static void updateAccount(String id, PlayerEconomyModel newAccount) {
         // linear search
-        for (EconomyModel model : economy) {
+        for (PlayerEconomyModel model : economy) {
             if (model.getId().equalsIgnoreCase(id)) {
                 model.setBank(newAccount.getBank());
                 model.setPlayerUUID(newAccount.getPlayerUUID());
@@ -62,8 +62,7 @@ public class EconomyStorageUtil {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                return model;
+                return;
             }
         }
         try {
@@ -71,34 +70,36 @@ public class EconomyStorageUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    public static void deleteAccount(String id) {
+    public static boolean deleteAccount(String id) {
 
         // linear search
-        for (EconomyModel model : economy) {
+        for (PlayerEconomyModel model : economy) {
             if (model.getId().equalsIgnoreCase(id)) {
                 economy.remove(model);
-                break;
+                try {
+                    saveAccounts();
+                    return true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        try {
-            saveAccounts();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return false;
     }
 
-    public static List<EconomyModel> findAllAccounts() {
+    public static List<PlayerEconomyModel> findAllAccounts() {
         return economy;
     }
 
     public static void saveAccounts() throws IOException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(IndroEconomy.getInstance().getDataFolder().getAbsolutePath() + File.separator + "economy.json");
-        file.getParentFile().mkdir();
-        file.createNewFile();
+        if (!file.exists()) {
+            file.getParentFile().mkdir();
+            file.createNewFile();
+        }
         Writer writer = new FileWriter(file, false);
         gson.toJson(economy, writer);
         writer.flush();
@@ -106,13 +107,12 @@ public class EconomyStorageUtil {
     }
 
     public static void loadAccounts() throws IOException {
-
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(IndroEconomy.getInstance().getDataFolder().getAbsolutePath() + File.separator + "economy.json");
-        if (file.exists()) {
-            Reader reader = new FileReader(file);
-            EconomyModel[] model = gson.fromJson(reader, EconomyModel[].class);
-            economy = new ArrayList<>(Arrays.asList(model));
+        if (!file.exists()) {
+            saveAccounts();
         }
+        PlayerEconomyModel[] model = gson.fromJson(new FileReader(file), PlayerEconomyModel[].class);
+        economy = new ArrayList<>(Arrays.asList(model));
     }
 }

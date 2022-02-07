@@ -21,6 +21,9 @@ money:
   moneySymbol: $ # the symbol that the plugin will use to present the money with
   deathLossPercent: 10 # when player's die, how much percent of their money do you want them to lose?
   defaultAmount: 200 # what amount do you want players to start with?
+  minimum: -1000000 # the minimum amount of money to have to be considered bankrupt
+  killerGetsDeathMoney: true # if a player kills another player, do they get your money?
+  killerGetsDeathMoneyPercent: 0.98 # how much money should the killer get from the player
 
 back:
   backAllowed: false
@@ -34,7 +37,3 @@ blocks:
     - 20
     - 5
     - 1
-
-shop:
-  shopPrice: 250 # this is the default cost per shop available
-  shopLimit: 5 # this is how many shops a player can have, will be toggleable later on

@@ -60,19 +60,13 @@ public class OpShopMenu extends Menu {
         int maxEnchants;
 
         switch (itemName) {
-            /*
-              <Tier 1>
-              - Cost: $2,500
-              - Extra Enchant Chance: 25%
-              - Overlevel Chance: 25%
-             */
             case "Tier 1" -> {
                 if (eco.getWallet(player) >= 2500) {
                     eco.minusWallet(player, 2500);
 
                     //init chance gates
                     extraEnchChance = 25;
-                    overlevelChance = 25;
+                    overlevelChance = 100;
                     maxEnchants = 3;
 
                     ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
@@ -84,20 +78,13 @@ public class OpShopMenu extends Menu {
                 }
             }
 
-
-            /*
-              <Tier 2>
-              - Cost: $16,500
-              - Extra Enchant Chance: 30%
-              - Overlevel Chance: 50%
-             */
             case "Tier 2" -> {
                 if (eco.getWallet(player) >= 16500) {
                     eco.minusWallet(player, 16500);
 
                     //init chance gates
-                    extraEnchChance = 30;
-                    overlevelChance = 50;
+                    extraEnchChance = 50;
+                    overlevelChance = 100;
                     maxEnchants = 4;
 
                     ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
@@ -109,20 +96,13 @@ public class OpShopMenu extends Menu {
                 }
             }
 
-
-            /*
-              <Tier 3>
-              - Cost: $24,550
-              - Extra Enchant Chance: 40%
-              - Overlevel Chance: 75%
-             */
             case "Tier 3" -> {
                 if (eco.getWallet(player) >= 24550) {
                     eco.minusWallet(player, 24500);
 
                     //init chance gates
-                    extraEnchChance = 40;
-                    overlevelChance = 75;
+                    extraEnchChance = 75;
+                    overlevelChance = 100;
                     maxEnchants = 5;
 
                     ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
@@ -141,17 +121,17 @@ public class OpShopMenu extends Menu {
     public void setMenuItems() {
 
         ItemStack tierOne = makeItem(Material.ENCHANTED_BOOK, "Tier 1",
-                ChatColor.BOLD + "Costs $2,500\n" +
-                        "25% chance of a over-leveled enchant.\n" +
+                ChatColor.BOLD + "Costs $2,500",
+                        "Guaranteed max level enchants.",
                         "25% chance for an extra enchant, for a max of 3");
         ItemStack tierTwo = makeItem(Material.ENCHANTED_BOOK, "Tier 2",
-                ChatColor.BOLD + "Costs $16,500\n" +
-                        "50% chance of a over-leveled enchant.\n" +
-                        "30% chance for an extra enchant, for a max of 4");
+                ChatColor.BOLD + "Costs $16,500",
+                        "Guaranteed max level enchants.",
+                        "50% chance for an extra enchant, for a max of 4");
         ItemStack tierThree = makeItem(Material.ENCHANTED_BOOK, "Tier 3",
-                ChatColor.BOLD + "Costs $24,550\n" +
-                        "75% chance of a over-leveled enchant.\n" +
-                        "40% chance for an extra enchant, for a max of 5.") ;
+                ChatColor.BOLD + "Costs $24,550",
+                        "Guaranteed max level enchants.",
+                        "75% chance for an extra enchant, for a max of 5.");
 
         inventory.setItem(3, tierOne);
         inventory.setItem(4, tierTwo);
@@ -188,7 +168,7 @@ public class OpShopMenu extends Menu {
             Enchantment enchantment = Enchantment.values()[(int) (Math.random()*Enchantment.values().length)];
             int maxEnchLvl;
             if (isEnchOverleveled(overLevelChance) && !blackListedEnchants.contains(enchantment)) {
-                maxEnchLvl = 5;
+                maxEnchLvl = enchantment.getMaxLevel();
             } else {
                 maxEnchLvl = enchantment.getMaxLevel();
             }

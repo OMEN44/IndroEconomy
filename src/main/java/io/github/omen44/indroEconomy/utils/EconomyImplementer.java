@@ -6,13 +6,15 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.*;
 
 public class EconomyImplementer implements Economy {
     EconomyUtils eco = new EconomyUtils();
+    YamlUtils yamlUtils = new YamlUtils("banks");
 
     @Override
     public boolean isEnabled() {
@@ -26,7 +28,7 @@ public class EconomyImplementer implements Economy {
 
     @Override
     public boolean hasBankSupport() {
-        return false;
+        return true;
     }
 
     @Override
@@ -226,62 +228,84 @@ public class EconomyImplementer implements Economy {
 
     // ignore for the moment
     @Override
-    public EconomyResponse createBank(String playerName, String world) {
-        return null;
+    public EconomyResponse createBank(String bankName, String bankOwner) {
+        return createBank(bankName, Objects.requireNonNull(Bukkit.getServer().getPlayer(bankOwner)));
     }
 
     @Override
-    public EconomyResponse createBank(String playerName, OfflinePlayer offlinePlayer) {
-        return null;
+    public EconomyResponse createBank(String bankName, OfflinePlayer bankOwner) {
+        eco.createBank(bankName, bankOwner);
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
-    public EconomyResponse deleteBank(String playerName) {
-        return null;
+    public EconomyResponse deleteBank(String bankName) {
+        eco.deleteBank(bankName);
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
-    public EconomyResponse bankBalance(String playerName) {
-        return null;
+    public EconomyResponse bankBalance(String bankName) {
+        int bankBalance = eco.bankBalance(bankName);
+        return new EconomyResponse(0, bankBalance, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
-    public EconomyResponse bankHas(String playerName, double value) {
-        return null;
+    public EconomyResponse bankHas(String bankName, double value) {
+        int bankBalance = eco.bankBalance(bankName);
+        if (bankBalance >= value) {
+            return new EconomyResponse(0, bankBalance, EconomyResponse.ResponseType.SUCCESS, "");
+        } else {
+            return new EconomyResponse(0, bankBalance, EconomyResponse.ResponseType.FAILURE, "Not Enough Bank Balance");
+        }
     }
 
     @Override
-    public EconomyResponse bankWithdraw(String playerName, double value) {
-        return null;
+    public EconomyResponse bankWithdraw(String bankName, double value) {
+        int bankBalance = eco.bankWithdraw(bankName, (int) value);
+        return new EconomyResponse(value, bankBalance, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
-    public EconomyResponse bankDeposit(String playerName, double value) {
-        return null;
+    public EconomyResponse bankDeposit(String bankName, double value) {
+        int bankBalance = eco.bankDeposit(bankName, (int) value);
+        return new EconomyResponse(value, bankBalance, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
-    public EconomyResponse isBankOwner(String playerName, String world) {
-        return null;
+    public EconomyResponse isBankOwner(String bankName, String playerName) {
+        OfflinePlayer offlinePlayer = Bukkit.getServer().getPlayer(playerName);
+        return isBankOwner(bankName, offlinePlayer);
     }
 
     @Override
-    public EconomyResponse isBankOwner(String playerName, OfflinePlayer offlinePlayer) {
-        return null;
+    public EconomyResponse isBankOwner(String bankName, OfflinePlayer bankOwner) {
+        boolean isBankOwner = eco.isBankOwner(bankName, bankOwner);
+        if (isBankOwner) {
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.SUCCESS, "");
+        } else {
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Null or Not Bank Owner");
+        }
     }
 
     @Override
-    public EconomyResponse isBankMember(String playerName, String world) {
-        return null;
+    public EconomyResponse isBankMember(String bankName, String playerName) {
+        OfflinePlayer offlinePlayer = Bukkit.getServer().getPlayer(playerName);
+        return isBankMember(bankName, offlinePlayer);
     }
 
     @Override
-    public EconomyResponse isBankMember(String playerName, OfflinePlayer offlinePlayer) {
-        return null;
+    public EconomyResponse isBankMember(String bankName, OfflinePlayer bankMember) {
+        boolean isBankMember = eco.isBankMember(bankName, bankMember);
+        if (isBankMember) {
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.SUCCESS, "");
+        } else {
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Null or Not Bank Member");
+        }
     }
 
     @Override
     public List<String> getBanks() {
-        return null;
+        return eco.getBanks();
     }
 }

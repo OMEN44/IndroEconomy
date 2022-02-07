@@ -31,27 +31,26 @@ public class CommandBack implements CommandExecutor {
 
             if (label.equalsIgnoreCase("back")) {
                 Location lastLocation = (Location) deathSaves.get(player.getUniqueId().toString());
-                if (lastLocation == null) {
-                    player.sendMessage(mWarning + "You have already used /back before!");
-                    return true;
-                }
 
-                if (backAllowed) {
+                if (backAllowed || player.hasPermission("indroEconomy.back")) {
                     final int playerWallet = eco.getWallet(player);
                     if (playerWallet >= config.getInt("back.backCost")) {
+                        if (lastLocation == null) {
+                            player.sendMessage(mWarning + "You have already used /back before!");
+                            return true;
+                        }
                         final int backCost = config.getInt("back.backCost");
                         eco.minusWallet(player, backCost);
-                        player.sendMessage(mNormal + "Deducted " + symbol + backCost + " to your wallet");
+                        player.sendMessage(mNormal + "Deducted " + symbol + backCost + " from your wallet");
                         player.sendMessage(mNormal + "Warping to your last death point!");
 
                         player.teleport(lastLocation);
                         player.sendMessage(mNormal + "Warped!");
                         deathSaves.set(player.getUniqueId().toString(), null);
-                        return true;
                     } else {
                         player.sendMessage(mWarning + "Sorry, no death saves for the poor.");
-                        return true;
                     }
+                    return true;
                 } else {
                     player.sendMessage(mWarning + "/back is not allowed");
                 }

@@ -1,12 +1,16 @@
 package io.github.omen44.indroEconomy;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.omen44.indroEconomy.commands.economy.*;
+import io.github.omen44.indroEconomy.commands.tp.CommandBack;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.events.EventOnPlayerDeath;
 import io.github.omen44.indroEconomy.events.EventOnPlayerJoinLeave;
 import io.github.omen44.indroEconomy.events.EventOnPlayerMine;
 import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
 import io.github.omen44.indroEconomy.utils.EconomyImplementer;
+import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import io.github.omen44.indroEconomy.utils.YamlUtils;
 import me.kodysimpson.simpapi.command.CommandManager;
 import me.kodysimpson.simpapi.menu.MenuManager;
@@ -36,8 +40,11 @@ public class IndroEconomy extends JavaPlugin {
         ConfigTools configTools = new ConfigTools();
         configTools.saveDefaultConfig("config.yml");
         FileConfiguration config = configTools.getConfig("config.yml");
-        YamlUtils yamlUtils = new YamlUtils("backLocation");
-        yamlUtils.createFile();
+        YamlUtils backFile = new YamlUtils("backLocation");
+        YamlUtils bankFile = new YamlUtils("teams");
+        backFile.createFile();
+        bankFile.createFile();
+
 
         String symbol = config.getString("money.moneySymbol");
         Bukkit.getLogger().info("Money symbol: " + symbol);
@@ -47,7 +54,15 @@ public class IndroEconomy extends JavaPlugin {
             this.getLogger().info("Vault Found, integrating with it.");
         }
 
+        try {
+            EconomyStorageUtil.loadAccounts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // commands
+        this.getServer().getPluginCommand("back").setExecutor(new CommandBack());
+
         try {
             CommandManager.createCoreCommand(this, "eco",
                     "The Economy Module of the Plugin.", "/eco",
@@ -55,12 +70,6 @@ public class IndroEconomy extends JavaPlugin {
                     CommandBal.class, CommandOpShop.class, CommandSend.class, CommandSetMoney.class,
                     CommandTransfer.class, CommandGamble.class);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            EconomyStorageUtil.loadAccounts();
-        } catch (IOException e) {
             e.printStackTrace();
         }
 

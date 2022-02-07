@@ -47,9 +47,16 @@ public class EventOnPlayerDeath implements Listener {
             //reduce their wallet by the percentage
             player.sendMessage(mPrefix + "You have died and lost " + symbol + ((int) (moneyLost)));
             eco.minusWallet(player, (int) moneyLost);
+
+            if (event.getEntity().getKiller() != null && config.getBoolean("money.killerGetsDeathMoney")) {
+                Player killer = event.getEntity().getKiller();
+                double moneyGained = moneyLost * config.getDouble("money.killerGetsDeathMoneyPercent");
+                eco.addWallet(killer, (int) moneyGained);
+                killer.sendMessage("You stole " + symbol + ((int) moneyGained));
+            }
         } else {
             event.setDeathMessage(player.getName() + " ran out of money");
-            player.setMetadata("deathCausePoverty", new FixedMetadataValue(IndroEconomy.getInstance(), false));
+            player.removeMetadata("deathCausePoverty", IndroEconomy.getInstance());
             eco.setWallet(player, 200);
         }
     }

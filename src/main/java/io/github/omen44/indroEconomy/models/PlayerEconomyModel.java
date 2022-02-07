@@ -2,7 +2,7 @@ package io.github.omen44.indroEconomy.models;
 
 import java.util.UUID;
 
-public class EconomyModel {
+public class PlayerEconomyModel {
 
     private final String id;
 
@@ -10,7 +10,7 @@ public class EconomyModel {
     private int wallet;
     private int bank;
 
-    public EconomyModel(UUID playerUUID, int wallet, int bank) {
+    public PlayerEconomyModel(UUID playerUUID, int wallet, int bank) {
         this.playerUUID = playerUUID;
         this.wallet = wallet;
         this.bank = bank;

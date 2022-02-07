@@ -37,10 +37,9 @@ public class CommandTransfer extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        if (!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage("This is a player only command!");
         } else {
-            Player player = (Player) commandSender;
             if (args.length == 3) {
                 ConfigTools configTools = new ConfigTools();
                 FileConfiguration config = configTools.getConfig("config.yml");
@@ -83,8 +82,8 @@ public class CommandTransfer extends SubCommand {
     public List<String> getSubcommandArguments(Player player, String[] args) {
         List<String> arguments = new ArrayList<>();
         if (args.length == 2) {
-            arguments.add("wallet");
-            arguments.add("bank");
+            arguments.add("withdraw");
+            arguments.add("deposit");
             return arguments;
         }
         if (args.length == 3) {

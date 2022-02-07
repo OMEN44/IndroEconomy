@@ -28,9 +28,11 @@ public class EventOnPlayerJoinLeave implements Listener {
         int defaultMoney = config.getInt("money.defaultAmount");
 
         // creating a player if they don't exist
-        if (!player.hasPlayedBefore() && !eco.hasAccount(player)) {
-            eco.createAccount(player);
+        if (!player.hasPlayedBefore()) {
             player.sendMessage(mPrefix + "You start with " + symbol + defaultMoney);
+        }
+        if (!eco.hasAccount(player)) {
+            eco.createAccount(player);
         }
         // dailyRewardtask(player);
     }
