@@ -1,7 +1,9 @@
-package io.github.omen44.indroEconomy.utils;
+package io.github.omen44.indroEconomy.integerations;
 
 import io.github.omen44.indroEconomy.IndroEconomy;
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.EconomyUtils;
+import io.github.omen44.indroEconomy.utils.YamlUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -39,7 +41,7 @@ public class EconomyImplementer implements Economy {
     @Override
     public String format(double value) {
         int money = ((int) value);
-        return String.valueOf(money);
+        return eco.format(money);
     }
 
     @Override

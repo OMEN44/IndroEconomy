@@ -2,6 +2,7 @@ package io.github.omen44.indroEconomy.commands.economy;
 
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
+import io.github.omen44.indroEconomy.utils.Lang;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.command.CommandSender;
@@ -38,13 +39,12 @@ public class CommandTransfer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if (!(commandSender instanceof Player player)) {
-            commandSender.sendMessage("This is a player only command!");
+            commandSender.sendMessage(Lang.TITLE.toString() + Lang.PLAYER_ONLY);
         } else {
             if (args.length == 3) {
                 ConfigTools configTools = new ConfigTools();
                 FileConfiguration config = configTools.getConfig("config.yml");
                 String symbol = config.getString("money.moneySymbol");
-
                 EconomyUtils eco = new EconomyUtils();
 
                 // initialise values

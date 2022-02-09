@@ -17,17 +17,17 @@ import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mWarning;
 public class CommandBack implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("The console cannot die.");
         } else {
             EconomyUtils eco = new EconomyUtils();
             ConfigTools configTools = new ConfigTools();
             FileConfiguration config = configTools.getConfig("config");
             boolean backAllowed = config.getBoolean("back.backAllowed");
+            String symbol = config.getString("money.moneySymbol");
+
             YamlUtils yamlUtils = new YamlUtils("backLocation");
             FileConfiguration deathSaves = yamlUtils.getConfig();
-            String symbol = config.getString("money.moneySymbol");
-            Player player = (Player) sender;
 
             if (label.equalsIgnoreCase("back")) {
                 Location lastLocation = (Location) deathSaves.get(player.getUniqueId().toString());
@@ -47,6 +47,7 @@ public class CommandBack implements CommandExecutor {
                         player.teleport(lastLocation);
                         player.sendMessage(mNormal + "Warped!");
                         deathSaves.set(player.getUniqueId().toString(), null);
+                        yamlUtils.saveFile(deathSaves);
                     } else {
                         player.sendMessage(mWarning + "Sorry, no death saves for the poor.");
                     }

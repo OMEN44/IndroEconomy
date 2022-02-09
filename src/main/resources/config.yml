@@ -17,13 +17,17 @@
 #     - <amount of $>
 #     - <amount of $>
 
+moneySymbol: $ # the symbol that the plugin will use to present the money with
+symbolPosition: "prefix" # the position of the moneySymbol
+separator: , # the separator for money formatting
+
 money:
-  moneySymbol: $ # the symbol that the plugin will use to present the money with
   deathLossPercent: 10 # when player's die, how much percent of their money do you want them to lose?
   defaultAmount: 200 # what amount do you want players to start with?
   minimum: -1000000 # the minimum amount of money to have to be considered bankrupt
   killerGetsDeathMoney: true # if a player kills another player, do they get your money?
   killerGetsDeathMoneyPercent: 0.98 # how much money should the killer get from the player
+
 
 back:
   backAllowed: false
@@ -37,3 +41,14 @@ blocks:
     - 20
     - 5
     - 1
+
+# Use & for color codes.
+# %type% is where the type of transfer will get inserted.
+title-name: "&4[&fIndroEconomy&4]:"
+invalid-args: "&cSyntax Error!"
+player-only: "Sorry but that can only be run by a player!"
+must-be-number: "&cYou need to specify a number, not a word."
+no-permissions: "&cYou don't have permission for that!"
+not-enough-money: "&cYou do not have enough money to do that!"
+transfer-success: "&9Transfer to %type% was successful!"
+transfer-failure: "&cTransfer to %type% failed!"

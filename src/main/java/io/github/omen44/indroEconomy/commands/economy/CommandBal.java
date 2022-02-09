@@ -1,16 +1,13 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
-import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
+import io.github.omen44.indroEconomy.utils.Lang;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
 
 public class CommandBal extends SubCommand {
     @Override
@@ -36,35 +33,26 @@ public class CommandBal extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         // checks if the sender is a player
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("This is a player only command!");
+        if (!(commandSender instanceof Player player)) {
+            commandSender.sendMessage(Lang.TITLE.toString() + Lang.PLAYER_ONLY);
         } else {
-            Player player = (Player) commandSender;
             EconomyUtils eco = new EconomyUtils();
-            ConfigTools configTools = new ConfigTools();
-            FileConfiguration config = configTools.getConfig("config.yml");
-            String symbol = config.getString("money.moneySymbol");
 
-            int wallet;
             int bank;
-            int totalBalance;
+            int wallet;
 
             try {
                 wallet = eco.getWallet(player);
                 bank = eco.getBank(player);
-                totalBalance = wallet + bank;
             } catch (NullPointerException e) {
                 player.sendMessage("Your account doesn't exist, contact an admin to get it fixed");
                 return;
             }
-            if (args.length == 2) {
-                if (args[1].equalsIgnoreCase("wallet")) {
-                    player.sendMessage(mNormal + "Wallet Balance: " + symbol + wallet);
-                } else if (args[1].equalsIgnoreCase("bank")) {
-                    player.sendMessage(mNormal + "Bank Balance: " + symbol +  bank);
-                }
+
+            if (args.length == 2 && args[1].equalsIgnoreCase("bank")) {
+                player.sendMessage(Lang.TITLE + "Bank Balance: " + eco.format(bank));
             } else {
-                player.sendMessage(mNormal + "Total Amount: " + symbol + totalBalance);
+                player.sendMessage(Lang.TITLE + "Wallet Balance: " + eco.format(wallet));
             }
         }
     }
@@ -74,7 +62,6 @@ public class CommandBal extends SubCommand {
         List<String> arguments = new ArrayList<>();
         if (args.length == 2) {
             arguments.add("bank");
-            arguments.add("wallet");
             return arguments;
         }
         return null;

@@ -2,8 +2,10 @@ package io.github.omen44.indroEconomy.commands.economy;
 
 import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
+import io.github.omen44.indroEconomy.utils.Lang;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -36,34 +38,44 @@ public class CommandSend extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("This is a player only command!");
-        }
-        if (commandSender instanceof Player) {
+        if (!(commandSender instanceof Player player)) {
+            commandSender.sendMessage(Lang.TITLE.toString() + Lang.PLAYER_ONLY);
+        } else {
             ConfigTools configTools = new ConfigTools();
             FileConfiguration config = configTools.getConfig("config.yml");
             String symbol = config.getString("money.moneySymbol");
 
-            Player player = (Player) commandSender;
             EconomyUtils eco = new EconomyUtils();
 
             // /eco pay <player> <amount>
-            if (args.length == 3) {
+            if (args.length > 3) {
                 Player target = Bukkit.getPlayer(args[1]);
                 int amount;
 
-
                 // error checkers
-                try {
-                    amount = Integer.parseInt(args[2]);
-                } catch (NumberFormatException e) {
-                    player.sendMessage(mNormal + "<amount> must be a positive, non-negative integer!");
-                    return;
-                }
-
                 if (target == null || !eco.hasAccount(target)) {
                     player.sendMessage(mWarning + "<target> must be a valid Minecraft Username, and have joined at least once!");
                     return;
+                }
+                if (!(args[2].equalsIgnoreCase("max"))) {
+                    try {
+                        amount = Integer.parseInt(args[2]);
+                    } catch (NumberFormatException e) {
+                        player.sendMessage(mNormal + "<amount> must be a positive, non-negative integer!");
+                        return;
+                    }
+                } else {
+                    amount = eco.getWallet(player);
+                    if (args[3] == null) {
+                        player.sendMessage(String.format("%sAre you sure you want to transfer %s to %s?",
+                                Lang.TITLE, eco.format(amount), args[1]));
+                        player.sendMessage(String.format("To confirm, do /eco pay %s %s confirm", args[1], args[2]));
+                        return;
+                    } else if (!(args[3].equalsIgnoreCase("confirm"))) {
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&cInvalid Confirmation Statement, Cancelling Transfer!"));
+                        return;
+                    }
                 }
 
                 // transferring amounts to players
@@ -76,7 +88,7 @@ public class CommandSend extends SubCommand {
                 }
 
             } else {
-                player.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco pay <player> <amount>");
+                player.sendMessage(String.valueOf(Lang.INVALID_ARGS));
             }
         }
     }
@@ -93,6 +105,7 @@ public class CommandSend extends SubCommand {
         }
         if (args.length == 3) {
             arguments.add("<amount>");
+            arguments.add("max");
             return arguments;
         }
         return null;

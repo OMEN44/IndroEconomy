@@ -1,6 +1,7 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
 import io.github.omen44.indroEconomy.menus.OpShopMenu;
+import io.github.omen44.indroEconomy.utils.Lang;
 import me.kodysimpson.simpapi.command.SubCommand;
 import me.kodysimpson.simpapi.exceptions.MenuManagerException;
 import me.kodysimpson.simpapi.exceptions.MenuManagerNotSetupException;
@@ -35,10 +36,9 @@ public class CommandOpShop extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("This is a player only command!");
+        if (!(commandSender instanceof Player player)) {
+            commandSender.sendMessage(Lang.TITLE.toString() + Lang.PLAYER_ONLY);
         } else {
-            Player player = (Player) commandSender;
             try {
                 MenuManager.openMenu(OpShopMenu.class, player);
             } catch (MenuManagerException | MenuManagerNotSetupException e) {

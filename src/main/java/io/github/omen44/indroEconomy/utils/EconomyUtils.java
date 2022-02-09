@@ -11,12 +11,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class EconomyUtils {
-    int defaultMoney;
-    int debtLimit;
-    YamlUtils yamlUtils;
+    private final int defaultMoney;
+    private final int debtLimit;
+    private final YamlUtils yamlUtils;
 
     public EconomyUtils() {
         ConfigTools configTools = new ConfigTools();
@@ -153,7 +157,7 @@ public class EconomyUtils {
 
 
     // ignore for the moment
-    
+
     public void createBank(String bankName, OfflinePlayer bankOwner) {
         FileConfiguration banks = yamlUtils.getConfig();
         banks.createSection(bankName);
@@ -163,25 +167,25 @@ public class EconomyUtils {
         yamlUtils.saveFile(banks);
     }
 
-    
+
     public void deleteBank(String bankName) {
         FileConfiguration banks = yamlUtils.getConfig();
         banks.set(bankName, null);
         yamlUtils.saveFile(banks);
     }
 
-    
+
     public Integer bankBalance(String bankName) {
         FileConfiguration banks = yamlUtils.getConfig();
         return banks.getInt(bankName + ".balance");
     }
-    
+
     public boolean bankHas(String bankName, int value) {
         FileConfiguration banks = yamlUtils.getConfig();
         int bankBalance = banks.getInt(bankName + ".balance");
         return bankBalance >= value;
     }
-    
+
     public int bankWithdraw(String bankName, int value) {
         FileConfiguration banks = yamlUtils.getConfig();
         int bankBalance = banks.getInt(bankName + ".balance");
@@ -189,7 +193,7 @@ public class EconomyUtils {
         banks.set(bankName + ".balance", bankBalance);
         return bankBalance;
     }
-    
+
     public int bankDeposit(String bankName, int value) {
         FileConfiguration banks = yamlUtils.getConfig();
         int bankBalance = banks.getInt(bankName + ".balance");
@@ -197,23 +201,23 @@ public class EconomyUtils {
         banks.set(bankName + ".balance", bankBalance);
         return bankBalance;
     }
-    
+
     public boolean isBankOwner(String bankName, String playerName) {
         OfflinePlayer offlinePlayer = Bukkit.getServer().getPlayer(playerName);
         return isBankOwner(bankName, offlinePlayer);
     }
-    
+
     public boolean isBankOwner(String bankName, OfflinePlayer bankOwner) {
         FileConfiguration banks = yamlUtils.getConfig();
         UUID banksString = (UUID) banks.get(bankName + ".owner");
         return banksString != null && banksString.equals(bankOwner.getUniqueId());
     }
-    
+
     public boolean isBankMember(String bankName, String playerName) {
         OfflinePlayer offlinePlayer = Bukkit.getServer().getPlayer(playerName);
         return isBankMember(bankName, offlinePlayer);
     }
-    
+
     public boolean isBankMember(String bankName, OfflinePlayer bankMember) {
         FileConfiguration banks = yamlUtils.getConfig();
         List<?> banksString = banks.getList(bankName + ".members");
@@ -233,4 +237,46 @@ public class EconomyUtils {
         }
         return bankList;
     }
+
+    public String format(int amount) {
+        // typical config tools
+        ConfigTools configTools = new ConfigTools();
+        FileConfiguration config = configTools.getConfig("config.yml");
+        final String symbol = config.getString("moneySymbol");
+        final String separator = config.getString("separator");
+        final char[] chars = String.valueOf(amount).toCharArray();
+        int initialCount;
+        String symbolPosition = config.getString("symbolPosition");
+        if (symbolPosition == null) {
+            Bukkit.getLogger().info("Defaulting to prefix formatting");
+            symbolPosition = "prefix";
+        }
+
+        switch (chars.length % 3) {
+            case 0 -> initialCount = 0;
+            case 1 -> initialCount = 1;
+            case 2 -> initialCount = 2;
+            default -> throw new IllegalStateException("Unexpected value: " + chars.length % 3);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = initialCount; i < chars.length; i++) {
+            if (i % 3 == 0) {
+                stringBuilder.append(separator);
+            } else {
+                stringBuilder.append(chars[i]);
+            }
+        }
+        if (symbolPosition.equalsIgnoreCase("prefix")) {
+            stringBuilder.insert(0, symbol);
+        } else if (symbolPosition.equalsIgnoreCase("suffix")){
+            stringBuilder.insert(stringBuilder.length()+1, symbol);
+        } else {
+            return null;
+        }
+
+        return stringBuilder.toString();
+    }
 }
+

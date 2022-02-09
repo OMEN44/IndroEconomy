@@ -23,6 +23,7 @@ public class EventOnPlayerDeath implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         FileConfiguration config = configTools.getConfig("config.yml");
         String symbol = config.getString("money.moneySymbol");
+        int defaultAmount = config.getInt("money.defaultMoney");
 
         //initialise the values needed
         Player player = event.getEntity();
@@ -57,7 +58,7 @@ public class EventOnPlayerDeath implements Listener {
         } else {
             event.setDeathMessage(player.getName() + " ran out of money");
             player.removeMetadata("deathCausePoverty", IndroEconomy.getInstance());
-            eco.setWallet(player, 200);
+            eco.setWallet(player, defaultAmount);
         }
     }
 }
