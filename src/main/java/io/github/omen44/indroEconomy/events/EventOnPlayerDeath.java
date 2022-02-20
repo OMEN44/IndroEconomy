@@ -2,13 +2,12 @@ package io.github.omen44.indroEconomy.events;
 
 import io.github.omen44.indroEconomy.IndroEconomy;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
-import io.github.omen44.indroEconomy.datamanager.ConfigTools;
+import io.github.omen44.indroEconomy.utils.Lang;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
@@ -17,13 +16,12 @@ import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
 
 public class EventOnPlayerDeath implements Listener {
     EconomyUtils eco = new EconomyUtils();
-    ConfigTools configTools = new ConfigTools();
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        FileConfiguration config = configTools.getConfig("config.yml");
-        String symbol = config.getString("money.moneySymbol");
-        int defaultAmount = config.getInt("money.defaultMoney");
+        FileConfiguration config = IndroEconomy.getInstance().getSavedConfig();
+        final String symbol = config.getString("moneySymbol");
+        final int defaultAmount = config.getInt("money.defaultMoney");
 
         //initialise the values needed
         Player player = event.getEntity();
@@ -46,19 +44,22 @@ public class EventOnPlayerDeath implements Listener {
             }
 
             //reduce their wallet by the percentage
-            player.sendMessage(mPrefix + "You have died and lost " + symbol + ((int) (moneyLost)));
+            player.sendMessage(mPrefix + "You have died and lost " + eco.format((int) moneyLost));
             eco.minusWallet(player, (int) moneyLost);
 
             if (event.getEntity().getKiller() != null && config.getBoolean("money.killerGetsDeathMoney")) {
                 Player killer = event.getEntity().getKiller();
-                double moneyGained = moneyLost * config.getDouble("money.killerGetsDeathMoneyPercent");
-                eco.addWallet(killer, (int) moneyGained);
-                killer.sendMessage("You stole " + symbol + ((int) moneyGained));
+                int moneyGained = (int) (moneyLost * config.getDouble("money.killerGetsDeathMoneyPercent"));
+                eco.addWallet(killer, moneyGained);
+                String formatted = eco.format(moneyGained);
+                killer.sendMessage(String.format("%s You stole %s from %s", Lang.TITLE, formatted, player.getName()));
             }
-        } else {
+        } else if (config.getBoolean("deathByPoverty")) {
             event.setDeathMessage(player.getName() + " ran out of money");
             player.removeMetadata("deathCausePoverty", IndroEconomy.getInstance());
+            player.sendMessage(Lang.TITLE + "Resetting your wallet and bank, since you ran out of money!");
             eco.setWallet(player, defaultAmount);
+            eco.setBank(player, 0);
         }
     }
 }

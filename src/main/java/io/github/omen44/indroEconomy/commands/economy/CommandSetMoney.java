@@ -1,12 +1,10 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
-import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -45,13 +43,9 @@ public class CommandSetMoney extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         EconomyUtils eco = new EconomyUtils();
-        ConfigTools configTools = new ConfigTools();
-        FileConfiguration config = configTools.getConfig("config.yml");
-
         if (commandSender.hasPermission("indroEconomy.admin.setMoney")) {
             if (args.length == 4) {
                 // initialising values
-                final String symbol = config.getString("money.moneySymbol");
                 final String type = args[1];
                 final Player target = Bukkit.getPlayer(args[2]);
                 int amount;
@@ -70,12 +64,12 @@ public class CommandSetMoney extends SubCommand {
 
                 if (type.equals("wallet")) {
                     eco.setWallet(target, amount);
-                    int wallet = eco.getWallet(target);
-                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fwallet to " + symbol + wallet));
+                    String formatted = eco.format(eco.getWallet(target));
+                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fwallet to " + formatted));
                 } else if (type.equals("bank")) {
                     eco.setBank(target, amount);
-                    int bank = eco.getBank(target);
-                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fbank to " + symbol + bank));
+                    String formatted = eco.format(eco.getBank(target));
+                    commandSender.sendMessage(ColorTranslator.translateColorCodes("&fSet &a" + target.getName() + "'s &fbank to " + formatted));
                 }
             } else {
                 commandSender.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco setmoney <player> <amount>");

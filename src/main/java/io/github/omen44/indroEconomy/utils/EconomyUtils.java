@@ -1,7 +1,6 @@
 package io.github.omen44.indroEconomy.utils;
 
 import io.github.omen44.indroEconomy.IndroEconomy;
-import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.models.PlayerEconomyModel;
 import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
 import org.bukkit.Bukkit;
@@ -23,8 +22,7 @@ public class EconomyUtils {
     private final YamlUtils yamlUtils;
 
     public EconomyUtils() {
-        ConfigTools configTools = new ConfigTools();
-        FileConfiguration config = configTools.getConfig("config.yml");
+        FileConfiguration config = IndroEconomy.getInstance().getSavedConfig();
         this.defaultMoney = config.getInt("money.defaultAmount");
         this.debtLimit = config.getInt("money.minimum");
         this.yamlUtils = new YamlUtils("banks");
@@ -240,8 +238,7 @@ public class EconomyUtils {
 
     public String format(int amount) {
         // typical config tools
-        ConfigTools configTools = new ConfigTools();
-        FileConfiguration config = configTools.getConfig("config.yml");
+        FileConfiguration config = IndroEconomy.getInstance().getSavedConfig();
         final String symbol = config.getString("moneySymbol");
         final String separator = config.getString("separator");
         final char[] chars = String.valueOf(amount).toCharArray();
@@ -261,17 +258,20 @@ public class EconomyUtils {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int i = initialCount; i < chars.length; i++) {
-            if (i % 3 == 0) {
+        for (int i = 0; i < chars.length; i++) {
+            boolean topped = (i+1) >= chars.length;
+            stringBuilder.append(chars[i]);
+            if (topped) break;
+            boolean multiple3 = ((i+1) % 3) - initialCount == 0;
+
+            if (multiple3) {
                 stringBuilder.append(separator);
-            } else {
-                stringBuilder.append(chars[i]);
             }
         }
         if (symbolPosition.equalsIgnoreCase("prefix")) {
             stringBuilder.insert(0, symbol);
         } else if (symbolPosition.equalsIgnoreCase("suffix")){
-            stringBuilder.insert(stringBuilder.length()+1, symbol);
+            stringBuilder.append(symbol);
         } else {
             return null;
         }

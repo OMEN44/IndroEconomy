@@ -168,7 +168,7 @@ public class OpShopMenu extends Menu {
             Enchantment enchantment = Enchantment.values()[(int) (Math.random()*Enchantment.values().length)];
             int maxEnchLvl;
             if (isEnchOverleveled(overLevelChance) && !blackListedEnchants.contains(enchantment)) {
-                maxEnchLvl = enchantment.getMaxLevel();
+                maxEnchLvl = 5;
             } else {
                 maxEnchLvl = enchantment.getMaxLevel();
             }

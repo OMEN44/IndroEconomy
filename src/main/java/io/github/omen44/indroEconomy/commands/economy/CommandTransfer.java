@@ -1,12 +1,10 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
-import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import io.github.omen44.indroEconomy.utils.Lang;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -42,9 +40,6 @@ public class CommandTransfer extends SubCommand {
             commandSender.sendMessage(Lang.TITLE.toString() + Lang.PLAYER_ONLY);
         } else {
             if (args.length == 3) {
-                ConfigTools configTools = new ConfigTools();
-                FileConfiguration config = configTools.getConfig("config.yml");
-                String symbol = config.getString("money.moneySymbol");
                 EconomyUtils eco = new EconomyUtils();
 
                 // initialise values
@@ -67,10 +62,10 @@ public class CommandTransfer extends SubCommand {
                     final int wallet = eco.getWallet(player);
                     final int bank = eco.getBank(player);
                     player.sendMessage(ColorTranslator.translateColorCodes("&aTransfer was successful!"));
-                    player.sendMessage(mNormal + "Current Wallet Balance: " + symbol + wallet);
-                    player.sendMessage(mNormal + "Current Bank Balance: " + symbol + bank);
+                    player.sendMessage(Lang.TITLE + "Current Wallet Balance: " + eco.format(wallet));
+                    player.sendMessage(Lang.TITLE + "Current Bank Balance: " + eco.format(bank));
                 } else {
-                    player.sendMessage(mWarning + "Payment could not be done, cancelling transaction!");
+                    player.sendMessage(Lang.TITLE + "Payment could not be done, cancelling transaction!");
                 }
             } else {
                 player.sendMessage(mWarning + "Syntax Error! \n" + mWarning + "Format: /eco transfer <bank/wallet> <amount>");

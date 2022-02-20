@@ -1,19 +1,18 @@
 package io.github.omen44.indroEconomy.commands.economy;
 
-import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
 import io.github.omen44.indroEconomy.utils.Lang;
 import me.kodysimpson.simpapi.command.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mWarning;
 
 public class CommandSend extends SubCommand {
     @Override
@@ -41,10 +40,6 @@ public class CommandSend extends SubCommand {
         if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage(Lang.TITLE.toString() + Lang.PLAYER_ONLY);
         } else {
-            ConfigTools configTools = new ConfigTools();
-            FileConfiguration config = configTools.getConfig("config.yml");
-            String symbol = config.getString("money.moneySymbol");
-
             EconomyUtils eco = new EconomyUtils();
 
             // /eco pay <player> <amount>
@@ -67,7 +62,7 @@ public class CommandSend extends SubCommand {
                 } else {
                     amount = eco.getWallet(player);
                     if (args[3] == null) {
-                        player.sendMessage(String.format("%sAre you sure you want to transfer %s to %s?",
+                        player.sendMessage(String.format("%s Are you sure you want to transfer %s to %s?",
                                 Lang.TITLE, eco.format(amount), args[1]));
                         player.sendMessage(String.format("To confirm, do /eco pay %s %s confirm", args[1], args[2]));
                         return;
@@ -80,13 +75,13 @@ public class CommandSend extends SubCommand {
 
                 // transferring amounts to players
                 boolean result = eco.sendMoney(player, target, amount);
+                String formatted = eco.format(amount);
                 if (result) {
-                    player.sendMessage(mNormal + "Payment was Successful, sent " + symbol + amount + " to " + target.getName());
-                    target.sendMessage(mNormal + "Received " + symbol + amount + " from " + player.getName());
+                    player.sendMessage(String.format(Lang.TITLE + "Payment was Successful, sent %s to %s", formatted, target.getName()));
+                    target.sendMessage(String.format(Lang.TITLE + "Received %s from %s", formatted, player.getName()));
                 } else {
                     player.sendMessage(mWarning + "Payment could not be done, cancelling transaction!");
                 }
-
             } else {
                 player.sendMessage(String.valueOf(Lang.INVALID_ARGS));
             }

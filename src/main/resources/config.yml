@@ -19,15 +19,15 @@
 
 moneySymbol: $ # the symbol that the plugin will use to present the money with
 symbolPosition: "prefix" # the position of the moneySymbol
-separator: , # the separator for money formatting
+separator: "," # the separator for money formatting
 
 money:
+  deathByPoverty: true # are players going to die when they run our of money
+  minimum: -1000000 # the minimum amount of money to have to be considered bankrupt
   deathLossPercent: 10 # when player's die, how much percent of their money do you want them to lose?
   defaultAmount: 200 # what amount do you want players to start with?
-  minimum: -1000000 # the minimum amount of money to have to be considered bankrupt
   killerGetsDeathMoney: true # if a player kills another player, do they get your money?
   killerGetsDeathMoneyPercent: 0.98 # how much money should the killer get from the player
-
 
 back:
   backAllowed: false
@@ -41,6 +41,11 @@ blocks:
     - 20
     - 5
     - 1
+
+stock:
+  enabled: true # is it allowed?
+  defaultStock: 500 # how many diamonds do you start with?
+
 
 # Use & for color codes.
 # %type% is where the type of transfer will get inserted.

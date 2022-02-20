@@ -1,22 +1,25 @@
 package io.github.omen44.indroEconomy.integerations;
 
 import io.github.omen44.indroEconomy.IndroEconomy;
-import io.github.omen44.indroEconomy.datamanager.ConfigTools;
 import io.github.omen44.indroEconomy.utils.EconomyUtils;
-import io.github.omen44.indroEconomy.utils.YamlUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 public class EconomyImplementer implements Economy {
-    EconomyUtils eco = new EconomyUtils();
-    YamlUtils yamlUtils = new YamlUtils("banks");
+    private final EconomyUtils eco = new EconomyUtils();
+    private final FileConfiguration config;
+
+    public EconomyImplementer() {
+        IndroEconomy plugin = IndroEconomy.getInstance();
+        this.config = plugin.getConfig();
+    }
 
     @Override
     public boolean isEnabled() {
@@ -46,8 +49,6 @@ public class EconomyImplementer implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        ConfigTools configTools = new ConfigTools();
-        FileConfiguration config = configTools.getConfig("config.yml");
         return config.getString("money.moneySymbol");
     }
 

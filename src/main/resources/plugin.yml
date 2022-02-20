@@ -1,12 +1,7 @@
 name: IndroEconomy
-version: 2.1.1
+version: 2.1.3
 main: io.github.omen44.indroEconomy.IndroEconomy
 api-version: 1.17
 load: STARTUP
-depend:
+softdepend:
   - Vault
-commands:
-  back:
-    description: "Allow player to return to their previous death point"
-    usage: /back
-    permission: indroEconomy.back
