@@ -5,3 +5,4 @@ api-version: 1.17
 load: STARTUP
 softdepend:
   - Vault
+permissions: {"indroEconomy.stock", "indroEconomy.stock.insider", "indroEconomy.admin.setMoney"}

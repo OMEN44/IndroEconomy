@@ -29,10 +29,6 @@ money:
   killerGetsDeathMoney: true # if a player kills another player, do they get your money?
   killerGetsDeathMoneyPercent: 0.98 # how much money should the killer get from the player
 
-back:
-  backAllowed: false
-  backCost: 2000
-
 # example for the Block Earning system
 blocks:
   DIAMOND_ORE:
@@ -44,8 +40,13 @@ blocks:
 
 stock:
   enabled: true # is it allowed?
-  defaultStock: 500 # how many diamonds do you start with?
+  defaultStock: 1000 # how many diamonds do you start with?
+  median: 1000 # how much stock are you expecting?
+  value: 100 # 1 diamond = (value)
+  openTime: 72000 # how many milliseconds should the stock be open in ticks (20 ticks = 1 second)
 
+mobs:
+  enabled: false # should players get money for attacking a mob?
 
 # Use & for color codes.
 # %type% is where the type of transfer will get inserted.
@@ -57,3 +58,5 @@ no-permissions: "&cYou don't have permission for that!"
 not-enough-money: "&cYou do not have enough money to do that!"
 transfer-success: "&9Transfer to %type% was successful!"
 transfer-failure: "&cTransfer to %type% failed!"
+
+version: 2.1.3 # should not be changed

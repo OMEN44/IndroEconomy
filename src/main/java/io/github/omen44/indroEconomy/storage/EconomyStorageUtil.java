@@ -18,14 +18,8 @@ public class EconomyStorageUtil {
     private static ArrayList<PlayerEconomyModel> economy = new ArrayList<>();
 
     public static PlayerEconomyModel createAccount(UUID uuid, int wallet, int bank) {
-
         PlayerEconomyModel model = new PlayerEconomyModel(uuid, wallet, bank);
         economy.add(model);
-        try {
-            saveAccounts();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return model;
     }
 
@@ -65,15 +59,9 @@ public class EconomyStorageUtil {
                 return;
             }
         }
-        try {
-            saveAccounts();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static boolean deleteAccount(String id) {
-
         // linear search
         for (PlayerEconomyModel model : economy) {
             if (model.getId().equalsIgnoreCase(id)) {

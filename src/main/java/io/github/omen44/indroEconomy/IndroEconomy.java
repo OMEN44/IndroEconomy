@@ -7,6 +7,8 @@ import io.github.omen44.indroEconomy.events.EventOnPlayerJoinLeave;
 import io.github.omen44.indroEconomy.events.EventOnPlayerMine;
 import io.github.omen44.indroEconomy.integerations.EconomyImplementer;
 import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
+import io.github.omen44.indroEconomy.tasks.TaskStockUpdate;
+import io.github.omen44.indroEconomy.tasks.TaskUpdateFile;
 import io.github.omen44.indroEconomy.utils.Lang;
 import io.github.omen44.indroEconomy.utils.YamlUtils;
 import me.kodysimpson.simpapi.command.CommandManager;
@@ -32,10 +34,6 @@ public class IndroEconomy extends JavaPlugin {
     public static YamlConfiguration LANG;
     public static File LANG_FILE;
 
-    private static int lastDiamondStock;
-    private static int currentDiamondStock;
-    private static int diamondPrice;
-
     @Override
     public void onEnable() {
         // Set up the MenuManager
@@ -45,24 +43,17 @@ public class IndroEconomy extends JavaPlugin {
         this.saveDefaultConfig();
         config = this.getConfig();
 
-        lastDiamondStock = config.getInt("stock.defaultStock");
-        currentDiamondStock = config.getInt("stock.defaultStock");
-
         loadLang();
         registerCommands();
         createEconomyFiles();
+        registerIntegrations();
+        applyBukkitTasks();
 
+        // load accounts from the accountProgram
         try {
             EconomyStorageUtil.loadAccounts();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
-            Bukkit.getServer().getServicesManager().register(Economy.class, new EconomyImplementer(), this, ServicePriority.Highest);
-            this.getLogger().info("Vault Found, integrating with it.");
-        } else {
-            this.getLogger().info("Vault could not be found, disabling Vault Integration.");
         }
     }
 
@@ -78,6 +69,7 @@ public class IndroEconomy extends JavaPlugin {
         }
     }
 
+    // an instance of the JavaPlugin program
     public static IndroEconomy getInstance() {
         return plugin;
     }
@@ -123,7 +115,6 @@ public class IndroEconomy extends JavaPlugin {
             e.printStackTrace();
         }
     }
-
     /**
      * Gets the lang.yml config.
      * @return The lang.yml config.
@@ -149,7 +140,7 @@ public class IndroEconomy extends JavaPlugin {
                     "The Economy Module of the Plugin.", "/eco",
                     null,
                     CommandBal.class, CommandOpShop.class, CommandSend.class, CommandSetMoney.class,
-                    CommandTransfer.class);
+                    CommandTransfer.class, CommandStock.class);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -161,6 +152,16 @@ public class IndroEconomy extends JavaPlugin {
         pm.registerEvents(new EventOnEntityKill(), this);
     }
 
+    private void registerIntegrations() {
+        // checks if vault exists
+        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
+            Bukkit.getServer().getServicesManager().register(Economy.class, new EconomyImplementer(), this, ServicePriority.Highest);
+            this.getLogger().info("Vault Found, integrating with it.");
+        } else {
+            this.getLogger().info("Vault could not be found, disabling Vault Integration.");
+        }
+    }
+
     private void createEconomyFiles() {
         // instantiation of classes
         YamlUtils backFile = new YamlUtils("backLocation");
@@ -169,27 +170,13 @@ public class IndroEconomy extends JavaPlugin {
         bankFile.createFile();
     }
 
+    private void applyBukkitTasks() {
+        final int period = config.getInt("stock.openTime");
+        new TaskStockUpdate(this).runTaskTimer(this, 60L, period);
+        new TaskUpdateFile(this).runTaskTimer(this, 20L, 6000L);
+    }
+
     public FileConfiguration getSavedConfig() {
         return config;
-    }
-
-    /*
-    ~ getters and setters for diamond stocks
-     */
-
-    public static int getDiamondPrice() {
-        return diamondPrice;
-    }
-
-    public static int getLastDiamondStock() {
-        return lastDiamondStock;
-    }
-
-    public static int getCurrentDiamondStock() {
-        return currentDiamondStock;
-    }
-
-    public static void setCurrentDiamondStock(int currentDiamondStock) {
-        IndroEconomy.currentDiamondStock = currentDiamondStock;
     }
 }

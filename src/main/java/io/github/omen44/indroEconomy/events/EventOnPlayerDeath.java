@@ -12,8 +12,6 @@ import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
 
-import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mPrefix;
-
 public class EventOnPlayerDeath implements Listener {
     EconomyUtils eco = new EconomyUtils();
 
@@ -44,7 +42,7 @@ public class EventOnPlayerDeath implements Listener {
             }
 
             //reduce their wallet by the percentage
-            player.sendMessage(mPrefix + "You have died and lost " + eco.format((int) moneyLost));
+            player.sendMessage(Lang.TITLE + "You have died and lost " + eco.format((int) moneyLost));
             eco.minusWallet(player, (int) moneyLost);
 
             if (event.getEntity().getKiller() != null && config.getBoolean("money.killerGetsDeathMoney")) {
