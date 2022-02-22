@@ -10,7 +10,6 @@ import io.github.omen44.indroEconomy.storage.EconomyStorageUtil;
 import io.github.omen44.indroEconomy.tasks.TaskStockUpdate;
 import io.github.omen44.indroEconomy.tasks.TaskUpdateFile;
 import io.github.omen44.indroEconomy.utils.Lang;
-import io.github.omen44.indroEconomy.utils.YamlUtils;
 import me.kodysimpson.simpapi.command.CommandManager;
 import me.kodysimpson.simpapi.menu.MenuManager;
 import net.milkbowl.vault.economy.Economy;
@@ -29,11 +28,12 @@ import java.util.logging.Logger;
 
 public class IndroEconomy extends JavaPlugin {
     private static IndroEconomy plugin;
+
     private static FileConfiguration config;
+
     private Logger log;
     public static YamlConfiguration LANG;
     public static File LANG_FILE;
-
     @Override
     public void onEnable() {
         // Set up the MenuManager
@@ -45,7 +45,6 @@ public class IndroEconomy extends JavaPlugin {
 
         loadLang();
         registerCommands();
-        createEconomyFiles();
         registerIntegrations();
         applyBukkitTasks();
 
@@ -56,6 +55,8 @@ public class IndroEconomy extends JavaPlugin {
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void onDisable() {
@@ -70,10 +71,10 @@ public class IndroEconomy extends JavaPlugin {
     }
 
     // an instance of the JavaPlugin program
+
     public static IndroEconomy getInstance() {
         return plugin;
     }
-
     /**
      * Load the lang.yml file.
      */
@@ -115,6 +116,7 @@ public class IndroEconomy extends JavaPlugin {
             e.printStackTrace();
         }
     }
+
     /**
      * Gets the lang.yml config.
      * @return The lang.yml config.
@@ -122,7 +124,6 @@ public class IndroEconomy extends JavaPlugin {
     public YamlConfiguration getLang() {
         return LANG;
     }
-
     /**
      * Get the lang.yml file.
      * @return The lang.yml file.
@@ -162,18 +163,14 @@ public class IndroEconomy extends JavaPlugin {
         }
     }
 
-    private void createEconomyFiles() {
-        // instantiation of classes
-        YamlUtils backFile = new YamlUtils("backLocation");
-        YamlUtils bankFile = new YamlUtils("teams");
-        backFile.createFile();
-        bankFile.createFile();
-    }
-
     private void applyBukkitTasks() {
         final int period = config.getInt("stock.openTime");
         new TaskStockUpdate(this).runTaskTimer(this, 60L, period);
         new TaskUpdateFile(this).runTaskTimer(this, 20L, 6000L);
+    }
+
+    public static void setSavedConfig(FileConfiguration config) {
+        IndroEconomy.config = config;
     }
 
     public FileConfiguration getSavedConfig() {

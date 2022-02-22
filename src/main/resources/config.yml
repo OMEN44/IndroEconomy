@@ -31,12 +31,64 @@ money:
 
 # example for the Block Earning system
 blocks:
+  EMERALD_ORE:
+    - 500
+    - 350
+    - 200
   DIAMOND_ORE:
+    - 200
     - 100
-  COAL_ORE:
+    - 50
+  LAPIS_ORE:
     - 20
-    - 5
+    - 16
+    - 12
+  GOLD_ORE:
+    - 20
+    - 16
+    - 12
+  IRON_ORE:
+    - 10
+    - 8
+    - 6
+  COPPER_ORE:
+    - 6
+    - 4
+    - 2
+  COAL_ORE:
+    - 3
+    - 2
     - 1
+
+  # deepslate versions - 2x rewards
+  DEEPSLATE_EMERALD_ORE:
+    - 1000
+    - 700
+    - 400
+  DEEPSLATE_DIAMOND_ORE:
+    - 400
+    - 200
+    - 100
+  DEEPSLATE_LAPIS_ORE:
+    - 40
+    - 32
+    - 24
+  DEEPSLATE_GOLD_ORE:
+    - 40
+    - 32
+    - 24
+  DEEPSLATE_IRON_ORE:
+    - 20
+    - 16
+    - 12
+  DEEPSLATE_COPPER_ORE:
+    - 12
+    - 8
+    - 4
+  DEEPSLATE_COAL_ORE:
+    - 6
+    - 4
+    - 2
 
 stock:
   enabled: true # is it allowed?

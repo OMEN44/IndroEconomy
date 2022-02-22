@@ -1,7 +1,6 @@
 package io.github.omen44.indroEconomy.utils;
 
 import io.github.omen44.indroEconomy.IndroEconomy;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -19,6 +18,7 @@ public class YamlUtils {
         return YamlConfiguration.loadConfiguration(file);
     }
 
+    /* // create a custom file
     public void createFile() {
         if (!file.exists()) {
             try {
@@ -31,6 +31,7 @@ public class YamlUtils {
             Bukkit.getLogger().info("File successfully created!");
         }
     }
+    */
 
     public void saveFile(FileConfiguration config) {
         try {
