@@ -11,12 +11,13 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.*;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mNormal;
+import static io.github.omen44.indroEconomy.utils.ShortcutsUtils.mWarning;
 
 public class OpShopMenu extends Menu {
     public OpShopMenu(PlayerMenuUtility playerMenuUtility) {
@@ -143,7 +144,7 @@ public class OpShopMenu extends Menu {
 
     private ItemStack generateEnchants(ItemStack enchantedItem, int maxEnch, int overLevelChance, int extraEnchantChance) {
         int enchCount = 0;
-        int percentRoll = 0;
+        int percentRoll;
 
         // enchants that break at lvl 5
         ArrayList<Enchantment> blackListedEnchants = new ArrayList<>();
@@ -158,8 +159,8 @@ public class OpShopMenu extends Menu {
         blackListedEnchants.add(Enchantment.BINDING_CURSE);
         blackListedEnchants.add(Enchantment.VANISHING_CURSE);
 
-        ItemMeta itemMeta = enchantedItem.getItemMeta();
-        Random random = new Random(142141);
+        EnchantmentStorageMeta itemMeta = (EnchantmentStorageMeta) enchantedItem.getItemMeta();
+        Random random = new Random();
 
         if (itemMeta == null) return null;
 
@@ -172,7 +173,7 @@ public class OpShopMenu extends Menu {
             } else {
                 maxEnchLvl = enchantment.getMaxLevel();
             }
-            itemMeta.addEnchant(enchantment, maxEnchLvl, true);
+            itemMeta.addStoredEnchant(enchantment, maxEnchLvl, true);
             percentRoll = random.nextInt(100);
         } while (percentRoll <= extraEnchantChance && enchCount != maxEnch);
 
@@ -183,7 +184,7 @@ public class OpShopMenu extends Menu {
 
 
     private boolean isEnchOverleveled(int chance) {
-        int roll = (int) (Math.random()*100);
+        int roll = new Random().nextInt(100);
         return roll <= chance;
     }
 }
